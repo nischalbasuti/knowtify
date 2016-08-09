@@ -36,9 +36,6 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
     private String mParam1;
     private String mParam2;
 
-    private static final int RC_SIGN_IN = 9001;
-
-    GoogleApiClient mGoogleApiClient;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -69,12 +66,6 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
-        GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder
-                (GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
-                .enableAutoManage(getActivity(),this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API,mGoogleSignInOptions)
-                .build();
     }
 
     @Override
@@ -85,8 +76,6 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
         Button signinButton = (Button) v.findViewById(R.id.email_sign_in_button);
         signinButton.setOnClickListener(this);
 
-        Button googleSignInButton = (Button) v.findViewById(R.id.google_sign_in_button);
-        googleSignInButton.setOnClickListener(this);
         // Inflate the layout for this fragment
         return v;
 
@@ -98,42 +87,12 @@ public class SignInFragment extends Fragment implements GoogleApiClient.OnConnec
             case R.id.email_sign_in_button:
                 emailSignIn();
                 break;
-            case R.id.google_sign_in_button:
-                googleSignIn();
-                break;
         }
     }
 
     private void emailSignIn() {
         Intent intent = new Intent(getActivity(), MainActivity.class);
         startActivity(intent);
-    }
-    private void googleSignIn() {
-        Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(intent,RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode,int resultCode,Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-
-        if (requestCode == RC_SIGN_IN) {
-            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleSignInResult(result);
-        }
-    }
-
-    private void handleSignInResult(GoogleSignInResult result) {
-        if (result.isSuccess()) {
-            //successfully signed in
-            GoogleSignInAccount googleSignInAccount = result.getSignInAccount();
-            Toast.makeText(getActivity(), "signed in as "+googleSignInAccount.getDisplayName(), Toast
-                    .LENGTH_LONG).show();
-        }
-        else {
-            //signed out
-            Toast.makeText(getActivity(),"signed out",Toast.LENGTH_LONG).show();
-        }
     }
 
     @Override

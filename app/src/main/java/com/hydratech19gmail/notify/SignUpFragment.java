@@ -70,6 +70,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
 
     }
 
+    SignUpListener mSignUpListener;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -79,7 +80,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
         Button signupButton = (Button) v.findViewById(R.id.email_sign_up_button);
         signupButton.setOnClickListener(this);
 
-
         return v;
     }
 
@@ -88,8 +88,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
         switch (v.getId()) {
             case R.id.email_sign_up_button:
                 emailSignUp();
-                break;
-            case R.id.google_sign_up_button:
                 break;
         }
     }
@@ -104,4 +102,7 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
         Toast.makeText(getContext(),"connection failed",Toast.LENGTH_LONG);
     }
 
+    public interface SignUpListener {
+        void signUpClicked();
+    }
 }

@@ -92,11 +92,6 @@
                 android:textStyle="bold"
                 android:paddingEnd="16dp"
                 android:paddingStart="62dp"/>
-           <!-- <com.google.android.gms.common.SignInButton
-                android:id="@+id/google_sign_in_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"/>-->
 
         </LinearLayout>
     </ScrollView>

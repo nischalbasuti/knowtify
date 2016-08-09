@@ -68,11 +68,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
 
-        GoogleSignInOptions googleSignInOptions = new GoogleSignInOptions.Builder
-                (GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
-
-        mGoogleApiClient = new GoogleApiClient.Builder(getContext()).enableAutoManage(getActivity
-                (),this).addApi(Auth.GOOGLE_SIGN_IN_API,googleSignInOptions).build();
     }
 
     @Override
@@ -84,8 +79,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
         Button signupButton = (Button) v.findViewById(R.id.email_sign_up_button);
         signupButton.setOnClickListener(this);
 
-        Button googleSignupButton = (Button) v.findViewById(R.id.google_sign_up_button);
-        googleSignupButton.setOnClickListener(this);
 
         return v;
     }
@@ -97,7 +90,6 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
                 emailSignUp();
                 break;
             case R.id.google_sign_up_button:
-                googleSignUp();
                 break;
         }
     }
@@ -107,35 +99,9 @@ public class SignUpFragment extends Fragment implements View.OnClickListener,Goo
         startActivity(intent);
     }
 
-    private void googleSignUp() {
-        Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(intent,RC_SIGN_IN);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode,resultCode,data);
-
-        if(requestCode == RC_SIGN_IN) {
-            GoogleSignInResult googleSignInResult = Auth.GoogleSignInApi
-                    .getSignInResultFromIntent(data);
-            handleSigninResult(googleSignInResult);
-        }
-    }
-
-    private void handleSigninResult(GoogleSignInResult result) {
-        if (result.isSuccess()) {
-            //successfully signed in
-            Toast.makeText(getContext(),"signed in as "+result.getSignInAccount(),Toast
-                    .LENGTH_LONG);
-        }
-        else {
-            Toast.makeText(getContext(),"sign in failed",Toast.LENGTH_LONG);
-        }
-    }
-
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         Toast.makeText(getContext(),"connection failed",Toast.LENGTH_LONG);
     }
+
 }

@@ -11,11 +11,10 @@ import android.widget.EditText;
 
 import com.android.volley.RequestQueue;
 
-/**
+/*
  * Created by Jaelse on 30-07-2016.
  */
 public class BroadcastFragment extends Fragment {
-    RequestQueue
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

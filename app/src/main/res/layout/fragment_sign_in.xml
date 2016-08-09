@@ -70,8 +70,33 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="or"
                 android:textStyle="bold"
-                android:onClick="signin"/>
+                android:layout_gravity="center_horizontal"/>
+
+            <Button
+                android:id="@+id/google_sign_in_button"
+                style="?android:textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sign in with Google"
+                android:layout_gravity="center_horizontal"
+                android:background="@drawable/common_google_signin_btn_text_dark"
+                android:textColor="@android:color/white"
+                android:textAllCaps="false"
+                android:textSize="15sp"
+                android:textStyle="bold"
+                android:paddingEnd="16dp"
+                android:paddingStart="62dp"/>
+           <!-- <com.google.android.gms.common.SignInButton
+                android:id="@+id/google_sign_in_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"/>-->
 
         </LinearLayout>
     </ScrollView>

@@ -2,12 +2,22 @@ package com.hydratech19gmail.notify;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.Toast;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
 
 
 /**
@@ -15,7 +25,8 @@ import android.widget.Button;
  * Use the {@link SignUpFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class SignInFragment extends Fragment implements View.OnClickListener{
+public class SignInFragment extends Fragment implements GoogleApiClient.OnConnectionFailedListener,
+        View.OnClickListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -25,6 +36,9 @@ public class SignInFragment extends Fragment implements View.OnClickListener{
     private String mParam1;
     private String mParam2;
 
+    private static final int RC_SIGN_IN = 9001;
+
+    GoogleApiClient mGoogleApiClient;
 
     public SignInFragment() {
         // Required empty public constructor
@@ -55,15 +69,24 @@ public class SignInFragment extends Fragment implements View.OnClickListener{
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder
+                (GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+        mGoogleApiClient = new GoogleApiClient.Builder(getContext())
+                .enableAutoManage(getActivity(),this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,mGoogleSignInOptions)
+                .build();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_sign_in, container, false);
+
         Button signinButton = (Button) v.findViewById(R.id.email_sign_in_button);
         signinButton.setOnClickListener(this);
 
+        Button googleSignInButton = (Button) v.findViewById(R.id.google_sign_in_button);
+        googleSignInButton.setOnClickListener(this);
         // Inflate the layout for this fragment
         return v;
 
@@ -73,8 +96,48 @@ public class SignInFragment extends Fragment implements View.OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.email_sign_in_button:
-                Intent intent = new Intent(getActivity(), MainActivity.class);
-                startActivity(intent);
+                emailSignIn();
+                break;
+            case R.id.google_sign_in_button:
+                googleSignIn();
+                break;
         }
+    }
+
+    private void emailSignIn() {
+        Intent intent = new Intent(getActivity(), MainActivity.class);
+        startActivity(intent);
+    }
+    private void googleSignIn() {
+        Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        startActivityForResult(intent,RC_SIGN_IN);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode,int resultCode,Intent data) {
+        super.onActivityResult(requestCode,resultCode,data);
+
+        if (requestCode == RC_SIGN_IN) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleSignInResult(result);
+        }
+    }
+
+    private void handleSignInResult(GoogleSignInResult result) {
+        if (result.isSuccess()) {
+            //successfully signed in
+            GoogleSignInAccount googleSignInAccount = result.getSignInAccount();
+            Toast.makeText(getActivity(), "signed in as "+googleSignInAccount.getDisplayName(), Toast
+                    .LENGTH_LONG).show();
+        }
+        else {
+            //signed out
+            Toast.makeText(getActivity(),"signed out",Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 }

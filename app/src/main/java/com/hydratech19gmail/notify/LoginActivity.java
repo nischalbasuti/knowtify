@@ -1,6 +1,7 @@
 package com.hydratech19gmail.notify;
 
 
+import android.app.DownloadManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -13,6 +14,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -20,12 +22,25 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener{
@@ -37,8 +52,28 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private int[] tabIcons = {
     };
 
-    GoogleApiClient mGoogleApiClient;
+    private static final String TAG = "LoginActivity";
+
+    private GoogleApiClient mGoogleApiClient;
     private static final int RC_SIGN_IN = 9001;
+
+    private FirebaseAuth mAuth;
+
+    private FirebaseAuth.AuthStateListener mAuthListener;
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (mAuthListener != null) {
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +96,32 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
 
 
+        //checking if signed in
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(user != null) {
+                    //user is signed in
+                    Log.d(TAG,"signed in");
+                    //start main acivity
+                    Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+                    startActivity(intent);
+                }
+                else {
+                    //user not signed in
+                    Log.d(TAG,"not signed in");
+                }
+            }
+        };
+
+        mAuth = FirebaseAuth.getInstance();
+
         GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder
-                (GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().build();
+                (GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.server_client_id))
+                .requestEmail()
+                .build();
         mGoogleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this,this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API,mGoogleSignInOptions)
@@ -90,6 +149,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private void googleSignIn() {
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         startActivityForResult(intent,RC_SIGN_IN);
+
+        Toast.makeText(this,"signing in...",Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -104,20 +165,70 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private void handleSignInResult(GoogleSignInResult result) {
         if (result.isSuccess()) {
-            //successfully signed in
+            //...successfully signed in...
             GoogleSignInAccount googleSignInAccount = result.getSignInAccount();
-            Toast.makeText(this, "signed in as "+googleSignInAccount.getDisplayName(), Toast
-                    .LENGTH_LONG).show();
+            Log.d(TAG,"google signed in as "+googleSignInAccount.getEmail());
+            Toast.makeText(this, "google signed in as "+googleSignInAccount.getDisplayName(), Toast
+                    .LENGTH_SHORT).show();
+            firebaseAuthWithGoogle(googleSignInAccount);
         }
         else {
             //signed out
-            Toast.makeText(this,"signed out",Toast.LENGTH_LONG).show();
+            Log.d(TAG,"google signed out");
+            Toast.makeText(this,"google signed out",Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
+        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+
+        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+        mAuth.signInWithCredential(credential)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithCredential:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.w(TAG, "signInWithCredential", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this,"failed to connect",Toast.LENGTH_LONG);
+    }
 
+    //.....BULLSHIT TO TEST VOLLEY......
+    private void sendRequest() {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "http://hydra2622.appspot.com/";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        //display first 10 chars or response
+                        Toast.makeText(getApplicationContext(),"response: "+response,Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplicationContext(),"response error",Toast
+                                .LENGTH_LONG).show();
+                    }
+                }
+        );
+        //adding request to queue, sending request
+        requestQueue.add(stringRequest);
     }
 }
 

@@ -36,7 +36,7 @@ public class BroadcastFragment extends Fragment {
         sendB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"asdf",Toast.LENGTH_LONG).show();
+                Toast.makeText(getContext(),"file uploaded",Toast.LENGTH_LONG).show();
                 Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
                 Notification notification = new Notification(data1.getText().toString(),data2.getText().toString());
 

@@ -1,0 +1,63 @@
+{
+  "project_info": {
+    "project_number": "995221071972",
+    "firebase_url": "https://notify-1384.firebaseio.com",
+    "project_id": "notify-1384",
+    "storage_bucket": "notify-1384.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:995221071972:android:4e46eca6e4ed4e18",
+        "android_client_info": {
+          "package_name": "com.hydratech19gmail.notify"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "995221071972-kgj2869nfo7s21if6gq0sasg38p63j7t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hydratech19gmail.notify",
+            "certificate_hash": "4905D2D1340DC4892C767AB8F908B19F7D9B2C7F"
+          }
+        },
+        {
+          "client_id": "995221071972-lt7fkjlnlp16696kge1aios3uj8ij4q9.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "995221071972-krotl61b1fluvfvvessfjluo7qd1t8ij.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "995221071972-j0v7h373b0ghbijq8b930uvt4gvgllj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyADZrDUZLr2wG33Qw9Ebr7rjfsALRupWNo"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "995221071972-lt7fkjlnlp16696kge1aios3uj8ij4q9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

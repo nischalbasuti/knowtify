@@ -136,7 +136,8 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
             return;
         }
 
-        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new
+                OnCompleteListener<AuthResult>() {
             @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ConstantConditions"})
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {

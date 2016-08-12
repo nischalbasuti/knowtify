@@ -3,7 +3,6 @@ package com.hydratech19gmail.notify;
 
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -33,13 +32,6 @@ import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener{
-
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
-
-    private int[] tabIcons = {
-    };
 
     private static final String TAG = "LoginActivity";
 
@@ -73,17 +65,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.activity_login);
 
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        viewPager = (ViewPager)findViewById(R.id.viewpager);
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         setupViewPager(viewPager);
 
-        tabLayout = (TabLayout)findViewById(R.id.tabs);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-
 
         //checking if signed in
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -156,9 +145,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         if (result.isSuccess()) {
             //...successfully signed in...
             GoogleSignInAccount googleSignInAccount = result.getSignInAccount();
-            Log.d(TAG,"google signed in as "+googleSignInAccount.getEmail());
-            Toast.makeText(this, "google signed in as "+googleSignInAccount.getDisplayName(), Toast
-                    .LENGTH_SHORT).show();
+            if (googleSignInAccount != null) {
+                Log.d(TAG,"google signed in as "+googleSignInAccount.getEmail());
+            }
+            if (googleSignInAccount != null) {
+                Toast.makeText(this, "google signed in as "+googleSignInAccount.getDisplayName(), Toast
+                        .LENGTH_SHORT).show();
+            }
             firebaseAuthWithGoogle(googleSignInAccount);
         }
         else {
@@ -192,7 +185,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this,"failed to connect",Toast.LENGTH_LONG);
+        Toast.makeText(this,"failed to connect",Toast.LENGTH_LONG).show();
     }
 }
 

@@ -154,11 +154,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 googleSignIn();
                 break;
             case R.id.tv_register:
-                Intent httpIntent = new Intent(Intent.ACTION_VIEW);
-                httpIntent.setData(Uri.parse("http://notify19.co.nf/"));
-                startActivity(httpIntent);
-              //  Intent intent = new Intent(this, SignupActivity.class);
-               // startActivity(intent);
+           //     Intent httpIntent = new Intent(Intent.ACTION_VIEW);
+           //     httpIntent.setData(Uri.parse("https://notify-1384.firebaseapp.com/"));
+           //     startActivity(httpIntent);
+                Intent intent = new Intent(this, SignupActivity.class);
+                startActivity(intent);
                 break;
             case R.id.email_sign_in_button:
                 signIn();

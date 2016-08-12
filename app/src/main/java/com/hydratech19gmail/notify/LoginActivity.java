@@ -22,6 +22,12 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -136,6 +142,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //...register new email...
         TextView register = (TextView) findViewById(R.id.tv_register);
         register.setOnClickListener(this);
+
+        //....testing volley....
+        Button volleyTest = (Button) findViewById(R.id.volley_test);
+        volleyTest.setOnClickListener(this);
     }
 
     /*
@@ -163,7 +173,31 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.email_sign_in_button:
                 signIn();
                 break;
+            case R.id.volley_test:
+                volleyTest();
+                break;
         }
+    }
+
+    private void volleyTest() {
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        String url = "https://hydra2622.appspot.com";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(getApplicationContext(),response,Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getApplication(),error.getMessage(),Toast.LENGTH_LONG).show();
+                    }
+        });
+
+        requestQueue.add(stringRequest);
     }
 
     private void signIn() {

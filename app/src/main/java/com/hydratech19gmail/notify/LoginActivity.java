@@ -42,7 +42,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private static final int RC_SIGN_IN = 9001;
 
     private FirebaseAuth mAuth;
-
     private FirebaseAuth.AuthStateListener mAuthListener;
 
     @Override
@@ -90,7 +89,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Typeface logo_typeface = Typeface.createFromAsset(getAssets(),"fonts/OliJo-Bold.ttf");
         logo.setTypeface(logo_typeface);
 
-        //checking if signed in
+        //setting listener to check for sign in. Start main activity when successful.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -111,6 +110,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         mAuth = FirebaseAuth.getInstance();
 
+        //...google sign in...
         GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder
                 (GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.server_client_id))
@@ -123,13 +123,25 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         Button googleSignInButton = (Button) findViewById(R.id.google_sign_in_button);
         googleSignInButton.setOnClickListener(this);
+        //......
+
+        //...email sign in...
+        Button emailSignIn = (Button) findViewById(R.id.email_sign_in_button);
+        emailSignIn.setOnClickListener(this);
+
+        //...register new email...
+        TextView register = (TextView) findViewById(R.id.tv_register);
+        register.setOnClickListener(this);
     }
+
+    /*
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragments(new SignInFragment(),"Sign In");
         adapter.addFragments(new SignUpFragment(),"Sign Up");
         viewPager.setAdapter(adapter);
     }
+    */
 
     @Override
     public void onClick(View v) {
@@ -137,7 +149,36 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.google_sign_in_button:
                 googleSignIn();
                 break;
+            case R.id.tv_register:
+                Intent intent = new Intent(this, SignupActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.email_sign_in_button:
+                signIn();
+                break;
         }
+    }
+
+    private void signIn() {
+        TextView emailView = (TextView) findViewById(R.id.email);
+        TextView passwordView = (TextView) findViewById(R.id.password);
+
+        String email = emailView.getText().toString();
+        String password = passwordView.getText().toString();
+
+        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if(!task.isSuccessful()) {
+                    //noinspection ThrowableResultOfMethodCallIgnored
+                    Log.d(TAG,"sign in failed: "+task.getException());
+                    Toast.makeText(getApplicationContext(),"sign in failed",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Log.d(TAG,"sign in successful");
+                }
+            }
+        });
     }
 
     private void googleSignIn() {

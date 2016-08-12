@@ -8,7 +8,7 @@
     <string name="title_activity_login">Sign in</string>
 
     <!-- Strings related to login -->
-    <string name="prompt_email">Email</string>
+    <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>
     <string name="prompt_password_check">Re-enter Password</string>
     <string name="action_sign_up">Sign up</string>
@@ -31,4 +31,5 @@
          from https://console.developers.google.com/ -->
     <string name="server_client_id">995221071972-krotl61b1fluvfvvessfjluo7qd1t8ij.apps.googleusercontent.com</string>
     <string name="title_activity_signin">Sign in</string>
+    <string name="title_activity_signup">Sign in</string>
 </resources>

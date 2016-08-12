@@ -5,7 +5,7 @@
              android:padding="@dimen/fab_margin"
              tools:context="com.hydratech19gmail.notify.SignInFragment">
 
-    <!-- Login progress -->
+    <!-- Login progress
     <ProgressBar
         android:id="@+id/login_progress"
         style="?android:attr/progressBarStyleLarge"
@@ -71,7 +71,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textStyle="bold"/>
-            <!--
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,9 +92,9 @@
                 android:textSize="15sp"
                 android:textStyle="bold"
                 android:paddingEnd="16dp"
-                android:paddingStart="62dp"/>-->
+                android:paddingStart="62dp"/>
 
         </LinearLayout>
     </ScrollView>
-
+-->
 </FrameLayout>

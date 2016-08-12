@@ -2,6 +2,7 @@ package com.hydratech19gmail.notify;
 
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
@@ -14,8 +15,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.FacebookSdk;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -63,8 +66,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         //prevent keyboard from opening
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
 
+        FacebookSdk.sdkInitialize(this);
+
         setContentView(R.layout.activity_login);
 
+        //...setting toolbar and tabs...
+        /*
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -73,6 +80,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
+        */
+
+        //changing action bar title
+        setTitle(R.string.title_activity_login);
+
+        //set logo text view font
+        TextView logo = (TextView) findViewById(R.id.logo_login);
+        Typeface logo_typeface = Typeface.createFromAsset(getAssets(),"fonts/OliJo-Bold.ttf");
+        logo.setTypeface(logo_typeface);
 
         //checking if signed in
         mAuthListener = new FirebaseAuth.AuthStateListener() {

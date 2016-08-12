@@ -1,70 +1,38 @@
 package com.hydratech19gmail.notify;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Typeface;
-import android.support.annotation.NonNull;
-import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
 import android.net.Uri;
-import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 
-import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.FacebookSdk;
-import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
-import static android.Manifest.permission.READ_CONTACTS;
 
-/**
- * A login screen that offers login via email/password.
- */
 public class SignupActivity extends AppCompatActivity implements OnClickListener{
 
     private static final String TAG = "SignupActivity";
     private FirebaseAuth mAuth;
 
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private String displayName;
 
     @Override
     public void onStart() {
@@ -106,6 +74,24 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                 if(user != null) {
                     //user is signed in
                     Log.d(TAG,"signed in");
+
+                    //set display name
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(displayName)
+                            .build();
+                    user.updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if(task.isSuccessful()) {
+                                Log.d(TAG,"display name updated to "+displayName);
+                            }
+                            else{
+                                //noinspection ThrowableResultOfMethodCallIgnored
+                                Log.d(TAG,"display name update failed: "+task.getException());
+                            }
+                        }
+                    });
+
                     //start main acivity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
@@ -134,21 +120,24 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
 
     private void signUp() {
 
+        TextView displayNameView = (TextView) findViewById(R.id.display_name);
         TextView emailView = (TextView) findViewById(R.id.email);
         TextView passwordView = (TextView) findViewById(R.id.password);
         TextView passwordCheckView = (TextView) findViewById(R.id.password_check);
 
+        String displayName = displayNameView.getText().toString();
         String email = emailView.getText().toString();
         String password = passwordView.getText().toString();
         String passwordCheck = passwordCheckView.getText().toString();
 
         //TODO
-        //add more verificatoin stuff
-        if(!verifyRegistration(email,password,passwordCheck)) {
+        //add more verification stuff
+        if(!verifyRegistration(displayName,email,password,passwordCheck)) {
             return;
         }
 
         mAuth.createUserWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+            @SuppressWarnings({"ThrowableResultOfMethodCallIgnored", "ConstantConditions"})
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
@@ -158,23 +147,25 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
                     Log.d(TAG,""+task.getException());
-                    Toast.makeText(SignupActivity.this,"signup failed, try again", Toast
+                    Toast.makeText(SignupActivity.this,"sign up failed, try again", Toast
                             .LENGTH_LONG).show();
                     displayError(task.getException().toString());
                 }
                 else {
-                    Toast.makeText(getApplicationContext(),"sign up successfull",Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
-                    startActivity(intent);
+                    Toast.makeText(getApplicationContext(),"sign up successful",Toast.LENGTH_LONG).show();
                 }
 
             }
         });
     }
 
-    private boolean verifyRegistration(String email, String password, String passwordCheck) {
-        if(email.isEmpty()) {
+    private boolean verifyRegistration(String displayName,String email, String password, String
+            passwordCheck) {
+        if(displayName.isEmpty()) {
+            displayError("enter name");
+            return false;
+        }
+        else if(email.isEmpty()) {
             displayError("enter email");
             return false;
         }
@@ -191,6 +182,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
             return false;
         }
 
+        this.displayName = displayName;
         return true;
     }
 

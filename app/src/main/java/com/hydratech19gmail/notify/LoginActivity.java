@@ -1,6 +1,7 @@
 package com.hydratech19gmail.notify;
 
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
@@ -165,20 +166,37 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         String email = emailView.getText().toString();
         String password = passwordView.getText().toString();
+        if (!validateEmailSignin(email,password)) {
+            return;
+        }
+        try{
+            mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new
+                    OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(!task.isSuccessful()) {
+                                //noinspection ThrowableResultOfMethodCallIgnored
+                                Log.d(TAG,"sign in failed: "+task.getException());
+                                Toast.makeText(getApplicationContext(),"sign in failed",Toast.LENGTH_LONG).show();
+                            }
+                            else {
+                                Log.d(TAG,"sign in successful");
+                            }
+                        }
+                    });
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
-        mAuth.signInWithEmailAndPassword(email,password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if(!task.isSuccessful()) {
-                    //noinspection ThrowableResultOfMethodCallIgnored
-                    Log.d(TAG,"sign in failed: "+task.getException());
-                    Toast.makeText(getApplicationContext(),"sign in failed",Toast.LENGTH_LONG).show();
-                }
-                else {
-                    Log.d(TAG,"sign in successful");
-                }
-            }
-        });
+    private boolean validateEmailSignin(String email, String password) {
+        if(email.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this,"must enter username and password",Toast.LENGTH_LONG).show();
+
+            return false;
+        }
+
+        return true;
     }
 
     private void googleSignIn() {

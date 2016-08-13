@@ -271,11 +271,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         else {
             //signed out
-            Log.d(TAG,"google signed out");
-            Toast.makeText(this,"google signed out",Toast.LENGTH_LONG).show();
+            Log.d(TAG,"google signed out "+result.getSignInAccount());
+            Toast.makeText(this,"google signed out "+result,Toast.LENGTH_LONG).show();
         }
     }
-
     private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 

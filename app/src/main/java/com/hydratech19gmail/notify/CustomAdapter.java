@@ -20,15 +20,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Jaelse on 01-08-2016.
  */
-public class CustomAdapter extends ArrayAdapter<String> {
+public class CustomAdapter extends ArrayAdapter<Notification> {
     ArrayList<String> dropDownList;
     PopupWindow popupWindowDropDownMenu;
-
-    public CustomAdapter(Context context, String[] data){
+    public CustomAdapter(Context context, List<Notification> data){
         super(context,R.layout.home_fragment_row,data);
     }
 
@@ -45,9 +45,9 @@ public class CustomAdapter extends ArrayAdapter<String> {
         LayoutInflater inflater = LayoutInflater.from(getContext());
         View vi = inflater.inflate(R.layout.home_fragment_row,parent,false);
 
-        String title = getItem(position);
-        String broadcaster = getItem(position);
-        String content = getItem(position);
+        Notification n = getItem(position);
+        //String broadcaster = getItem(position);
+        //String content = getItem(position);
 
         TextView broadcastTitle = (TextView)vi.findViewById(R.id.broadcastTitle);
         ImageView broadcastThumbImage = (ImageView)vi.findViewById(R.id.thumbnail_image);
@@ -61,11 +61,12 @@ public class CustomAdapter extends ArrayAdapter<String> {
                popupWindowDropDownMenu.showAsDropDown(v,-5,0);
             }
         });
-        broadcastTitle.setText(title);
+        broadcastTitle.setText(n.data1);
 
         broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
         Log.d("text","getView");
+
         return vi;
     }
 

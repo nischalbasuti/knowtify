@@ -65,7 +65,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
 
         broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
-        Log.d("text","getView");
+        Log.d("text","getViewww");
 
         return vi;
     }

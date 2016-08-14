@@ -71,6 +71,7 @@ public class BroadcastFragment extends Fragment {
 
         final EditText data1 = (EditText)rootView.findViewById(R.id.editText);
         final EditText data2 = (EditText)rootView.findViewById(R.id.editText2);
+        final EditText data3 = (EditText)rootView.findViewById(R.id.editText3);
 
         Button sendB = (Button)rootView.findViewById(R.id.button);
         Button goGalleryB = (Button)rootView.findViewById(R.id.button2);
@@ -121,7 +122,8 @@ public class BroadcastFragment extends Fragment {
 
                 Toast.makeText(getContext(),"file ",Toast.LENGTH_LONG).show();
                 Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
-                Notification notification = new Notification(data1.getText().toString(),data2.getText().toString());
+                Notification notification = new Notification(data1.getText().toString(),data2
+                        .getText().toString(),data3.getText().toString());
 
                 ref.push().setValue(notification);
                 data1.setText("");

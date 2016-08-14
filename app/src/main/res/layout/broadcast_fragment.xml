@@ -12,38 +12,34 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
     tools:context="com.hydratech19gmail.notify.MainActivity">
-
-    <TextView
-        android:text="Enter the data"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView4" />
-
     <EditText
+        android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_below="@+id/textView4"
-        android:layout_alignParentStart="true" />
-    <TextView
-        android:text="Enter the data"
-        android:layout_width="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:hint="enter data"/>
+    <EditText
+        android:id="@+id/editText2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText"
-        android:id="@+id/textView5" />
+        android:layout_alignParentStart="true"
+        android:hint="enter data"/>
     <EditText
+        android:id="@+id/editText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText2"
-        android:layout_below="@+id/textView5"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@id/editText2"
+        android:layout_alignParentStart="true"
+        android:hint="enter data"/>
     <TextView
+        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="no file"
-        android:id="@+id/textView"
         android:layout_centerVertical="true"
-        android:layout_below="@+id/editText2"
+        android:layout_below="@+id/editText3"
         android:layout_alignParentStart="true" />
 
     <Button

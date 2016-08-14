@@ -26,8 +26,8 @@ import java.util.List;
  * Created by Jaelse on 01-08-2016.
  */
 public class CustomAdapter extends ArrayAdapter<Notification> {
-    ArrayList<String> dropDownList;
-    PopupWindow popupWindowDropDownMenu;
+    ArrayList<String> mDropDownList;
+    PopupWindow mPopupWindowDropDownMenu;
     public CustomAdapter(Context context, List<Notification> data){
         super(context,R.layout.home_fragment_row,data);
     }
@@ -35,11 +35,11 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
 
-        dropDownList = new ArrayList<>();
-        dropDownList.add("Delete");
-        dropDownList.add("Mark as read");
+        mDropDownList = new ArrayList<>();
+        mDropDownList.add("Delete");
+        mDropDownList.add("Mark as read");
 
-        popupWindowDropDownMenu = popupWindowDropDownMenu();
+        mPopupWindowDropDownMenu = PopupWindowDropDownMenu();
 
 
         LayoutInflater inflater = LayoutInflater.from(getContext());
@@ -58,10 +58,13 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         dropDownImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               popupWindowDropDownMenu.showAsDropDown(v,-5,0);
+               mPopupWindowDropDownMenu.showAsDropDown(v,-5,0);
             }
         });
-        broadcastTitle.setText(n.data1);
+
+        broadcastTitle.setText(n.getData1());
+        broadcasterName.setText(n.getData2());
+        contentText.setText(n.getData3());
 
         broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
@@ -70,13 +73,13 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         return vi;
     }
 
-    public PopupWindow popupWindowDropDownMenu(){
+    public PopupWindow PopupWindowDropDownMenu(){
 
         PopupWindow popupWindow = new PopupWindow(this.getContext());
 
         ListView listView = new ListView(this.getContext());
 
-        listView.setAdapter(dropDownAdapter(dropDownList));
+        listView.setAdapter(dropDownAdapter(mDropDownList));
 
         listView.setOnItemClickListener(new DropDownMenuOnItemClickListener());
 
@@ -89,10 +92,10 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         return popupWindow;
     }
 
-    public ArrayAdapter<String> dropDownAdapter(ArrayList<String> dropDownList){
+    public ArrayAdapter<String> dropDownAdapter(ArrayList<String> mDropDownList){
 
-        final String[] list = new String[dropDownList.size()];
-        dropDownList.toArray(list);
+        final String[] list = new String[mDropDownList.size()];
+        mDropDownList.toArray(list);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this.getContext(),android.R.layout.simple_list_item_1,list){
 
             @Override

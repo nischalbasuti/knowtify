@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment{
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
                 Notification n = new Notification();
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
                     notifications.add(notification.getValue(Notification.class));

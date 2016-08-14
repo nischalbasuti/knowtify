@@ -6,16 +6,16 @@
     android:orientation="horizontal"
     >
     <LinearLayout android:id="@+id/thumbnail"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_alignParentLeft="true"
         android:background="@drawable/dp_default_broadcast"
         android:layout_margin="5dip">
 
         <ImageView
             android:id="@+id/thumbnail_image"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:src="@drawable/dp_default_broadcast"/>
 
     </LinearLayout>
@@ -45,14 +45,16 @@
         android:id="@+id/broadcasterName"
         android:layout_below="@+id/broadcastTitle"
         android:layout_toEndOf="@+id/thumbnail" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="New Text"
-        android:id="@+id/textView3"
-        android:layout_below="@+id/content"
-        android:layout_alignStart="@+id/textView2" />
-
-
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@+id/thumbnail">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/content"
+            android:layout_below="@+id/broadcasterName"
+            android:padding="10dp" />
+    </LinearLayout>
 </RelativeLayout>

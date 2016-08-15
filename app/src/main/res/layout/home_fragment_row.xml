@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    >
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal">
     <LinearLayout android:id="@+id/thumbnail"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -45,42 +44,48 @@
         android:id="@+id/broadcasterName"
         android:layout_below="@+id/broadcastTitle"
         android:layout_toEndOf="@+id/thumbnail" />
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#c3bebd"
+        android:layout_above="@+id/contentLayout"/>
     <LinearLayout
-        android:id="@+id/contentContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        android:id="@+id/contentLayout"
         android:layout_below="@+id/thumbnail">
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="New Text"
             android:id="@+id/content"
             android:layout_below="@+id/broadcasterName"
             android:padding="10dp" />
     </LinearLayout>
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="#c3bebd"
+        android:layout_below="@+id/contentLayout"/>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/contentContainer">
-        <ImageButton
+        android:layout_height="40dp"
+        android:layout_below="@+id/contentLayout"
+        android:layout_weight="1">
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_gallery"
-            />
-        <ImageButton
+            android:id="@+id/imageView2"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_media_pdf" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_slideshow"
-            />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_send"
-            />
-        <ImageButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/ic_menu_camera"
-            />
+            android:id="@+id/imageView3"
+            android:layout_gravity="end"
+            android:src="@drawable/ic_media_pdf" />
     </LinearLayout>
+
 </RelativeLayout>

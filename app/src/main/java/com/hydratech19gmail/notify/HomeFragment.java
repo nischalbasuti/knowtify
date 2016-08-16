@@ -2,6 +2,8 @@ package com.hydratech19gmail.notify;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
@@ -32,7 +34,6 @@ import java.util.List;
  * Created by Jaelse on 30-07-2016.
  */
 public class HomeFragment extends Fragment{
-
     public HomeFragment(){
 
     }
@@ -63,10 +64,7 @@ public class HomeFragment extends Fragment{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
                 Notification n = new Notification();
-
-                Notification ntf = new Notification();
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
-
                     notifications.add(notification.getValue(Notification.class));
                     ((CustomAdapter)listAdapter).notifyDataSetChanged();
                 }

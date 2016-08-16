@@ -102,23 +102,31 @@ public class BroadcastFragment extends Fragment {
                 mountainsRef.getName().equals(mountainImagesRef.getName());
                 mountainsRef.getPath().equals(mountainImagesRef.getPath());
 
-                Uri file = Uri.fromFile(new File(path));
-                StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-                UploadTask uploadTask = riversRef.putFile(file);
+                try{
 
-                // Register observers to listen for when the download is done or if it fails
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        // Handle unsuccessful uploads
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    }
-                });
+                    Uri file = Uri.fromFile(new File(path));
+                    StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+                    UploadTask uploadTask = riversRef.putFile(file);
+
+                    // Register observers to listen for when the download is done or if it fails
+                    uploadTask.addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                            Log.d("BroadcastFragment: ","file thing: "+exception.getMessage());
+                            Toast.makeText(getContext(),"error uploading file",Toast.LENGTH_LONG).show();
+                            // Handle unsuccessful uploads
+                        }
+                    }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                            Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                        }
+                    });
+                } catch (Exception e) {
+                    Log.d("BroadcastFragment: ","file thing: "+e.getMessage());
+                    e.printStackTrace();
+                }
 
                 Toast.makeText(getContext(),"file ",Toast.LENGTH_LONG).show();
                 Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");

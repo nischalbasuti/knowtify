@@ -12,27 +12,41 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
 
     tools:context="com.hydratech19gmail.notify.MainActivity">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        android:id="@+id/button"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:textAllCaps="false"/>
     <EditText
         android:id="@+id/editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_below="@+id/button"
         android:layout_alignParentStart="true"
-        android:hint="enter data"/>
+        android:hint="enter title"/>
     <EditText
         android:id="@+id/editText2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText"
         android:layout_alignParentStart="true"
-        android:hint="enter data"/>
+        android:hint="enter name"/>
     <EditText
         android:id="@+id/editText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/editText2"
         android:layout_alignParentStart="true"
-        android:hint="enter data"/>
+        android:hint="enter content"/>
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </ScrollView>
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"
@@ -46,15 +60,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Upload File"
+        android:textAllCaps="false"
         android:id="@+id/button2"
         android:layout_below="@+id/textView"
         android:layout_centerHorizontal="true"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Send"
-        android:id="@+id/button"
-        android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

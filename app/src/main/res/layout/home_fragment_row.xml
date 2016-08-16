@@ -53,6 +53,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="100dp"
             android:text="New Text"
             android:id="@+id/content"
             android:layout_below="@+id/broadcasterName"

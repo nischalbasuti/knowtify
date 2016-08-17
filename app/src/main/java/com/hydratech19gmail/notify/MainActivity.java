@@ -3,6 +3,8 @@ package com.hydratech19gmail.notify;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -31,6 +33,13 @@ import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
+import java.net.URLConnection;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener {
@@ -136,6 +145,25 @@ public class MainActivity extends AppCompatActivity
 
         TextView nav_user_email = (TextView) navHeader.findViewById(R.id.drawer_user_email);
         nav_user_email.setText(user.getEmail());
+
+        try {
+            Bitmap bitmap = (Bitmap) new RetrieveImage().execute(user.getPhotoUrl().toString()).get();
+
+            ImageView nav_user_image = (ImageView) navHeader.findViewById(R.id.drawer_user_image);
+            nav_user_image.setMaxHeight(nav_user_image.getHeight());
+            nav_user_image.setMaxWidth(nav_user_image.getWidth());
+
+            Log.d("DP Dimentions :","h="+nav_user_image.getHeight()+" w="+nav_user_image.getWidth());
+
+            nav_user_image.setImageBitmap(bitmap);
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private GoogleApiClient mGoogleApiClient;
@@ -229,5 +257,33 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
 
+    }
+
+    private class RetrieveImage extends AsyncTask<String,Void,Bitmap> {
+
+        @Override
+        protected Bitmap doInBackground(String... strings) {
+            Bitmap bitmap = null;
+            try {
+                URL imgUrl = new URL(strings[0]);
+                URLConnection imgConn = imgUrl.openConnection();
+                imgConn.connect();
+
+                InputStream inputStream = imgConn.getInputStream();
+                BufferedInputStream bufferedInputStream = new BufferedInputStream(inputStream);
+                bitmap = BitmapFactory.decodeStream(bufferedInputStream);
+
+                bufferedInputStream.close();
+                inputStream.close();
+
+                Log.d(TAG,"photo url: "+imgUrl.toString());
+            }
+            catch (Exception e) {
+                Log.d(TAG,"display image"+e.getMessage());
+                Log.d(TAG,"photo url: "+user.getPhotoUrl().toString());
+                e.printStackTrace();
+            }
+            return bitmap;
+        }
     }
 }

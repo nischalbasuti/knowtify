@@ -9,8 +9,9 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-
     tools:context="com.hydratech19gmail.notify.MainActivity">
 
     <Button
@@ -43,12 +44,9 @@
         android:minHeight="200dp"
         android:layout_below="@id/button"
         android:layout_alignParentStart="true"
-        android:hint="enter content" />
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-
-    </ScrollView>
+        android:hint="enter content"
+        android:background="@drawable/com_facebook_auth_dialog_cancel_background"
+        android:padding="@dimen/activity_horizontal_margin"/>
     <TextView
         android:id="@+id/textView"
         android:layout_width="match_parent"

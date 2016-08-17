@@ -22,6 +22,9 @@ import android.widget.Toast;
 import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,6 +37,8 @@ import java.io.File;
 public class BroadcastFragment extends Fragment {
     String path;
     TextView pathV;
+
+    private FirebaseUser user;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -62,6 +67,7 @@ public class BroadcastFragment extends Fragment {
         }
 
 
+
     }
 
     @Nullable
@@ -69,8 +75,8 @@ public class BroadcastFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.broadcast_fragment,container,false);
 
-        final EditText data1 = (EditText)rootView.findViewById(R.id.editText);
-        final EditText data2 = (EditText)rootView.findViewById(R.id.editText2);
+       // final EditText data1 = (EditText)rootView.findViewById(R.id.editText);
+       // final EditText data2 = (EditText)rootView.findViewById(R.id.editText2);
         final EditText data3 = (EditText)rootView.findViewById(R.id.editText3);
 
         Button sendB = (Button)rootView.findViewById(R.id.button);
@@ -89,6 +95,8 @@ public class BroadcastFragment extends Fragment {
         });
 
 
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         sendB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -134,15 +142,15 @@ public class BroadcastFragment extends Fragment {
                 //sending message to database
                 Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
                 Notification notification = new Notification(
-                                                            data1.getText().toString(),
-                                                            data2.getText().toString(),
+                                                            user.getDisplayName(),
+                                                            user.getEmail(),
                                                             data3.getText().toString()
                                                             );
                 ref.push().setValue(notification);
 
                 //resetting fields to blank
-                data1.setText("");
-                data2.setText("");
+                //data1.setText("");
+                //data2.setText("");
                 data3.setText("");
 
             }

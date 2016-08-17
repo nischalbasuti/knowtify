@@ -1,6 +1,6 @@
 NoteFerry
 
-My part of work.
+Jaelse part of work.
 
 1.asynchronizing.
 2.starting service.

@@ -137,7 +137,6 @@ public class BroadcastFragment extends Fragment {
                     e.printStackTrace();
                 }
 
-
                 Toast.makeText(getContext(),"file ",Toast.LENGTH_LONG).show();
 
                 //sending message to database
@@ -150,7 +149,6 @@ public class BroadcastFragment extends Fragment {
                 ref.push().setValue(notification);
 
                 //resetting fields to blank
-
                 //data1.setText("");
                 //data2.setText("");
                 data3.setText("");

@@ -93,6 +93,7 @@ public class BroadcastFragment extends Fragment {
         sendB.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //uploading file
                 FirebaseStorage storage = FirebaseStorage.getInstance();
 
                 StorageReference storageRef = storage.getReferenceFromUrl("gs://notify-1384.appspot.com");
@@ -129,13 +130,20 @@ public class BroadcastFragment extends Fragment {
                 }
 
                 Toast.makeText(getContext(),"file ",Toast.LENGTH_LONG).show();
-                Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
-                Notification notification = new Notification(data1.getText().toString(),data2
-                        .getText().toString(),data3.getText().toString());
 
+                //sending message to database
+                Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
+                Notification notification = new Notification(
+                                                            data1.getText().toString(),
+                                                            data2.getText().toString(),
+                                                            data3.getText().toString()
+                                                            );
                 ref.push().setValue(notification);
+
+                //resetting fields to blank
                 data1.setText("");
                 data2.setText("");
+                data3.setText("");
 
             }
         });

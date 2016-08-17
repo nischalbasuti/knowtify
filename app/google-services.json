@@ -15,6 +15,30 @@
       },
       "oauth_client": [
         {
+          "client_id": "995221071972-np3k64tpg5sqnlrs9g475aidpn5avi9g.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hydratech19gmail.notify",
+            "certificate_hash": "B03CF36194536AD34160CD3C7D943695165D7434"
+          }
+        },
+        {
+          "client_id": "995221071972-ig9qdgrj8lj08g6ke4f7s96s5p9sgpne.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hydratech19gmail.notify",
+            "certificate_hash": "B7DE73958663F7F60715F94FD9F13E5AE8707F59"
+          }
+        },
+        {
+          "client_id": "995221071972-mr8sfou4nrlcdjf37c53lbus6s0kfnig.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hydratech19gmail.notify",
+            "certificate_hash": "143866846DFFD8BF47E1D3884E3D0D3320C6DFCC"
+          }
+        },
+        {
           "client_id": "995221071972-kgj2869nfo7s21if6gq0sasg38p63j7t.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

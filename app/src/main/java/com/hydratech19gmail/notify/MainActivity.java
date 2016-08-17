@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity
         mGoogleApiClient.connect();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
-
+  
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override

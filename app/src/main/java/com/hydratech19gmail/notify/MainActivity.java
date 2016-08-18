@@ -120,15 +120,7 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -189,10 +181,10 @@ public class MainActivity extends AppCompatActivity
 
     private void setupViewPager(ViewPager viewPager){
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragments(new HomeFragment(),"Home");
-        adapter.addFragments(new SearchFragment(),"Search");
-        adapter.addFragments(new BroadcastFragment(),"Broadcast");
-        adapter.addFragments(new NotificationFragment(),"Notification");
+        adapter.addFragments(new HomeFragment(),"");
+        adapter.addFragments(new SearchFragment(),"");
+        adapter.addFragments(new BroadcastFragment(),"");
+        adapter.addFragments(new NotificationFragment(),"");
         viewPager.setAdapter(adapter);
     }
     @Override

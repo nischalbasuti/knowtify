@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -74,7 +76,7 @@ public class BroadcastFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.broadcast_fragment,container,false);
-
+/*
        // final EditText data1 = (EditText)rootView.findViewById(R.id.editText);
        // final EditText data2 = (EditText)rootView.findViewById(R.id.editText2);
         final EditText data3 = (EditText)rootView.findViewById(R.id.editText3);
@@ -153,6 +155,15 @@ public class BroadcastFragment extends Fragment {
                 //data2.setText("");
                 data3.setText("");
 
+            }
+        });*/
+        FloatingActionButton fabNewBroadcast = (FloatingActionButton) rootView.findViewById(R.id.fab_new_broadcast);
+        fabNewBroadcast.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View view) {
+                NewBroadcastDialog newBroadcastDialog = new NewBroadcastDialog(getContext());
+                newBroadcastDialog.show();
             }
         });
         return rootView;

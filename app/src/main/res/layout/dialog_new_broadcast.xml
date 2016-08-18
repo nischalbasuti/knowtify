@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_new_broadcast"
         android:hint="Broadcast Name"
+        android:layout_margin="@dimen/fab_margin"
         />
     <TextView
         android:id="@+id/tv_privacy"
@@ -24,27 +25,45 @@
         android:layout_below="@+id/broadcast_name"
         android:text="Privacy:"
         android:textStyle="bold" />
-    <RadioButton
-        android:id="@+id/public_radio"
+    <RadioGroup
+        android:id="@+id/radio_group_privacy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_privacy"
-        android:layout_marginTop="10dp"
-        android:checked="true"
-        />
-    <RadioButton
-        android:id="@+id/private_radio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/public_radio"
-        android:layout_marginTop="10dp"/>
+        android:layout_below="@+id/tv_privacy"
+        android:layout_margin="@dimen/fab_margin">
+        <RadioButton
+            android:id="@+id/public_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_privacy"
+            android:layout_marginTop="10dp"
+            android:checked="true"
+            android:text="public"
+            />
+        <RadioButton
+            android:id="@+id/private_radio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/public_radio"
+            android:layout_marginTop="10dp"
+            android:text="private"/>
+    </RadioGroup>
     <Button
         android:id="@+id/new_broadcast_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/private_radio"
+        android:layout_below="@id/radio_group_privacy"
         android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentEnd="true"
         android:text="Create New Broadcast"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/new_broadcast_exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_broadcast_button"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        android:text="Cancel"
         android:textAllCaps="false"/>
 </RelativeLayout>

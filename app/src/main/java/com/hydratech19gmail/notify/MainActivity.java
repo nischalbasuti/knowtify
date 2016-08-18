@@ -50,8 +50,8 @@ public class MainActivity extends AppCompatActivity
     private int[] tabIcons = {
             R.drawable.ic_tab_home,
             R.drawable.ic_tab_search,
-            R.drawable.ic_tab_broadcast,
-            R.drawable.ic_media_pdf
+            R.drawable.ic_router_black_18dp,
+            R.drawable.ic_tab_broadcast
     };
 
     private FirebaseUser user;

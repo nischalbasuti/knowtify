@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ImageView android:id="@+id/thumbnail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/announcement_icon"
+        android:layout_margin="@dimen/fab_margin">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/broadcast_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Name of the broadcast" />
+    <TextView
+        android:id="@+id/broadcast_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/broadcast_name"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="info about broadcast"
+        android:layout_marginEnd="@dimen/fab_margin"/>
+
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:id="@+id/dropDownMenu"
+        android:src="@drawable/ic_dropdown_menu"
+        android:layout_margin="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        />
+</RelativeLayout>

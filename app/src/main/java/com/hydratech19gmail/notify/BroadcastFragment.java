@@ -18,10 +18,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,6 +37,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * Created by Jaelse on 30-07-2016.
@@ -157,6 +165,33 @@ public class BroadcastFragment extends Fragment {
 
             }
         });*/
+
+        final List<Broadcast> broadcasts = new LinkedList<>();
+
+        final ListAdapter listAdapter = new BroadcastAdapter(this.getContext(),broadcasts);
+        final ListView listView = (ListView) rootView.findViewById(R.id.broadcast_list);
+        listView.setAdapter(listAdapter);
+
+        Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/");
+
+        firebase.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(getContext(),"broadcast update",Toast.LENGTH_SHORT).show();
+
+                for (DataSnapshot broadcast : dataSnapshot.getChildren()) {
+                    broadcasts.add(broadcast.getValue(Broadcast.class));
+                    ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
+                }
+            }
+
+            @Override
+            public void onCancelled(FirebaseError firebaseError) {
+
+            }
+        });
+
+
         FloatingActionButton fabNewBroadcast = (FloatingActionButton) rootView.findViewById(R.id.fab_new_broadcast);
         fabNewBroadcast.setOnClickListener(new View.OnClickListener() {
 

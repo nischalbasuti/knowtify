@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
@@ -32,6 +33,7 @@ public class BroadcastActivity extends AppCompatActivity {
 
         try {
             getSupportActionBar().setTitle("Name of Broadcast");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         catch (Exception e) {
             Log.d(TAG,"error changing action bar");
@@ -66,5 +68,16 @@ public class BroadcastActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

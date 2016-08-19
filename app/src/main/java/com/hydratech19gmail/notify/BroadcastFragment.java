@@ -16,6 +16,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
@@ -172,6 +173,7 @@ public class BroadcastFragment extends Fragment {
         final ListView listView = (ListView) rootView.findViewById(R.id.broadcast_list);
         listView.setAdapter(listAdapter);
 
+
         Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/");
 
         firebase.addValueEventListener(new ValueEventListener() {
@@ -188,6 +190,15 @@ public class BroadcastFragment extends Fragment {
             @Override
             public void onCancelled(FirebaseError firebaseError) {
 
+            }
+        });
+
+        //on  item click
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent = new Intent(getContext(),BroadcastActivity.class);
+                startActivity(intent);
             }
         });
 

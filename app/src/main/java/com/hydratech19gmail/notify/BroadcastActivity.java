@@ -42,37 +42,11 @@ public class BroadcastActivity extends AppCompatActivity {
 
         final ListAdapter listAdapter = new CustomAdapter(this,notifications);
         final ListView listView = (ListView) findViewById(R.id.notificationList);
+
+        LayoutInflater inflater = getLayoutInflater();
+        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_broadcast,listView,false);
+        listView.addHeaderView(header,null,false);
         listView.setAdapter(listAdapter);
-
-
-        final RelativeLayout headerContainer = (RelativeLayout) findViewById(R.id.header_container);
-
-        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(AbsListView absListView, int scrollState) {
-
-            }
-            int lastVisibleItem = 0;
-            @Override
-            public void onScroll(AbsListView absListView, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-               /* if(firstVisibleItem > lastVisibleItem){
-                    headerContainer.animate().translationY(-headerContainer.getHeight())
-                            .setDuration(1)
-                            .withEndAction(new Runnable() {
-                                @Override
-                                public void run() {
-                                    headerContainer.setVisibility(View.GONE);
-                                }
-                            });
-                }
-                else if(firstVisibleItem < lastVisibleItem ){
-                    headerContainer.animate().translationY(0).setDuration(1);
-                    headerContainer.setVisibility(View.VISIBLE);
-                }
-                lastVisibleItem  = firstVisibleItem;
-                */
-            }
-        });
 
         Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
 

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:id="@+id/header_broadcast"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <ImageView
+        android:id="@+id/dividerTop"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:src="@color/authui_colorAccent"/>
+
+    <ImageView android:id="@+id/thumbnail"
+        android:layout_below="@+id/dividerTop"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/announcement_icon"
+        android:layout_marginEnd="@dimen/fab_margin">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/broadcast_info_heading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:textStyle="bold"
+        android:text="info about broadcast:" />
+    <TextView
+        android:id="@+id/broadcast_info"
+        android:layout_marginTop="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/broadcast_info_heading"
+        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:text="nalskdjflasfjlasdflaslkdfjaslkfjaskfasdfasdfadsfasdfasdfasdfasdfasdfasfasdfasdfasdfasdfasdfasdfa"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <ImageView
+        android:id="@+id/dividerBottom"
+        android:layout_below="@+id/broadcast_info"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:src="@color/authui_colorAccent"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dividerBottom"
+        android:id="@+id/notification_heading"
+        android:text="Notifications"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:layout_marginBottom="@dimen/fab_margin"/>
+</RelativeLayout>

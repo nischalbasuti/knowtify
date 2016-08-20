@@ -44,7 +44,7 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
 
         Broadcast broadcast = getItem(position);
         mViewHolder.broadcastName.setText(broadcast.getData1());
-        mViewHolder.broadcastInfo.setText(broadcast.getData2());
+        mViewHolder.broadcastInfo.setText(broadcast.getData2()+"\nprivacy: "+broadcast.getPrivacy());
 
         return convertView;
     }

@@ -1,17 +1,14 @@
 package com.hydratech19gmail.notify;
 
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -31,8 +28,12 @@ public class BroadcastActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
 
+        String broadcastName = getIntent().getExtras().getString("broadcastName");
+        String broadcastInfo = getIntent().getExtras().getString("broadcastInfo");
+
         try {
-            getSupportActionBar().setTitle("Name of Broadcast");
+            //noinspection ConstantConditions
+            getSupportActionBar().setTitle(broadcastName);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         catch (Exception e) {
@@ -47,6 +48,9 @@ public class BroadcastActivity extends AppCompatActivity {
 
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_broadcast,listView,false);
+
+        ((TextView) header.findViewById(R.id.broadcast_info)).setText(broadcastInfo);
+
         listView.addHeaderView(header,null,false);
         listView.setAdapter(listAdapter);
 
@@ -58,8 +62,12 @@ public class BroadcastActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "onDataChange", Toast.LENGTH_SHORT).show();
 
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
-                    notifications.add(notification.getValue(Notification.class));
-                    ((CustomAdapter)listAdapter).notifyDataSetChanged();
+                    try{
+                        notifications.add(notification.getValue(Notification.class));
+                        ((CustomAdapter)listAdapter).notifyDataSetChanged();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

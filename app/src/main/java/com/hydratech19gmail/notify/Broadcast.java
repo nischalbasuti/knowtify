@@ -8,6 +8,7 @@ public class Broadcast {
     private String data1;
     private String data2;
     private String data3;
+    private String privacy;
 
     public Broadcast() {}
 
@@ -34,5 +35,13 @@ public class Broadcast {
 
     public void setData3(String data3) {
         this.data3 = data3;
+    }
+
+    public String getPrivacy() {
+        return privacy;
+    }
+
+    public void setPrivacy(String privacy) {
+        this.privacy = privacy;
     }
 }

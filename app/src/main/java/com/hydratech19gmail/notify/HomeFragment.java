@@ -29,6 +29,7 @@ import com.firebase.client.ValueEventListener;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by Jaelse on 30-07-2016.
@@ -65,8 +66,12 @@ public class HomeFragment extends Fragment{
                 Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
                 Notification n = new Notification();
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
-                    notifications.add(notification.getValue(Notification.class));
-                    ((CustomAdapter)listAdapter).notifyDataSetChanged();
+                    try{
+                        notifications.add(notification.getValue(Notification.class));
+                        ((CustomAdapter)listAdapter).notifyDataSetChanged();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 

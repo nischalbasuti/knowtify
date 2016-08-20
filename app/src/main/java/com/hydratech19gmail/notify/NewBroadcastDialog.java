@@ -6,8 +6,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
-import android.widget.TextView;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.firebase.client.Firebase;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 /*
  * Created by nischal on 18/8/16.
@@ -44,15 +49,38 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
     }
 
     private void createNewBroadcast() {
-        TextView tvBroadcastName = (TextView) findViewById(R.id.broadcast_name);
-        String broadcastName = tvBroadcastName.getText().toString();
+        EditText etBroadcastName = (EditText) findViewById(R.id.broadcast_name);
+        String broadcastName = etBroadcastName.getText().toString();
 
         if(broadcastName.equals("")) {
             Toast.makeText(getContext(),"Enter broadcast name",Toast.LENGTH_SHORT).show();
         }
         else {
-            Toast.makeText(getContext(),"Created broadcast",Toast.LENGTH_SHORT).show();
-            dismiss();
+            //..............
+            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+            //sending message to database
+            Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
+            Broadcast newBroadcast = new Broadcast();
+
+            newBroadcast.setData1(broadcastName);
+            newBroadcast.setData2(user.getDisplayName());
+            newBroadcast.setData3(user.getEmail());
+
+            RadioGroup privacyGroup = (RadioGroup) findViewById(R.id.radio_group_privacy);
+            int selectedId = privacyGroup.getCheckedRadioButtonId();
+
+            if (selectedId == R.id.private_radio) {
+                newBroadcast.setPrivacy("private");
+            }
+            else if(selectedId == R.id.public_radio) {
+                newBroadcast.setPrivacy("public");
+            }
+
+            ref.push().setValue(newBroadcast);
+            //................
         }
+
+        Toast.makeText(getContext(),"Created broadcast",Toast.LENGTH_SHORT).show();
+        dismiss();
     }
 }

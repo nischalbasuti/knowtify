@@ -165,7 +165,8 @@ public class BroadcastFragment extends Fragment {
                 data3.setText("");
 
             }
-        });*/
+        });
+*/
 
         final List<Broadcast> broadcasts = new LinkedList<>();
 
@@ -182,8 +183,15 @@ public class BroadcastFragment extends Fragment {
                 Toast.makeText(getContext(),"broadcast update",Toast.LENGTH_SHORT).show();
 
                 for (DataSnapshot broadcast : dataSnapshot.getChildren()) {
-                    broadcasts.add(broadcast.getValue(Broadcast.class));
-                    ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
+                    try {
+                        Broadcast addBroadcast = broadcast.getValue(Broadcast.class);
+                        if(addBroadcast.getPrivacy() != null) {
+                            broadcasts.add(addBroadcast);
+                            ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
 
@@ -196,8 +204,15 @@ public class BroadcastFragment extends Fragment {
         //on  item click
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
                 Intent intent = new Intent(getContext(),BroadcastActivity.class);
+
+                TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
+                TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
+
+                intent.putExtra("broadcastName", broadcastName.getText().toString());
+                intent.putExtra("broadcastInfo", broadcastInfo.getText().toString());
+
                 startActivity(intent);
             }
         });
@@ -210,6 +225,9 @@ public class BroadcastFragment extends Fragment {
             public void onClick(View view) {
                 NewBroadcastDialog newBroadcastDialog = new NewBroadcastDialog(getContext());
                 newBroadcastDialog.show();
+
+                //TODO find a better fix
+                broadcasts.clear();
             }
         });
         return rootView;

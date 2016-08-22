@@ -1,8 +1,10 @@
 package com.hydratech19gmail.notify;
 
 import android.content.Intent;
+import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,16 +18,25 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.LinkedList;
 import java.util.List;
 
 public class BroadcasterProfileActivity extends AppCompatActivity {
 
+    String mUserId;
+    private static final String TAG = "BroadcasterProfile";
+
+    FirebaseUser user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcaster_profile);
+        
+        mUserId = getIntent().getExtras().getString("userId");
 
         final List<Broadcast> broadcasts = new LinkedList<>();
 
@@ -35,9 +46,14 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_broadcaster_profile,listView,false);
         listView.addHeaderView(header,null,false);
-
         listView.setAdapter(listAdapter);
 
+        try{
+            ((TextView)header.findViewById(R.id.user_id)).setText(mUserId);
+        } catch (Exception e){
+            e.printStackTrace();
+            Log.d(TAG,"error setting user id");
+        }
 
         Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/");
 

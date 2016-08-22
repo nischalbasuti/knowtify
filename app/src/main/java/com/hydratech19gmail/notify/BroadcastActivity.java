@@ -27,19 +27,24 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     private static final String TAG = "BroadcastActivity";
 
+    String mBroadcastName;
+    String mBroadcastInfo;
+    String mUserId;
+    String mPrivacy;
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
 
-        String broadcastName = getIntent().getExtras().getString("broadcastName");
-        String broadcastInfo = getIntent().getExtras().getString("broadcastInfo");
-        String userId = getIntent().getExtras().getString("userId");
-        String privacy = getIntent().getExtras().getString("privacy");
+        mBroadcastName = getIntent().getExtras().getString("broadcastName");
+        mBroadcastInfo = getIntent().getExtras().getString("broadcastInfo");
+        mUserId = getIntent().getExtras().getString("userId");
+        mPrivacy = getIntent().getExtras().getString("privacy");
 
         try {
             //noinspection ConstantConditions
-            getSupportActionBar().setTitle(broadcastName);
+            getSupportActionBar().setTitle(mBroadcastName);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
         catch (Exception e) {
@@ -56,9 +61,9 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_broadcast,listView,false);
 
         //setting broadcast information
-        ((TextView) header.findViewById(R.id.broadcast_info)).setText(broadcastInfo);
-        ((TextView) header.findViewById(R.id.privacy)).setText(privacy);
-        ((TextView) header.findViewById(R.id.user_id)).setText(userId);
+        ((TextView) header.findViewById(R.id.broadcast_info)).setText(mBroadcastInfo);
+        ((TextView) header.findViewById(R.id.privacy)).setText(mPrivacy);
+        ((TextView) header.findViewById(R.id.user_id)).setText(mUserId);
 
         ((TextView) header.findViewById(R.id.user_id)).setOnClickListener(this);
 
@@ -119,6 +124,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.user_id:
                 Intent intent = new Intent(this,BroadcasterProfileActivity.class);
+                intent.putExtra("userId",mUserId);
                 startActivity(intent);
         }
     }

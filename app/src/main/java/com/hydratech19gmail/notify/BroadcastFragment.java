@@ -37,6 +37,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -209,9 +211,13 @@ public class BroadcastFragment extends Fragment {
 
                 TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
                 TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
+                TextView userId = (TextView) view.findViewById(R.id.user_id);
+                TextView privacy = (TextView) view.findViewById(R.id.privacy);
 
                 intent.putExtra("broadcastName", broadcastName.getText().toString());
                 intent.putExtra("broadcastInfo", broadcastInfo.getText().toString());
+                intent.putExtra("userId",userId.getText().toString());
+                intent.putExtra("privacy",privacy.getText().toString());
 
                 startActivity(intent);
             }

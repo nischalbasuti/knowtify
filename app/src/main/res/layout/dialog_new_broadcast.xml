@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_horizontal_margin">
 
@@ -18,13 +18,22 @@
         android:hint="Broadcast Name"
         android:layout_margin="@dimen/fab_margin"
         />
+    <EditText
+        android:id="@+id/broadcast_info"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/broadcast_name"
+        android:hint="Broadcast Information"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"/>
     <TextView
         android:id="@+id/tv_privacy"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/broadcast_name"
+        android:layout_below="@+id/broadcast_info"
         android:text="Privacy:"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:layout_marginTop="@dimen/fab_margin"/>
     <RadioGroup
         android:id="@+id/radio_group_privacy"
         android:layout_width="wrap_content"
@@ -53,7 +62,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/radio_group_privacy"
-        android:layout_margin="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
         android:layout_alignParentEnd="true"
         android:text="Create New Broadcast"
         android:textAllCaps="false"/>

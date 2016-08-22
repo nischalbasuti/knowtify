@@ -28,9 +28,16 @@ import java.util.List;
 public class CustomAdapter extends ArrayAdapter<Notification> {
     ArrayList<String> mDropDownList;
     PopupWindow mPopupWindowDropDownMenu;
+
+    LayoutInflater inflater;
+
     public CustomAdapter(Context context, List<Notification> data){
         super(context,R.layout.home_fragment_row,data);
+        mViewHolder = new ViewHolder();
+        inflater = LayoutInflater.from(getContext());
     }
+    
+    ViewHolder mViewHolder;
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
@@ -41,36 +48,51 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
 
         mPopupWindowDropDownMenu = PopupWindowDropDownMenu();
 
+        if (convertView == null) {
 
-        LayoutInflater inflater = LayoutInflater.from(getContext());
-        View vi = inflater.inflate(R.layout.home_fragment_row,parent,false);
+            convertView = inflater.inflate(R.layout.home_fragment_row,parent,false);
+
+            mViewHolder.broadcastTitle = (TextView)convertView.findViewById(R.id.broadcastTitle);
+            mViewHolder.broadcastThumbImage = (ImageView)convertView.findViewById(R.id.thumbnail_image);
+            mViewHolder.broadcasterName = (TextView)convertView.findViewById(R.id.broadcasterName);
+            mViewHolder.contentText = (TextView)convertView.findViewById(R.id.content);
+            mViewHolder.dropDownImage = (ImageView)convertView.findViewById(R.id.dropDownMenu);
+
+            convertView.setTag(mViewHolder);
+
+            Log.d("CustomAdapter","getView | null");
+        } else {
+            mViewHolder = (ViewHolder) convertView.getTag();
+
+            Log.d("CustomAdapter","getView | not null");
+        }
+
 
         Notification n = getItem(position);
-        //String broadcaster = getItem(position);
-        //String content = getItem(position);
 
-        TextView broadcastTitle = (TextView)vi.findViewById(R.id.broadcastTitle);
-        ImageView broadcastThumbImage = (ImageView)vi.findViewById(R.id.thumbnail_image);
-        TextView broadcasterName = (TextView)vi.findViewById(R.id.broadcasterName);
-        TextView contentText = (TextView)vi.findViewById(R.id.content);
-        ImageView dropDownImage = (ImageView)vi.findViewById(R.id.dropDownMenu);
 
-        dropDownImage.setOnClickListener(new View.OnClickListener() {
+
+        mViewHolder.dropDownImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                mPopupWindowDropDownMenu.showAsDropDown(v,-5,0);
             }
         });
 
-        broadcastTitle.setText(n.getData1());
-        broadcasterName.setText(n.getData2());
-        contentText.setText(n.getData3());
+        mViewHolder.broadcastTitle.setText(n.getData1());
+        mViewHolder.broadcasterName.setText(n.getData2());
+        mViewHolder.contentText.setText(n.getData3());
+        mViewHolder.broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
-        broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
-
-        Log.d("CustomAdapter","getView");
-
-        return vi;
+        return convertView;
+    }
+    
+    static class ViewHolder {
+        TextView broadcastTitle;
+        ImageView broadcastThumbImage;
+        TextView broadcasterName;
+        TextView contentText;
+        ImageView dropDownImage;
     }
 
     public PopupWindow PopupWindowDropDownMenu(){

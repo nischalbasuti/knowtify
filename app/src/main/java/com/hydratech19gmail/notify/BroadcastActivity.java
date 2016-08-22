@@ -1,11 +1,14 @@
 package com.hydratech19gmail.notify;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,10 +19,11 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class BroadcastActivity extends AppCompatActivity {
+public class BroadcastActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "BroadcastActivity";
 
@@ -30,6 +34,8 @@ public class BroadcastActivity extends AppCompatActivity {
 
         String broadcastName = getIntent().getExtras().getString("broadcastName");
         String broadcastInfo = getIntent().getExtras().getString("broadcastInfo");
+        String userId = getIntent().getExtras().getString("userId");
+        String privacy = getIntent().getExtras().getString("privacy");
 
         try {
             //noinspection ConstantConditions
@@ -49,9 +55,28 @@ public class BroadcastActivity extends AppCompatActivity {
         LayoutInflater inflater = getLayoutInflater();
         ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_broadcast,listView,false);
 
+        //setting broadcast information
         ((TextView) header.findViewById(R.id.broadcast_info)).setText(broadcastInfo);
+        ((TextView) header.findViewById(R.id.privacy)).setText(privacy);
+        ((TextView) header.findViewById(R.id.user_id)).setText(userId);
+
+        ((TextView) header.findViewById(R.id.user_id)).setOnClickListener(this);
+
+        //setting up drop down list
+        ArrayList<String> dropDownList = new ArrayList<>();
+        dropDownList.add("Settings");
+        dropDownList.add("Delete");
+        final PopupWindowDropDownMenu popupWindowDropDownMenu = new PopupWindowDropDownMenu(this,dropDownList);
+        ((ImageView) header.findViewById(R.id.dropDownMenu)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popupWindowDropDownMenu.popupWindowDropDownMenu().showAsDropDown(view);
+            }
+        });
+
 
         listView.addHeaderView(header,null,false);
+        listView.setHeaderDividersEnabled(true);
         listView.setAdapter(listAdapter);
 
         Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
@@ -86,6 +111,15 @@ public class BroadcastActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.user_id:
+                Intent intent = new Intent(this,BroadcasterProfileActivity.class);
+                startActivity(intent);
         }
     }
 }

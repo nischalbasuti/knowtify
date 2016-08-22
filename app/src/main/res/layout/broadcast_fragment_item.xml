@@ -7,7 +7,10 @@
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
         android:src="@drawable/announcement_icon"
-        android:layout_margin="@dimen/fab_margin">
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginBottom="2dp">
     </ImageView>
 
     <TextView
@@ -15,25 +18,51 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Name of the broadcast" />
+        android:text="Name of the broadcast"
+        android:textColor="@color/bodyTextColor"/>
+    <TextView
+        android:id="@+id/user_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/broadcast_name"
+        android:layout_toEndOf="@+id/thumbnail"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="user@id"
+        android:textStyle="bold"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:textColor="@color/bodyTextColor"/>
     <TextView
         android:id="@+id/broadcast_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/broadcast_name"
-        android:layout_toRightOf="@+id/thumbnail"
+        android:layout_below="@+id/user_id"
+        android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="info about broadcast"
-        android:layout_marginEnd="@dimen/fab_margin"/>
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_marginBottom="@dimen/fab_margin"
+        android:textColor="@color/bodyTextColor"/>
+    <TextView
+        android:id="@+id/privacy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/thumbnail"
+        android:layout_alignLeft="@+id/thumbnail"
+        android:textStyle="italic"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="privacy"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:textColor="@color/bodyTextColor"/>
 
     <ImageView
-        android:layout_width="20dp"
-        android:layout_height="20dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:scaleX=".25"
+        android:scaleY=".25"
         android:id="@+id/dropDownMenu"
         android:src="@drawable/ic_dropdown_menu"
-        android:layout_margin="@dimen/fab_margin"
         android:layout_alignParentEnd="true"
-        />
+        android:layout_alignParentTop="true" />
 </RelativeLayout>

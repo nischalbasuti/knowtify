@@ -50,7 +50,10 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
 
     private void createNewBroadcast() {
         EditText etBroadcastName = (EditText) findViewById(R.id.broadcast_name);
+        EditText etBroadcastInfo = (EditText) findViewById(R.id.broadcast_info);
+
         String broadcastName = etBroadcastName.getText().toString();
+        String broadcastInfo = etBroadcastInfo.getText().toString();
 
         if(broadcastName.equals("")) {
             Toast.makeText(getContext(),"Enter broadcast name",Toast.LENGTH_SHORT).show();
@@ -62,9 +65,9 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
             Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
             Broadcast newBroadcast = new Broadcast();
 
-            newBroadcast.setData1(broadcastName);
-            newBroadcast.setData2(user.getDisplayName());
-            newBroadcast.setData3(user.getEmail());
+            newBroadcast.setName(broadcastName);
+            newBroadcast.setInfo(broadcastInfo);
+            newBroadcast.setUserId(user.getEmail());
 
             RadioGroup privacyGroup = (RadioGroup) findViewById(R.id.radio_group_privacy);
             int selectedId = privacyGroup.getCheckedRadioButtonId();
@@ -78,9 +81,10 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
 
             ref.push().setValue(newBroadcast);
             //................
+
+            Toast.makeText(getContext(),"Created broadcast",Toast.LENGTH_SHORT).show();
         }
 
-        Toast.makeText(getContext(),"Created broadcast",Toast.LENGTH_SHORT).show();
         dismiss();
     }
 }

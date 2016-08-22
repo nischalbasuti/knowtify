@@ -34,6 +34,14 @@
             android:name=".SignupActivity"
             android:label="@string/title_activity_signup" >
         </activity>
+        <activity
+            android:name=".BroadcasterProfileActivity"
+            android:label="@string/title_activity_broadcaster_profile" >
+        </activity>
+        <activity
+            android:name=".BroadcastActivity"
+            android:label="@string/title_activity_broadcast">
+        </activity>
     </application>
 
 </manifest>

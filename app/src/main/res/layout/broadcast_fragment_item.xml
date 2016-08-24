@@ -55,14 +55,4 @@
         android:text="privacy"
         android:layout_marginEnd="@dimen/fab_margin"
         android:textColor="@color/bodyTextColor"/>
-
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:scaleX=".25"
-        android:scaleY=".25"
-        android:id="@+id/dropDownMenu"
-        android:src="@drawable/ic_dropdown_menu"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true" />
 </RelativeLayout>

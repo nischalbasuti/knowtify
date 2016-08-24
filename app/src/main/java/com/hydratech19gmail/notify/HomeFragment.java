@@ -58,8 +58,6 @@ public class HomeFragment extends Fragment{
 
         Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
 
-
-
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

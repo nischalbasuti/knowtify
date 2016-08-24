@@ -6,11 +6,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +23,7 @@ import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,7 +38,17 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcaster_profile);
-        
+
+        try {
+            //noinspection ConstantConditions
+            getSupportActionBar().setTitle("User Name's Profile");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        catch (Exception e) {
+            Log.d(TAG,"error changing action bar");
+            e.printStackTrace();
+        }
+
         mUserId = getIntent().getExtras().getString("userId");
 
         final List<Broadcast> broadcasts = new LinkedList<>();
@@ -98,8 +111,44 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
                 intent.putExtra("privacy",privacy.getText().toString());
 
                 startActivity(intent);
+                finish();
+            }
+        });
+
+        //showing dropdown on long click
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                ArrayList<String> mDropDownList;
+                mDropDownList = new ArrayList<>();
+                mDropDownList.add("Settings");
+                mDropDownList.add("Delete");
+
+                final PopupWindowDropDownMenu popupWindowDropDownMenu = new PopupWindowDropDownMenu(getApplicationContext(),mDropDownList);
+                PopupWindow popupWindow = popupWindowDropDownMenu.popupWindowDropDownMenu();
+                popupWindow.showAsDropDown(
+                        view,
+                        view.getWidth()/2 - popupWindow.getWidth()/2,
+                        -view.getHeight()/2 + popupWindow.getHeight()/2
+                );
+
+                return true;
             }
         });
     }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
 }
 

@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -89,6 +89,14 @@ public class MainActivity extends AppCompatActivity
         mGoogleApiClient.connect();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if(user == null) {
+            Intent intent= new Intent(this,LoginActivity.class);
+            startActivity(intent);
+            finish();
+
+            return;
+        }
   
         mAuth = FirebaseAuth.getInstance();
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -104,6 +112,7 @@ public class MainActivity extends AppCompatActivity
                     googleSignOut();
                     Intent intent = new Intent(getApplicationContext(),LoginActivity.class);
                     startActivity(intent);
+                    finish();
                 }
             }
         };

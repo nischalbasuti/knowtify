@@ -14,6 +14,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -21,6 +22,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -78,9 +80,6 @@ public class BroadcastFragment extends Fragment {
 
             pathV.setText(path);
         }
-
-
-
     }
 
     @Nullable
@@ -220,6 +219,32 @@ public class BroadcastFragment extends Fragment {
                 intent.putExtra("privacy",privacy.getText().toString());
 
                 startActivity(intent);
+            }
+        });
+
+
+        //showing dropdown on long click
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+
+                ArrayList<String> mDropDownList;
+                mDropDownList = new ArrayList<>();
+                mDropDownList.add("Settings");
+                mDropDownList.add("Delete");
+
+
+                final PopupWindowDropDownMenu popupWindowDropDownMenu = new PopupWindowDropDownMenu(getContext(),mDropDownList);
+
+                PopupWindow popupWindow = popupWindowDropDownMenu.popupWindowDropDownMenu();
+                popupWindow.showAsDropDown(
+                        view,
+                        view.getWidth()/2 - popupWindow.getWidth()/2,
+                        -view.getHeight() - popupWindow.getHeight()/2
+                );
+
+                return true;
             }
         });
 

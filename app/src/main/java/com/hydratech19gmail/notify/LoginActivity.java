@@ -29,6 +29,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.facebook.FacebookSdk;
+import com.firebase.client.Firebase;
 import com.google.android.gms.auth.api.Auth;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -114,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //start main acivity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else {
                     //user not signed in

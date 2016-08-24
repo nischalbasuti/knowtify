@@ -126,6 +126,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 Intent intent = new Intent(this,BroadcasterProfileActivity.class);
                 intent.putExtra("userId",mUserId);
                 startActivity(intent);
+                finish();
         }
     }
 }

@@ -1,31 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal">
-    <LinearLayout android:id="@+id/thumbnail"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:layout_alignParentLeft="true"
-        android:background="@drawable/dp_default_broadcast"
-        android:layout_margin="5dip">
-
-        <ImageView
-            android:id="@+id/thumbnail_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:src="@drawable/dp_default_broadcast"/>
-
-    </LinearLayout>
+    android:orientation="horizontal"
+    android:background="@drawable/customshape">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
-        android:layout_toRightOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/broadcastTitle" />
+        android:id="@+id/broadcastTitle"
+        android:paddingLeft="8dp" />
 
     <ImageView
         android:layout_width="20dp"
@@ -43,17 +29,17 @@
         android:text="Small Text"
         android:id="@+id/broadcasterName"
         android:layout_below="@+id/broadcastTitle"
-        android:layout_toEndOf="@+id/thumbnail" />
+        android:paddingLeft="8dp" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#c3bebd"
-        android:layout_above="@+id/contentLayout"/>
+        android:background="@color/light_grey"
+        android:layout_below="@+id/broadcasterName"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/contentLayout"
-        android:layout_below="@+id/thumbnail">
+        android:layout_below="@+id/broadcasterName">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,27 +52,13 @@
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
-        android:background="#c3bebd"
+        android:background="@color/light_grey"
         android:layout_below="@+id/contentLayout"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/contentLayout"
         android:layout_weight="1">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView2"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_media_pdf" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageView3"
-            android:layout_gravity="end"
-            android:src="@drawable/ic_media_pdf" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -53,7 +53,6 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             convertView = inflater.inflate(R.layout.home_fragment_row,parent,false);
 
             mViewHolder.broadcastTitle = (TextView)convertView.findViewById(R.id.broadcastTitle);
-            mViewHolder.broadcastThumbImage = (ImageView)convertView.findViewById(R.id.thumbnail_image);
             mViewHolder.broadcasterName = (TextView)convertView.findViewById(R.id.broadcasterName);
             mViewHolder.contentText = (TextView)convertView.findViewById(R.id.content);
             mViewHolder.dropDownImage = (ImageView)convertView.findViewById(R.id.dropDownMenu);
@@ -82,14 +81,12 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         mViewHolder.broadcastTitle.setText(n.getName());
         mViewHolder.broadcasterName.setText(n.getSubject());
         mViewHolder.contentText.setText(n.getContent());
-        mViewHolder.broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
         return convertView;
     }
     
     static class ViewHolder {
         TextView broadcastTitle;
-        ImageView broadcastThumbImage;
         TextView broadcasterName;
         TextView contentText;
         ImageView dropDownImage;

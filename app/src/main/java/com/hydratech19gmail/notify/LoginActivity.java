@@ -116,7 +116,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
 
         mAuth = FirebaseAuth.getInstance();
-
         //...google sign in...
         GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder
                 (GoogleSignInOptions.DEFAULT_SIGN_IN)

@@ -39,6 +39,7 @@ public class HomeFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
         final List<Notification> notifications = new LinkedList<>();
 
         View rootView = inflater.inflate(R.layout.home_fragment,container,false);

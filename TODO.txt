@@ -2,19 +2,19 @@ NoteFerry
 
 Jaelse part of work.
 
-1.asynchronizing.(not started)
-2.starting service.(working)
-3.notification on the cellphone.(complete)
+1.asynchronizing.
+2.starting service.
+3.notification on the cellphone.
 4.completing the home fragement.
 5.setting reminder.
 
 Nischal part of work.
 
-1.broadcast fragement.(completed)
-2.bradcaster profile.(working)
-3.broadcast profile.(working)
-4.Query page.(not started)
-5.App settings.(not started)
+1.broadcast fragement.
+2.bradcaster profile.
+3.broadcast profile.
+4.Query page.
+5.App settings.
 
 Kavya part of work.
 

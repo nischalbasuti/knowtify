@@ -2,11 +2,12 @@ NoteFerry
 
 Jaelse part of work.
 
-1.asynchronizing.
-2.starting service.
-3.notification on the cellphone.
-4.completing the home fragement.
-5.setting reminder.
+1.asynchronizing.(Not yet started)
+2.starting service.(In preogress)
+3.notification on the cellphone.(In progress)
+4.completing the home fragement.(In progress)
+5.setting reminder.(Not yet started)
+6.send email.(In progress)
 
 Nischal part of work.
 

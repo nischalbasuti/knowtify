@@ -1,6 +1,7 @@
 package com.hydratech19gmail.notify;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +19,8 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -27,15 +30,22 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     private static final String TAG = "BroadcastActivity";
 
+    FirebaseUser mUser;
+
     String mBroadcastName;
     String mBroadcastInfo;
     String mUserId;
     String mPrivacy;
-    
+    String mBroadcastKey;
+
+    final List<Notification> notifications = new LinkedList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
+
+        mUser = FirebaseAuth.getInstance().getCurrentUser();
 
         mBroadcastName = getIntent().getExtras().getString("broadcastName");
         mBroadcastInfo = getIntent().getExtras().getString("broadcastInfo");
@@ -51,8 +61,6 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             Log.d(TAG,"error changing action bar");
             e.printStackTrace();
         }
-
-        final List<Notification> notifications = new LinkedList<>();
 
         final ListAdapter listAdapter = new CustomAdapter(this,notifications);
         final ListView listView = (ListView) findViewById(R.id.notificationList);
@@ -84,7 +92,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         listView.setHeaderDividersEnabled(true);
         listView.setAdapter(listAdapter);
 
-        Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
+        Firebase ref = new Firebase("https://notify-1384.firebaseio.com/notifications");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
@@ -96,7 +104,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                         notifications.add(notification.getValue(Notification.class));
                         ((CustomAdapter)listAdapter).notifyDataSetChanged();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.d(TAG,e.getMessage());
                     }
                 }
             }
@@ -106,6 +114,10 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
             }
         });
+
+        FloatingActionButton newNotificationFab = (FloatingActionButton) findViewById(R.id.fab_new_notification);
+        newNotificationFab.setOnClickListener(this);
+
     }
 
     @Override
@@ -127,6 +139,12 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 intent.putExtra("userId",mUserId);
                 startActivity(intent);
                 finish();
+                break;
+            case R.id.fab_new_notification:
+                NewNotificationDialog newNotificationDialog = new NewNotificationDialog(this,mUser);
+                newNotificationDialog.show();
+
+                notifications.clear();
         }
     }
 }

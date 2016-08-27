@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:id="@+id/tv_new_notification"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Notiication:"
+        android:textStyle="bold"/>
+    <EditText
+        android:id="@+id/notification_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_new_notification"
+        android:hint="Notification Name"
+        android:layout_margin="@dimen/fab_margin"
+        />
+    <EditText
+        android:id="@+id/notification_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notification_name"
+        android:hint="Notification Subject"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"/>
+    <EditText
+        android:id="@+id/notification_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notification_subject"
+        android:hint="Notification Content"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:height="100dp"/>
+
+    <Button
+        android:id="@+id/upload_attachments_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/notification_content"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_alignParentStart="true"
+        android:text="upload attachments"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/new_notification_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/upload_attachments_button"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        android:text="Create New notification"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/new_notification_exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_notification_button"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        android:text="Cancel"
+        android:textAllCaps="false"/>
+</RelativeLayout>

@@ -1,44 +1,61 @@
 package com.hydratech19gmail.notify;
 
-/**
+/*
  * Created by Jaelse on 09-08-2016.
  */
 public class Notification {
 
-    private String data1;
-    private String data2;
-    private String data3;
-
+    private String name;
+    private String subject;
+    private String content;
+    private String timeStamp;
+    /*
+    private String broadcastName;
+    private String broadcasterName;
+    private String broadcasterId;
+*/
     public Notification(){
 
     }
-    public Notification(String data1,String data2,String data3){
-        this.data1 = data1;
-        this.data2 = data2;
-        this.data3 = data3;
+
+    public Notification(String name,String subject,String content,String timeStamp) {
+        this.name = name;
+        this.subject = subject;
+        this.content = content;
+        this.timeStamp = timeStamp;
     }
 
-    public String getData1() {
-        return data1;
+    //getters and setters
+
+    public String getName() {
+        return name;
     }
 
-    public String getData2() {
-        return data2;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getData3() {
-        return data3;
+    public String getSubject() {
+        return subject;
     }
 
-    public void setData1(String data1) {
-        this.data1 = data1;
+    public void setSubject(String subject) {
+        this.subject = subject;
     }
 
-    public void setData2(String data2) {
-        this.data2 = data2;
+    public String getContent() {
+        return content;
     }
 
-    public void setData3(String data3) {
-        this.data3 = data3;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

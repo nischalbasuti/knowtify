@@ -79,9 +79,9 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             }
         });
 
-        mViewHolder.broadcastTitle.setText(n.getData1());
-        mViewHolder.broadcasterName.setText(n.getData2());
-        mViewHolder.contentText.setText(n.getData3());
+        mViewHolder.broadcastTitle.setText(n.getName());
+        mViewHolder.broadcasterName.setText(n.getSubject());
+        mViewHolder.contentText.setText(n.getContent());
         mViewHolder.broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
         return convertView;

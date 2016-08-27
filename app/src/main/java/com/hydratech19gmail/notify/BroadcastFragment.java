@@ -7,19 +7,14 @@ import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -30,26 +25,19 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserInfo;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import org.w3c.dom.Text;
-
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
+/*
  * Created by Jaelse on 30-07-2016.
  */
 public class BroadcastFragment extends Fragment {
+
+    private static final String TAG = "BroadcastFrgmnt";
+
     String path;
     TextView pathV;
 
@@ -160,14 +148,11 @@ public class BroadcastFragment extends Fragment {
                                                             );
                 ref.push().setValue(notification);
 
-                //resetting fields to blank
-                //data1.setText("");
-                //data2.setText("");
-                data3.setText("");
-
             }
         });
 */
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
 
         final List<Broadcast> broadcasts = new LinkedList<>();
 
@@ -176,7 +161,7 @@ public class BroadcastFragment extends Fragment {
         listView.setAdapter(listAdapter);
 
 
-        Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/");
+        Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/broadcasts/");
 
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -191,7 +176,7 @@ public class BroadcastFragment extends Fragment {
                             ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.d(TAG,e.getMessage());
                     }
                 }
             }
@@ -254,7 +239,7 @@ public class BroadcastFragment extends Fragment {
 
             @Override
             public void onClick(View view) {
-                NewBroadcastDialog newBroadcastDialog = new NewBroadcastDialog(getContext());
+                NewBroadcastDialog newBroadcastDialog = new NewBroadcastDialog(getContext(),user);
                 newBroadcastDialog.show();
 
                 //TODO find a better fix

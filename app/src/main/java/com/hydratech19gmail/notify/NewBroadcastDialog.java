@@ -18,8 +18,13 @@ import com.google.firebase.auth.FirebaseUser;
  * Created by nischal on 18/8/16.
  */
 public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
-    public NewBroadcastDialog(Context context) {
+
+
+    final FirebaseUser mUser;
+
+    public NewBroadcastDialog(Context context, FirebaseUser user) {
         super(context);
+        this.mUser = user;
     }
 
     @Override
@@ -60,14 +65,17 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
         }
         else {
             //..............
-            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             //sending message to database
-            Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
+            Firebase ref = new Firebase("https://notify-1384.firebaseio.com/broadcasts/");
             Broadcast newBroadcast = new Broadcast();
 
             newBroadcast.setName(broadcastName);
             newBroadcast.setInfo(broadcastInfo);
-            newBroadcast.setUserId(user.getEmail());
+            try{
+                newBroadcast.setUserId(mUser.getEmail());
+            } catch (Exception e) {
+                newBroadcast.setUserId("faiiiilllll");
+            }
 
             RadioGroup privacyGroup = (RadioGroup) findViewById(R.id.radio_group_privacy);
             int selectedId = privacyGroup.getCheckedRadioButtonId();

@@ -1,7 +1,6 @@
 package com.hydratech19gmail.notify;
 
 import android.content.Intent;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,7 +19,6 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
@@ -68,7 +66,7 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
             Log.d(TAG,"error setting user id");
         }
 
-        Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/");
+        Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/broadcasts/");
 
         firebase.addValueEventListener(new ValueEventListener() {
             @Override
@@ -83,7 +81,7 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
                             ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
                         }
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.d(TAG,e.getMessage());
                     }
                 }
             }

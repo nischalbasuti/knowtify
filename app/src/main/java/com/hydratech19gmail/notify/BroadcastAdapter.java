@@ -46,10 +46,10 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
 
             convertView.setTag(mViewHolder);
 
-            Log.d(TAG, "getView, convertView = null");
+            Log.d(TAG, "getView, convertView | null");
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
-            Log.d(TAG, "getView, convertView != null");
+            Log.d(TAG, "getView, convertView | not null");
         }
 
         Broadcast broadcast = getItem(position);

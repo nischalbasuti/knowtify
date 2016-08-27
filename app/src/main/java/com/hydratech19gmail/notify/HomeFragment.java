@@ -1,24 +1,14 @@
 package com.hydratech19gmail.notify;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.client.DataSnapshot;
@@ -26,15 +16,16 @@ import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
-/**
+/*
  * Created by Jaelse on 30-07-2016.
  */
 public class HomeFragment extends Fragment{
+
+    private static final String TAG = "HomeFrgmnt";
+
     public HomeFragment(){
 
     }
@@ -56,19 +47,19 @@ public class HomeFragment extends Fragment{
         final ListView listView = (ListView) rootView.findViewById(R.id.notificationList);
         listView.setAdapter(listAdapter);
 
-        Firebase ref = new Firebase("https://notify-1384.firebaseio.com/");
+        Firebase ref = new Firebase("https://notify-1384.firebaseio.com/notifications/");
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
-                Notification n = new Notification();
+
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
                     try{
                         notifications.add(notification.getValue(Notification.class));
                         ((CustomAdapter)listAdapter).notifyDataSetChanged();
                     } catch (Exception e) {
-                        e.printStackTrace();
+                        Log.d(TAG,e.getMessage());
                     }
                 }
             }

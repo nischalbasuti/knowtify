@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class BroadcastFragment extends Fragment {
 
-    private static final String TAG = "BroadcastFrgmnt";
+    private static final String TAG = "BroadcastFragmen";
 
     String path;
     TextView pathV;

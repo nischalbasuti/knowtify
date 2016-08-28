@@ -36,7 +36,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
 
     static class ViewHolder {
         public TextView broadcastTitle;
-        public ImageView broadcastThumbImage;
+        //public ImageView broadcastThumbImage;
         public TextView broadcasterName;
         public TextView contentText;
         public ImageView dropDownImage;
@@ -56,7 +56,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
 
             mViewHolder = new ViewHolder();
             mViewHolder.broadcastTitle = (TextView)convertView.findViewById(R.id.broadcastTitle);
-            mViewHolder.broadcastThumbImage = (ImageView)convertView.findViewById(R.id.thumbnail_image);
+           // mViewHolder.broadcastThumbImage = (ImageView)convertView.findViewById(R.id.thumbnail_image);
             mViewHolder.broadcasterName = (TextView)convertView.findViewById(R.id.broadcasterName);
             mViewHolder.contentText = (TextView)convertView.findViewById(R.id.content);
             mViewHolder.dropDownImage = (ImageView)convertView.findViewById(R.id.dropDownMenu);
@@ -76,7 +76,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         mViewHolder.broadcastTitle.setText(n.getName());
         mViewHolder.broadcasterName.setText(n.getSubject());
         mViewHolder.contentText.setText(n.getContent());
-        mViewHolder.broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
+        //mViewHolder.broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
 
         //setting dropdown

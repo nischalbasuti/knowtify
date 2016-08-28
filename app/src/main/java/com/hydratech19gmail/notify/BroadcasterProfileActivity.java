@@ -49,7 +49,7 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
 
         mUserId = getIntent().getExtras().getString("userId");
 
-        final List<Broadcast> broadcasts = new LinkedList<>();
+        final LinkedList<Broadcast> broadcasts = new LinkedList<>();
 
         final ListAdapter listAdapter = new BroadcastAdapter(getApplicationContext(),broadcasts);
         final ListView listView = (ListView) findViewById(R.id.broadcast_list);
@@ -76,10 +76,8 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
                 for (DataSnapshot broadcast : dataSnapshot.getChildren()) {
                     try {
                         Broadcast addBroadcast = broadcast.getValue(Broadcast.class);
-                        if(addBroadcast.getPrivacy() != null) {
-                            broadcasts.add(addBroadcast);
-                            ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
-                        }
+                        broadcasts.addFirst(addBroadcast);
+                        ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
                     } catch (Exception e) {
                         Log.d(TAG,e.getMessage());
                     }

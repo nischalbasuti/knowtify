@@ -38,7 +38,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     String mPrivacy;
     String mBroadcastKey;
 
-    final List<Notification> notifications = new LinkedList<>();
+    final LinkedList<Notification> notifications = new LinkedList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,12 +101,12 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
                     try{
-                        notifications.add(notification.getValue(Notification.class));
-                        ((CustomAdapter)listAdapter).notifyDataSetChanged();
+                        notifications.addFirst(notification.getValue(Notification.class));
                     } catch (Exception e) {
                         Log.d(TAG,e.getMessage());
                     }
                 }
+                ((CustomAdapter)listAdapter).notifyDataSetChanged();
             }
 
             @Override

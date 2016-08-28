@@ -154,12 +154,10 @@ public class BroadcastFragment extends Fragment {
 
         user = FirebaseAuth.getInstance().getCurrentUser();
 
-        final List<Broadcast> broadcasts = new LinkedList<>();
-
+        final LinkedList<Broadcast> broadcasts = new LinkedList<>();
         final ListAdapter listAdapter = new BroadcastAdapter(this.getContext(),broadcasts);
         final ListView listView = (ListView) rootView.findViewById(R.id.broadcast_list);
         listView.setAdapter(listAdapter);
-
 
         Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/broadcasts/");
 
@@ -171,10 +169,8 @@ public class BroadcastFragment extends Fragment {
                 for (DataSnapshot broadcast : dataSnapshot.getChildren()) {
                     try {
                         Broadcast addBroadcast = broadcast.getValue(Broadcast.class);
-                        if(addBroadcast.getPrivacy() != null) {
-                            broadcasts.add(addBroadcast);
-                            ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
-                        }
+                        broadcasts.addFirst(addBroadcast);
+                        ((BroadcastAdapter) listAdapter).notifyDataSetChanged();
                     } catch (Exception e) {
                         Log.d(TAG,e.getMessage());
                     }
@@ -244,6 +240,7 @@ public class BroadcastFragment extends Fragment {
 
                 //TODO find a better fix
                 broadcasts.clear();
+                ((BroadcastAdapter)listAdapter).notifyDataSetChanged();
             }
         });
         return rootView;

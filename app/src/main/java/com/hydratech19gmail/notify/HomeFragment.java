@@ -40,10 +40,11 @@ public class HomeFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final List<Notification> notifications = new LinkedList<>();
 
         View rootView = inflater.inflate(R.layout.home_fragment,container,false);
 
+
+        final LinkedList<Notification> notifications = new LinkedList<>();
         final ListAdapter listAdapter = new CustomAdapter(this.getContext(),notifications);
         final ListView listView = (ListView) rootView.findViewById(R.id.notificationList);
         listView.setAdapter(listAdapter);
@@ -55,9 +56,11 @@ public class HomeFragment extends Fragment{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
 
+                notifications.clear();
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
                     try{
-                        notifications.add(notification.getValue(Notification.class));
+                        Notification addNotification = notification.getValue(Notification.class);
+                        notifications.addFirst(addNotification);
                         ((CustomAdapter)listAdapter).notifyDataSetChanged();
                     } catch (Exception e) {
                         Log.d(TAG,e.getMessage());

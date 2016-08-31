@@ -133,7 +133,6 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                 break;
             case R.id.new_notification_button:
                 makeNewNotification();
-                onBackPressed();
                 break;
             case R.id.new_notification_exit_button:
                 onBackPressed();
@@ -161,6 +160,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                     timeStamp
             );
             ref.push().setValue(notification);
+            onBackPressed();
         }
     }
 

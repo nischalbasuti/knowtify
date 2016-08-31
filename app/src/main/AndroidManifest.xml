@@ -41,6 +41,11 @@
             android:name=".BroadcastActivity"
             android:label="@string/title_activity_broadcast">
         </activity>
+        <activity
+            android:name=".NewNotificationDialog"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"
+            android:excludeFromRecents="true">
+        </activity>
         <service
             android:name=".FirebaseInstaceIDService">
             <intent-filter>

@@ -56,7 +56,9 @@ public class HomeFragment extends Fragment{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
 
+                //TODO find a better fix
                 notifications.clear();
+
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
                     try{
                         Notification addNotification = notification.getValue(Notification.class);

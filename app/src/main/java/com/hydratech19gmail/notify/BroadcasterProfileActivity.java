@@ -73,6 +73,9 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getApplicationContext(),"broadcast update",Toast.LENGTH_SHORT).show();
 
+                //TODO find better fix
+                broadcasts.clear();
+
                 for (DataSnapshot broadcast : dataSnapshot.getChildren()) {
                     try {
                         Broadcast addBroadcast = broadcast.getValue(Broadcast.class);

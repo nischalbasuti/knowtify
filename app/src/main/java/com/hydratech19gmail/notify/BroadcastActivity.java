@@ -1,6 +1,12 @@
 package com.hydratech19gmail.notify;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.DatabaseUtils;
+import android.net.Uri;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,9 +25,15 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 import com.firebase.client.ValueEventListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -36,7 +48,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     String mBroadcastInfo;
     String mUserId;
     String mPrivacy;
-    String mBroadcastKey;
+  //  String mBroadcastKey;
 
     final LinkedList<Notification> notifications = new LinkedList<>();
 
@@ -45,8 +57,10 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
 
+        //getting user info
         mUser = FirebaseAuth.getInstance().getCurrentUser();
 
+        //getting data from previous activity
         mBroadcastName = getIntent().getExtras().getString("broadcastName");
         mBroadcastInfo = getIntent().getExtras().getString("broadcastInfo");
         mUserId = getIntent().getExtras().getString("userId");
@@ -62,6 +76,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             e.printStackTrace();
         }
 
+        //initializing listView and it's adapter
         final ListAdapter listAdapter = new CustomAdapter(this,notifications);
         final ListView listView = (ListView) findViewById(R.id.notificationList);
 
@@ -88,16 +103,20 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         });
 
 
+        //setting header containing broadcast information to listView
         listView.addHeaderView(header,null,false);
         listView.setHeaderDividersEnabled(true);
         listView.setAdapter(listAdapter);
 
+        //getting notifications data from database and adding refreshing listView
         Firebase ref = new Firebase("https://notify-1384.firebaseio.com/notifications");
-
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getApplicationContext(), "onDataChange", Toast.LENGTH_SHORT).show();
+
+                //TODO find a better fix
+                notifications.clear();
 
                 for(DataSnapshot notification : dataSnapshot.getChildren()){
                     try{
@@ -115,6 +134,8 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
+
+        //setting on click listener fo new notification fab
         FloatingActionButton newNotificationFab = (FloatingActionButton) findViewById(R.id.fab_new_notification);
         newNotificationFab.setOnClickListener(this);
 
@@ -134,17 +155,67 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.user_id:
+            case R.id.user_id://starting activity to display broadcasters profile
                 Intent intent = new Intent(this,BroadcasterProfileActivity.class);
                 intent.putExtra("userId",mUserId);
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.fab_new_notification:
-                NewNotificationDialog newNotificationDialog = new NewNotificationDialog(this,mUser);
-                newNotificationDialog.show();
+            case R.id.fab_new_notification://starting dialog box to create new notification
+            //    NewNotificationDialog newNotificationDialog = new NewNotificationDialog(this,mUser);
+            //    newNotificationDialog.show();
+                Intent intent1 = new Intent(this,NewNotificationDialog.class);
+                startActivity(intent1);
+        }
+    }
 
-                notifications.clear();
+    String path;
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null){
+            Uri uri = data.getData();
+            String[] projection = { MediaStore.Images.Media.DATA };
+
+            Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
+            cursor.moveToFirst();
+
+            Log.d("something", DatabaseUtils.dumpCursorToString(cursor));
+            int columnIndex = cursor.getColumnIndex(projection[0]);
+
+            path = cursor.getString(columnIndex);
+
+            Toast.makeText(this,path,Toast.LENGTH_LONG).show();
+            cursor.close();
+
+            //uploading file
+            FirebaseStorage storage = FirebaseStorage.getInstance();
+            StorageReference storageRef = storage.getReferenceFromUrl("gs://notify-1384.appspot.com");
+            try{
+
+                Uri file = Uri.fromFile(new File(path));
+                StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
+                UploadTask uploadTask = riversRef.putFile(file);
+
+                // Register observers to listen for when the download is done or if it fails
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.d("NotifDialog: ","file thing: "+exception.getMessage());
+                        Toast.makeText(getApplicationContext(),"error uploading file",Toast.LENGTH_LONG).show();
+                        // Handle unsuccessful uploads
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    }
+                });
+            } catch (Exception e) {
+                Log.d("NotifDialog: ","file thing: "+e.getMessage());
+                //e.printStackTrace();
+            }
         }
     }
 }

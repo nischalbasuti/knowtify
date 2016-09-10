@@ -152,7 +152,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
 
         if (name.isEmpty() || subject.isEmpty()) {
             Toast.makeText(this,"must enter name and subject",Toast.LENGTH_SHORT).show();
-        } else {
+        } else {push
             Notification notification = new Notification(
                     name,
                     subject,

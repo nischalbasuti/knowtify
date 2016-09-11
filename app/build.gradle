@@ -29,7 +29,6 @@ dependencies {
     testCompile 'junit:junit:4.12'
     // https://mvnrepository.com/artifact/com.almworks.sqlite4java/sqlite4java
     //  compile 'com.almworks.sqlite  4java:sqlite4java:0.282'
-    compile project(':volley')
     compile 'com.google.android.gms:play-services-auth:9.4.0'
     compile 'com.android.support:appcompat-v7:24.1.1'
     compile 'com.android.support:design:24.1.1'

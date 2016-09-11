@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "995221071972-jvdoqh3srnc2h32kcl3hii9pnkg2uj3b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hydratech19gmail.notify",
+            "certificate_hash": "A1869211B6805312D5A4E1D8CFD188E92C1D52C4"
+          }
+        },
+        {
           "client_id": "995221071972-np3k64tpg5sqnlrs9g475aidpn5avi9g.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

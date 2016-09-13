@@ -14,16 +14,20 @@ import com.google.firebase.iid.FirebaseInstanceIdService;
  */
 public class FirebaseInstaceIDService extends FirebaseInstanceIdService{
     public static final String TAG = "TOKEN";
+    static String TOKEN;
 
     @Override
     public void onTokenRefresh() {
-
-
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG,token);
+        setToken(token);
         registerToken(token);
     }
 
+
+    public static void setToken(String token){
+        TOKEN = token;
+    }
     public void registerToken(final String token){
        /* final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         final DatabaseReference tokensRef = ref.child("tokens");
@@ -54,6 +58,5 @@ public class FirebaseInstaceIDService extends FirebaseInstanceIdService{
 
             }
         });*/
-        Log.d(TAG,token);
     }
 }

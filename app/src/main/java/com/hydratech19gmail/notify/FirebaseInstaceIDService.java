@@ -1,12 +1,11 @@
 package com.hydratech19gmail.notify;
 
 import android.util.Log;
-import android.widget.Toast;
-
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
@@ -26,19 +25,35 @@ public class FirebaseInstaceIDService extends FirebaseInstanceIdService{
     }
 
     public void registerToken(final String token){
-        final Firebase ref = new Firebase("https://notify-1384.firebaseio.com/notifications/tokens");
+       /* final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference tokensRef = ref.child("tokens");
 
-        ref.addValueEventListener(new ValueEventListener() {
+        tokensRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                ref.push().setValue("Jaelse",token);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                tokensRef.push().setValue("Jaelse",token);
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
-        });
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
         Log.d(TAG,token);
     }
 }

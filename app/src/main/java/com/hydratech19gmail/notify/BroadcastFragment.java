@@ -22,15 +22,16 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /*
  * Created by Jaelse on 30-07-2016.
@@ -61,9 +62,11 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
         final ListView listView = (ListView) rootView.findViewById(R.id.broadcast_list);
 
         listView.setAdapter(listAdapter);
+        /*
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference broadcastRef = ref.child("broadcasts");
 
-        Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/broadcasts/");
-        firebase.addValueEventListener(new ValueEventListener() {
+        broadcastRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getContext(),"broadcast update",Toast.LENGTH_SHORT).show();
@@ -83,11 +86,10 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-
+        });*/
         //on  item click
         listView.setOnItemClickListener(this);
 

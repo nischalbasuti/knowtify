@@ -1,8 +1,6 @@
 package com.hydratech19gmail.notify;
 
 import android.app.Activity;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
@@ -10,22 +8,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import com.firebase.client.Firebase;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -141,7 +136,8 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
     }
 
     private void makeNewNotification() {
-        Firebase ref = new Firebase("https://notify-1384.firebaseio.com/notifications/");
+        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+       // DatabaseReference notificationRef = ref.child("notifications");
 
         Long tsLong = System.currentTimeMillis()/1000;
 
@@ -159,7 +155,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                     content,
                     timeStamp
             );
-            ref.push().setValue(notification);
+           // notificationRef.push().setValue(notification);
             onBackPressed();
         }
     }

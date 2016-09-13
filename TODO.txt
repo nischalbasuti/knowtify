@@ -8,6 +8,7 @@ Jaelse part of work.
 4.completing the home fragement.(In progress)
 5.setting reminder.(Not yet started)
 6.send email.(In progress)
+7.Make local database.
 
 Nischal part of work.
 

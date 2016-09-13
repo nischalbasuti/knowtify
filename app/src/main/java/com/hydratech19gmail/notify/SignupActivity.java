@@ -94,6 +94,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
 
                     //start main acivity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
+
                     startActivity(intent);
                 }
                 else {

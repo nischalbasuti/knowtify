@@ -11,20 +11,19 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.LinkedList;
-import java.util.List;
-
 /*
  * Created by Jaelse on 30-07-2016.
  */
 public class HomeFragment extends Fragment{
 
-    private static final String TAG = "HomeFrgmnt";
+    private static final String TAG = "HomeFrgment";
 
     public HomeFragment(){
 
@@ -39,19 +38,18 @@ public class HomeFragment extends Fragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        //TODO The listview should not always load.
 
         View rootView = inflater.inflate(R.layout.home_fragment,container,false);
-
 
         final LinkedList<Notification> notifications = new LinkedList<>();
         final ListAdapter listAdapter = new CustomAdapter(this.getContext(),notifications);
         final ListView listView = (ListView) rootView.findViewById(R.id.notificationList);
         listView.setAdapter(listAdapter);
-
-        Firebase ref = new Firebase("https://notify-1384.firebaseio.com/notifications/");
-
-        ref.addValueEventListener(new ValueEventListener() {
+        /*
+        DatabaseReference ref =  FirebaseDatabase.getInstance().getReference();
+        DatabaseReference notificationRef = ref.child("notifications");
+        notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
@@ -71,11 +69,10 @@ public class HomeFragment extends Fragment{
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
-
+        });*/
         return rootView;
 
     }

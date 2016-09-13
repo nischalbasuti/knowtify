@@ -21,14 +21,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -109,10 +110,17 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         listView.setAdapter(listAdapter);
 
         //getting notifications data from database and adding refreshing listView
-        Firebase ref = new Firebase("https://notify-1384.firebaseio.com/notifications");
-        ref.addValueEventListener(new ValueEventListener() {
+       // DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+       // DatabaseReference notificationRef = ref.child("notifications");
+
+       /* notificationRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Toast.makeText(getApplicationContext(), "onDataChange", Toast.LENGTH_SHORT).show();
 
                 //TODO find a better fix
@@ -129,12 +137,20 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
-        });
 
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
         //setting on click listener fo new notification fab
         FloatingActionButton newNotificationFab = (FloatingActionButton) findViewById(R.id.fab_new_notification);
         newNotificationFab.setOnClickListener(this);

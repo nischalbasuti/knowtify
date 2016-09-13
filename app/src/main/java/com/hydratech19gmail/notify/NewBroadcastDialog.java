@@ -10,9 +10,9 @@ import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import com.firebase.client.Firebase;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /*
  * Created by nischal on 18/8/16.
@@ -66,7 +66,8 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
         else {
             //..............
             //sending message to database
-            Firebase ref = new Firebase("https://notify-1384.firebaseio.com/broadcasts/");
+            //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            //DatabaseReference broadcastRef = ref.child("broadcasts");
             Broadcast newBroadcast = new Broadcast();
 
             newBroadcast.setName(broadcastName);
@@ -87,7 +88,7 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
                 newBroadcast.setPrivacy("public");
             }
 
-            ref.push().setValue(newBroadcast);
+            //broadcastRef.push().setValue(newBroadcast);
             //................
 
             Toast.makeText(getContext(),"Created broadcast",Toast.LENGTH_SHORT).show();

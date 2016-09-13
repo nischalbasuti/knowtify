@@ -15,15 +15,15 @@ import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.firebase.client.DataSnapshot;
-import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
-import com.firebase.client.ValueEventListener;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class BroadcasterProfileActivity extends AppCompatActivity {
 
@@ -66,11 +66,17 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
             Log.d(TAG,"error setting user id");
         }
 
-        Firebase firebase = new Firebase("https://notify-1384.firebaseio.com/broadcasts/");
+       /* DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference broadcastRef = ref.child("broadcasts");
 
-        firebase.addValueEventListener(new ValueEventListener() {
+        broadcastRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
                 Toast.makeText(getApplicationContext(),"broadcast update",Toast.LENGTH_SHORT).show();
 
                 //TODO find better fix
@@ -88,10 +94,20 @@ public class BroadcasterProfileActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(FirebaseError firebaseError) {
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
 
             }
-        });
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });*/
 
         //on  item click
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -106,7 +106,8 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
         //setting header containing broadcast information to listView
         listView.addHeaderView(header,null,false);
-        listView.setHeaderDividersEnabled(true);
+
+        //setting adapter
         listView.setAdapter(listAdapter);
 
         //getting notifications data from database and adding refreshing listView

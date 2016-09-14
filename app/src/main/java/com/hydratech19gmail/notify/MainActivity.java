@@ -234,6 +234,12 @@ public class MainActivity extends AppCompatActivity
             return true;
         }
 
+        if (id == R.id.action_queries) {
+            Intent intent = new Intent(this,QueryActivity.class);
+            startActivity(intent);
+            return true;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

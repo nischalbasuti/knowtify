@@ -21,6 +21,7 @@ public class FirebaseInstaceIDService extends FirebaseInstanceIdService{
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG,token);
         setToken(token);
+        HomeFragment.getToken(token);
         registerToken(token);
     }
 

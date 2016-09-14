@@ -8,7 +8,6 @@ Jaelse part of work.
 4.completing the home fragement.(In progress)
 5.setting reminder.(Not yet started)
 6.send email.(In progress)
-7.Make local database.
 
 Nischal part of work.
 
@@ -23,6 +22,7 @@ Kavya part of work.
 1.Database structure.
 2.search fragement.
 3.Navigation bar.
+4.Make local database.
 
 Things to figure out.
 

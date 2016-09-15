@@ -22,6 +22,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.Objects;
 
@@ -91,6 +96,9 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                             }
                         }
                     });
+
+                    //pushing token
+                    pushToken();
 
                     //start main acivity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
@@ -191,6 +199,40 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
     private void displayError(String errorText) {
         TextView errorView = (TextView) findViewById(R.id.errorText);
         errorView.setText(errorText);
+    }
+
+
+    static String token;
+    public static void getToken(String t){
+        Log.d(TAG,"get token: "+t);
+        token = t;
+    }
+
+    private void pushToken() {
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        DatabaseReference userRef = ref.child("Users");
+        Token tkn = new Token(token);
+
+        userRef.push().setValue(tkn);
+        Log.d(TAG, "push token: "+tkn.getToken());
+
+        userRef.orderByChild("token")
+                .equalTo(token)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            String key = childSnapshot.getKey();
+                            Log.d(TAG,key);
+                            /*add this key to the local database*/
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 }
 

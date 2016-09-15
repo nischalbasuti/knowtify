@@ -9,7 +9,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.FirebaseInstanceIdService;
 
-/**
+/*
  * Created by Jaelse on 27-08-2016.
  */
 public class FirebaseInstaceIDService extends FirebaseInstanceIdService{
@@ -21,7 +21,7 @@ public class FirebaseInstaceIDService extends FirebaseInstanceIdService{
         String token = FirebaseInstanceId.getInstance().getToken();
         Log.d(TAG,token);
         setToken(token);
-        HomeFragment.getToken(token);
+        SignupActivity.getToken(token);
         registerToken(token);
     }
 

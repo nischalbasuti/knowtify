@@ -6,9 +6,9 @@ package com.hydratech19gmail.notify;
 public class Notification {
 
     private String name;
+    private String timeStamp;
     private String subject;
     private String content;
-    private String timeStamp;
     /*
     private String broadcastName;
     private String broadcasterName;

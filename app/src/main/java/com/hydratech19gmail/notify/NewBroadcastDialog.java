@@ -2,7 +2,9 @@ package com.hydratech19gmail.notify;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -11,6 +13,7 @@ import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -65,18 +68,25 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
         }
         else {
             //..............
+
+            //getting key value from aldsfjalsdf
+            SharedPreferences sharedPref = getContext().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
+            String key = sharedPref.getString("user_key","user_key_doesnt_exist");
+
+            Log.d("broadDialog","prefs key: "+key);
+
             //sending message to database
-            //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-            //DatabaseReference broadcastRef = ref.child("broadcasts");
+            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference broadcastRef = ref.child("users/"+key+"/broadcasts");
             Broadcast newBroadcast = new Broadcast();
 
             newBroadcast.setName(broadcastName);
             newBroadcast.setInfo(broadcastInfo);
-            try{
-                newBroadcast.setUserId(mUser.getEmail());
-            } catch (Exception e) {
-                newBroadcast.setUserId("faiiiilllll");
-            }
+            //setting timeStamp
+            Long tsLong = System.currentTimeMillis()/1000;
+
+            String timeStamp = tsLong.toString();
+            newBroadcast.setTimeStamp(timeStamp);
 
             RadioGroup privacyGroup = (RadioGroup) findViewById(R.id.radio_group_privacy);
             int selectedId = privacyGroup.getCheckedRadioButtonId();
@@ -86,12 +96,18 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
             }
             else if(selectedId == R.id.public_radio) {
                 newBroadcast.setPrivacy("public");
+
             }
 
-            //broadcastRef.push().setValue(newBroadcast);
-            //................
 
-            Toast.makeText(getContext(),"Created broadcast",Toast.LENGTH_SHORT).show();
+            //pushing data
+            broadcastRef.push().setValue(newBroadcast, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    Toast.makeText(getContext(),"Created broadcast",Toast.LENGTH_SHORT).show();
+                }
+            });
+            //................
         }
 
         dismiss();

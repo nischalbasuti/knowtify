@@ -1,7 +1,9 @@
 package com.hydratech19gmail.notify;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -32,6 +34,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener{
@@ -89,14 +96,54 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Typeface logo_typeface = Typeface.createFromAsset(getAssets(),"fonts/OliJo-Bold.ttf");
         logo.setTypeface(logo_typeface);
 
+
+        boolean userExists = false;
         //setting listener to check for sign in. Start main activity when successful.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null) {
                     //user is signed in
                     Log.d(TAG,"signed in");
+
+                    //changing token
+                    final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+                    //getting token value and pushing
+                    SharedPreferences sharedPref = getSharedPreferences("myprefs", Context.MODE_PRIVATE);
+                    final String prefToken = sharedPref.getString("device_token","device_token_doesnt_exist");
+                    Log.d(TAG,"pref token: "+prefToken);
+
+                    //checking if token exists
+                    ref.child("users").orderByChild("token").equalTo(prefToken)
+                            .addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                                        String key = childSnapshot.getKey();
+                                        Log.d(TAG,"user key: "+key);
+
+                                        //writting key value pair
+                                        SharedPreferences sharedPref = getBaseContext().getSharedPreferences("myprefs",MODE_PRIVATE);
+                                        SharedPreferences.Editor editor = sharedPref.edit();
+                                        editor.putString("user_key", key);
+                                        editor.commit();
+
+                                        if(!user.getEmail().toString().replace("@","").replace(".","").equals(key)){
+                                            ref.child("users").child(key).child("token").setValue(null);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                    //setting token
+                    ref.child("users/"+user.getEmail().toString().replace("@","").replace(".","")).child("token").setValue(prefToken);
+
                     //start main acivity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);

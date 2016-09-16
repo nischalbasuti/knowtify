@@ -10,6 +10,8 @@
     <string name="title_activity_broadcaster_profile">Broadcaster Profile</string>
     <string name="title_activity_broadcast">Broadcast</string>
 
+    <string name="user_key">userkey</string>
+
     <!-- Strings related to login -->
     <string name="prompt_email">Username</string>
     <string name="prompt_password">Password</string>

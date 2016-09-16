@@ -1,5 +1,6 @@
 package com.hydratech19gmail.notify;
 
+import android.content.SharedPreferences;
 import android.util.Log;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +24,12 @@ public class FirebaseInstaceIDService extends FirebaseInstanceIdService{
         setToken(token);
         SignupActivity.getToken(token);
         registerToken(token);
+
+        //writting key value pair
+        SharedPreferences sharedPref = getBaseContext().getSharedPreferences("myprefs",MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString("device_token", token);
+        editor.commit();
     }
 
 

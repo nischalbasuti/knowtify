@@ -1,6 +1,8 @@
 package com.hydratech19gmail.notify;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -75,7 +77,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
+                final FirebaseUser user = firebaseAuth.getCurrentUser();
                 if(user != null) {
                     //user is signed in
                     Log.d(TAG,"signed in");
@@ -94,11 +96,10 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                                 //noinspection ThrowableResultOfMethodCallIgnored
                                 Log.d(TAG,"display name update failed: "+task.getException());
                             }
+                            //pushing token
+                            pushToken(user);
                         }
                     });
-
-                    //pushing token
-                    pushToken();
 
                     //start main acivity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
@@ -208,13 +209,75 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
         token = t;
     }
 
-    private void pushToken() {
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userRef = ref.child("Users");
-        Token tkn = new Token(token);
+    static String staticKey;
+    String prefToken;
+    boolean userExists = false;
 
-        userRef.push().setValue(tkn);
-        Log.d(TAG, "push token: "+tkn.getToken());
+    private void pushToken(final FirebaseUser user) {
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        final DatabaseReference userRef = ref.child("users");
+
+        //getting token value and pushing
+        SharedPreferences sharedPref = getSharedPreferences("myprefs",Context.MODE_PRIVATE);
+        prefToken = sharedPref.getString("device_token","device_token_doesnt_exist");
+
+        //checking if token exists and removing
+        ref.child("users").orderByChild("token").equalTo(prefToken)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            String key = childSnapshot.getKey();
+                            //writting key value pair
+                            SharedPreferences sharedPref = getBaseContext().getSharedPreferences("myprefs",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("user_key", key);
+                            editor.commit();
+
+                            Log.d(TAG,"user key: "+key);
+                            if(!user.getEmail().toString().replace("@","").replace(".","").equals(key)){
+                                ref.child("users").child(key).child("token").setValue(null);
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+        //checking for email
+        ref.equalTo(user.getEmail().toString().replace("@","").replace("@",""))
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            String key = childSnapshot.getKey();
+                            Log.d(TAG,"user key: "+key);
+
+                            userExists = true;
+                            //old user new/old device
+                            ref.child("users/"+user.getEmail().toString()).setValue(prefToken);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+        if(userExists == false){
+            /*
+            Token tkn = new Token(prefToken);
+            userRef.push().setValue(tkn);
+            Log.d(TAG, "push token: "+tkn.getToken());
+            */
+            //creating user for first time
+            userRef.child(user.getEmail().toString().replace("@","").replace(".","")).child("token").setValue(prefToken);
+        }
+
+
 
         userRef.orderByChild("token")
                 .equalTo(token)
@@ -223,8 +286,14 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                             String key = childSnapshot.getKey();
-                            Log.d(TAG,key);
-                            /*add this key to the local database*/
+                            Log.d(TAG,"user key: "+key);
+                            staticKey = key;
+
+                            //writting key value pair
+                            SharedPreferences sharedPref = getBaseContext().getSharedPreferences("myprefs",MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putString("user_key", key);
+                            editor.commit();
                         }
                     }
 

@@ -24,7 +24,6 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
     static class ViewHolder {
         public TextView broadcastName;
         public TextView broadcastInfo;
-        public TextView userId;
         public TextView privacy;
     }
 
@@ -41,7 +40,6 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
             mViewHolder = new ViewHolder();
             mViewHolder.broadcastName = (TextView) convertView.findViewById(R.id.broadcast_name);
             mViewHolder.broadcastInfo = (TextView) convertView.findViewById(R.id.broadcast_info);
-            mViewHolder.userId = (TextView) convertView.findViewById(R.id.user_id);
             mViewHolder.privacy = (TextView) convertView.findViewById(R.id.privacy);
 
             convertView.setTag(mViewHolder);
@@ -55,7 +53,6 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
         Broadcast broadcast = getItem(position);
         mViewHolder.broadcastName.setText(broadcast.getName());
         mViewHolder.broadcastInfo.setText(broadcast.getInfo());
-        mViewHolder.userId.setText(broadcast.getUserId());
         mViewHolder.privacy.setText(broadcast.getPrivacy());
 
         return convertView;

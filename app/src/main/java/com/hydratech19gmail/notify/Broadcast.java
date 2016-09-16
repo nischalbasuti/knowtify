@@ -6,8 +6,8 @@ package com.hydratech19gmail.notify;
 public class Broadcast {
 
     private String name;
+    private String timeStamp;
     private String info;
-    private String userId;
     private String privacy;
 
     public Broadcast() {}
@@ -38,11 +38,12 @@ public class Broadcast {
         this.info = info;
     }
 
-    public String getUserId() {
-        return userId;
+
+    public String getTimeStamp() {
+        return timeStamp;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
     }
 }

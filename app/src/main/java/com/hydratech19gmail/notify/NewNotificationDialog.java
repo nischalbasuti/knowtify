@@ -136,8 +136,8 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
     }
 
     private void makeNewNotification() {
-        //DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-       // DatabaseReference notificationRef = ref.child("notifications");
+       DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+       DatabaseReference notificationRef = ref.child("notifications");
 
         Long tsLong = System.currentTimeMillis()/1000;
 
@@ -155,7 +155,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                     content,
                     timeStamp
             );
-           // notificationRef.push().setValue(notification);
+           notificationRef.push().setValue(notification);
             onBackPressed();
         }
     }

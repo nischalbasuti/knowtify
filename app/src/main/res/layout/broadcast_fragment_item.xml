@@ -23,24 +23,25 @@
         android:text="Name of the broadcast"
         android:textColor="@color/bodyTextColor"/>
     <TextView
-        android:id="@+id/user_id"
+        android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/broadcast_name"
         android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="user@id"
-        android:textStyle="bold"
+        android:text="date month, year"
+        android:textStyle="italic"
         android:layout_marginEnd="@dimen/fab_margin"
         android:textColor="@color/bodyTextColor"/>
     <TextView
         android:id="@+id/broadcast_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_id"
+        android:layout_below="@+id/time"
         android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="info about broadcast"
+        android:textStyle="bold"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
         android:textColor="@color/bodyTextColor"/>

@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /*
@@ -25,6 +27,7 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
         public TextView broadcastName;
         public TextView broadcastInfo;
         public TextView privacy;
+        public TextView time;
     }
 
     public BroadcastAdapter(Context context, List<Broadcast> resource) {
@@ -41,6 +44,7 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
             mViewHolder.broadcastName = (TextView) convertView.findViewById(R.id.broadcast_name);
             mViewHolder.broadcastInfo = (TextView) convertView.findViewById(R.id.broadcast_info);
             mViewHolder.privacy = (TextView) convertView.findViewById(R.id.privacy);
+            mViewHolder.time = (TextView) convertView.findViewById(R.id.time);
 
             convertView.setTag(mViewHolder);
 
@@ -55,6 +59,10 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
         mViewHolder.broadcastInfo.setText(broadcast.getInfo());
         mViewHolder.privacy.setText(broadcast.getPrivacy());
 
+        mViewHolder.time.setText(DateConvert.timeStampToDate(Long.parseLong(broadcast.getTimeStamp())*1000));
+
         return convertView;
     }
+
+
 }

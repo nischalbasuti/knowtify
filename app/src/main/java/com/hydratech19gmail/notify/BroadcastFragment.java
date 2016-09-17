@@ -72,7 +72,7 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
         broadcastRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Toast.makeText(getContext(),"broadcast update",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getContext(),"broadcast update",Toast.LENGTH_SHORT).show();
 
                 //TODO find a better fix
                 broadcasts.clear();
@@ -113,7 +113,7 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
 
         TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
         TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
-        TextView userId = (TextView) view.findViewById(R.id.user_id);
+        TextView userId = (TextView) view.findViewById(R.id.time);
         TextView privacy = (TextView) view.findViewById(R.id.privacy);
 
         intent.putExtra("broadcastName", broadcastName.getText().toString());

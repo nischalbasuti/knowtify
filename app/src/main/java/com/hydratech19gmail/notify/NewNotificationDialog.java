@@ -2,12 +2,14 @@ package com.hydratech19gmail.notify;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -19,8 +21,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -34,18 +39,14 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
 
     FirebaseUser mUser;
 
+    private final String TAG = "NewNotif";
+
     private EditText notificationName;
     private EditText notificationSubject;
     private EditText notificationContent;
 
- //   public NewNotificationDialog(Context context, FirebaseUser user) {
- //       this.mUser = user;
- //   }
-
-    //...................
-
-
-
+    String mBroadcastName;
+    
     String path;
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -95,8 +96,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
             }
         }
     }
-
-
+    
     //.......................
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +105,8 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
         setContentView(R.layout.dialog_new_notification);
 
         mUser = FirebaseAuth.getInstance().getCurrentUser();
+
+        mBroadcastName = getIntent().getExtras().getString("broadcastName");
 
         notificationName = (EditText) findViewById(R.id.notification_name);
         notificationSubject = (EditText) findViewById(R.id.notification_subject);
@@ -135,29 +137,60 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
         }
     }
 
+    String broadcastKey;
     private void makeNewNotification() {
-       DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-       DatabaseReference notificationRef = ref.child("notifications");
+        SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
+        final String prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
 
-        Long tsLong = System.currentTimeMillis()/1000;
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-        String timeStamp = tsLong.toString();
-        String name = notificationName.getText().toString();
-        String subject = notificationSubject.getText().toString();
-        String content = notificationContent.getText().toString();
+        Log.d("NewNotif","user key: "+prefUserKey);
+        Log.d(TAG,"broadcast name: "+mBroadcastName);
+        
+        //finding broadcast key
+        ref.child("users").child(prefUserKey).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //send the notification when broadcast key is found
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            broadcastKey = childSnapshot.getKey();
+                            Log.d("NewNotif","broadcast key: "+broadcastKey);
 
-        if (name.isEmpty() || subject.isEmpty()) {
-            Toast.makeText(this,"must enter name and subject",Toast.LENGTH_SHORT).show();
-        } else {
-            Notification notification = new Notification(
-                    name,
-                    subject,
-                    content,
-                    timeStamp
-            );
-           notificationRef.push().setValue(notification);
-            onBackPressed();
-        }
+
+                            DatabaseReference notificationRef = ref.child("users")
+                                    .child(prefUserKey)
+                                    .child("broadcasts")
+                                    .child(broadcastKey)
+                                    .child("notifications");
+
+                            Long tsLong = System.currentTimeMillis()/1000;
+
+                            String timeStamp = tsLong.toString();
+                            String name = notificationName.getText().toString();
+                            String subject = notificationSubject.getText().toString();
+                            String content = notificationContent.getText().toString();
+
+                            if (name.isEmpty() || subject.isEmpty()) {
+                                Toast.makeText(getApplicationContext(),"must enter name and subject",Toast.LENGTH_SHORT).show();
+                            } else {
+                                Notification notification = new Notification(
+                                        name,
+                                        subject,
+                                        content,
+                                        timeStamp
+                                );
+                                notificationRef.push().setValue(notification);
+                                onBackPressed();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     private void uploadAttachments() {

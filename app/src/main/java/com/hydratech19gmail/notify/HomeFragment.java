@@ -46,9 +46,7 @@ public class HomeFragment extends Fragment{
         final ListView listView = (ListView) rootView.findViewById(R.id.notificationList);
         listView.setAdapter(listAdapter);
 
-
-
-        /*
+        //listen for new notifications
         DatabaseReference ref =  FirebaseDatabase.getInstance().getReference();
         DatabaseReference notificationRef = ref.child("notifications");
         notificationRef.addValueEventListener(new ValueEventListener() {
@@ -74,35 +72,9 @@ public class HomeFragment extends Fragment{
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });*/
+        });
+
         return rootView;
-
     }
 
-    public static void getToken(String token){
-        Log.d(TAG,token);
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference userRef = ref.child("Users");
-        Token tkn = new Token(token);
-        userRef.push().setValue(tkn);
-
-        userRef.orderByChild("token")
-                .equalTo(token)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                            String key = childSnapshot.getKey();
-                            Log.d(TAG,key);
-                            /*add this key to the local database*/
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
-    }
 }

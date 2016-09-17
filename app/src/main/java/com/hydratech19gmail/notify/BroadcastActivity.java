@@ -2,6 +2,7 @@ package com.hydratech19gmail.notify;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
@@ -30,6 +31,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -45,10 +47,12 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     FirebaseUser mUser;
 
+    String mBroadcastKey;
     String mBroadcastName;
     String mBroadcastInfo;
     String mUserId;
     String mPrivacy;
+
   //  String mBroadcastKey;
 
     final LinkedList<Notification> notifications = new LinkedList<>();
@@ -110,52 +114,63 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         //setting adapter
         listView.setAdapter(listAdapter);
 
-        //getting notifications data from database and adding refreshing listView
-       // DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-       // DatabaseReference notificationRef = ref.child("notifications");
+        displayNotifications(listAdapter);
 
-       /* notificationRef.addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Toast.makeText(getApplicationContext(), "onDataChange", Toast.LENGTH_SHORT).show();
-
-                //TODO find a better fix
-                notifications.clear();
-
-                for(DataSnapshot notification : dataSnapshot.getChildren()){
-                    try{
-                        notifications.addFirst(notification.getValue(Notification.class));
-                    } catch (Exception e) {
-                        Log.d(TAG,e.getMessage());
-                    }
-                }
-                ((CustomAdapter)listAdapter).notifyDataSetChanged();
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });*/
         //setting on click listener fo new notification fab
         FloatingActionButton newNotificationFab = (FloatingActionButton) findViewById(R.id.fab_new_notification);
         newNotificationFab.setOnClickListener(this);
 
+    }
+
+    private void displayNotifications(final ListAdapter listAdapter) {
+
+        SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
+        final String prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
+
+        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        //finding broadcast key
+        ref.child("users").child(prefUserKey).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //if broadcast key is found, display notifications
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            mBroadcastKey = childSnapshot.getKey();
+                            Log.d("NewNotif","broadcast key: "+mBroadcastKey);
+
+                            DatabaseReference notificationRef = ref.child("users/"+prefUserKey+"/broadcasts/"+mBroadcastKey+"/notifications/");
+                            notificationRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    Toast.makeText(getApplicationContext(), "onDataChange", Toast.LENGTH_SHORT).show();
+
+                                    //TODO find a better fix
+
+                                    notifications.clear();
+                                    for(DataSnapshot notification : dataSnapshot.getChildren()){
+                                        try{
+                                            notifications.addFirst(notification.getValue(Notification.class));
+                                        } catch (Exception e) {
+                                            Log.d(TAG,e.getMessage());
+                                        }
+                                    }
+                                    ((CustomAdapter)listAdapter).notifyDataSetChanged();
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     @Override
@@ -182,6 +197,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             //    NewNotificationDialog newNotificationDialog = new NewNotificationDialog(this,mUser);
             //    newNotificationDialog.show();
                 Intent intent1 = new Intent(this,NewNotificationDialog.class);
+                intent1.putExtra("broadcastName",mBroadcastName);
                 startActivity(intent1);
         }
     }

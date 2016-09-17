@@ -2,6 +2,7 @@ package com.hydratech19gmail.notify;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
@@ -62,9 +63,11 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
         final ListView listView = (ListView) rootView.findViewById(R.id.broadcast_list);
 
         listView.setAdapter(listAdapter);
-        /*
+
+        String userKey = user.getEmail().replace("@","").replace(".","");
+
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference broadcastRef = ref.child("broadcasts");
+        DatabaseReference broadcastRef = ref.child("users/"+userKey+"/broadcasts");
 
         broadcastRef.addValueEventListener(new ValueEventListener() {
             @Override
@@ -89,7 +92,7 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });*/
+        });
         //on  item click
         listView.setOnItemClickListener(this);
 

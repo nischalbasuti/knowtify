@@ -9,11 +9,7 @@ public class Notification {
     private String timeStamp;
     private String subject;
     private String content;
-    /*
-    private String broadcastName;
-    private String broadcasterName;
-    private String broadcasterId;
-*/
+
     public Notification(){
 
     }
@@ -39,23 +35,11 @@ public class Notification {
         return subject;
     }
 
-    public void setSubject(String subject) {
-        this.subject = subject;
-    }
-
     public String getContent() {
         return content;
     }
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getTimeStamp() {
-        return timeStamp;
-    }
-
-    public void setTimeStamp(String timeStamp) {
-        this.timeStamp = timeStamp;
     }
 }

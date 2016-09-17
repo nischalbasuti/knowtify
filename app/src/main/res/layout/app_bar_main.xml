@@ -24,8 +24,10 @@
             android:id="@+id/tabs"
             android:layout_height="?attr/actionBarSize"
             android:layout_width="match_parent"
-            app:tabMode="fixed"
             android:background="?attr/colorPrimary"
+            app:tabMode="fixed"
+            app:tabMaxWidth="0dp"
+            app:tabGravity="fill"
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
             />

@@ -16,6 +16,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         showNotification(remoteMessage.getData().get("message"));
+        /*get the url for the new notification with the attachment url if any*/
     }
 
     private void showNotification(String message) {

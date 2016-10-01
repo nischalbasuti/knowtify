@@ -17,25 +17,44 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 /*
  * Created by nischal on 25/8/16.
  */
 public class NewNotificationDialog extends Activity implements View.OnClickListener {
+
+    Boolean no_same_notification = true; /*this is the number of notification have
+                                                              the same name and subject as above*/
+
 
     FirebaseUser mUser;
 
@@ -45,6 +64,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
     private EditText notificationSubject;
     private EditText notificationContent;
 
+    private String server = "http://104.155.213.151:8080/notification";
     String mBroadcastName;
     
     String path;
@@ -146,7 +166,8 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
 
         Log.d("NewNotif","user key: "+prefUserKey);
         Log.d(TAG,"broadcast name: "+mBroadcastName);
-        
+
+
         //finding broadcast key
         ref.child("users").child(prefUserKey).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -158,7 +179,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                             Log.d("NewNotif","broadcast key: "+broadcastKey);
 
 
-                            DatabaseReference notificationRef = ref.child("users")
+                            final DatabaseReference notificationRef = ref.child("users")
                                     .child(prefUserKey)
                                     .child("broadcasts")
                                     .child(broadcastKey)
@@ -174,13 +195,95 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                             if (name.isEmpty() || subject.isEmpty()) {
                                 Toast.makeText(getApplicationContext(),"must enter name and subject",Toast.LENGTH_SHORT).show();
                             } else {
-                                Notification notification = new Notification(
+                                no_same_notification = true;
+                                Query query = notificationRef.orderByChild("name").equalTo(name);
+                                query.addChildEventListener(new ChildEventListener() {
+                                    @Override
+                                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                        no_same_notification = false;
+                                    }
+
+                                    @Override
+                                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                    }
+
+                                    @Override
+                                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                                if(no_same_notification == true){
+                                   Notification notification = new Notification(
                                         name,
                                         subject,
                                         content,
                                         timeStamp
                                 );
                                 notificationRef.push().setValue(notification);
+
+                                    Query query1 = notificationRef.orderByChild("name").equalTo(name);
+                                    query.addChildEventListener(new ChildEventListener() {
+                                        @Override
+                                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                                            if(dataSnapshot != null){
+                                                Log.d("key",dataSnapshot.getKey());
+                                                /*send this key with the url to the node js server*/
+                                                HashMap<String, String> params = new HashMap<String, String>();
+                                                params.put("user",prefUserKey);
+                                                params.put("broadcast",broadcastKey);
+                                                params.put("key",dataSnapshot.getKey());
+                                                RequestQueue requestQueue = Volley.newRequestQueue(getBaseContext());
+                                                    JsonObjectRequest request = new JsonObjectRequest(server, new JSONObject(params), new Response.Listener<JSONObject>() {
+                                                        @Override
+                                                        public void onResponse(JSONObject response) {
+                                                            Log.d("Response",response.toString());
+                                                        }
+                                                    }, new Response.ErrorListener() {
+                                                        @Override
+                                                        public void onErrorResponse(VolleyError error) {
+                                                            Log.d("VOlley Error",error.toString());
+                                                        }
+                                                    });
+                                                    requestQueue.add(request);
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+                                        }
+
+                                        @Override
+                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
+
+                                        }
+                                    });
+                                }
+                                /*get the key for the notification added
+                                *make sure the notification is pushed to the database correctly
+                                *send the url with the key to the node js server using volley
+                                */
                                 onBackPressed();
                             }
                         }

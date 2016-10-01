@@ -62,3 +62,9 @@ Policies:
 5.Any number of files can be uploaded, but the limit should not cross 20mb.
 
 There will be a notification button in top right corner,if that is clicked, we
+
+
+-------------------------------------------------------------------------------------------
+
+Should we let the users make two or more notification with same name and subject?yes (done)
+Thinking of taking out the name attribute from the new notification because it make no sense. (name stays)

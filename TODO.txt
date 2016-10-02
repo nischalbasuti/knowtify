@@ -1,4 +1,4 @@
-NoteFerry
+Knotify
 
 Jaelse part of work.
 
@@ -65,6 +65,7 @@ There will be a notification button in top right corner,if that is clicked, we
 
 
 -------------------------------------------------------------------------------------------
-
+1/10/2016
 Should we let the users make two or more notification with same name and subject?yes (done)
 Thinking of taking out the name attribute from the new notification because it make no sense. (name stays)
+----------------------------------------------------------------------------------------------------------

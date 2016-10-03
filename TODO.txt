@@ -1,13 +1,14 @@
-Knotify
+Knowtiphy
 
 Jaelse part of work.
 
 1.asynchronizing.(Not yet started)
-2.starting service.(In preogress)
-3.notification on the cellphone.(In progress)
+2.starting service.(done)
+3.notification on the cellphone.(Sound is left)
 4.completing the home fragement.(In progress)
 5.setting reminder.(Not yet started)
 6.send email.(In progress)
+7.Make local database.(not yet started)
 
 Nischal part of work.
 
@@ -19,10 +20,10 @@ Nischal part of work.
 
 Kavya part of work.
 
-1.Database structure.
+1.Database structure.(done)
 2.search fragement.
 3.Navigation bar.
-4.Make local database.
+
 
 Things to figure out.
 
@@ -55,9 +56,9 @@ check the dp dimension if dimension is less, give an error.
 
 
 Policies:
-1.Broadcaster cannot delete the notification but they can edit it.
+1.Broadcaster cannot delete the notification but they can edit it.(need to remove this)
 2.Subscribers can remove the broadcast Subscription.
-3.Bradcaster can only stop the notification service but cannot remove the whole broadcast.
+3.Broadcaster can only stop the notification service but cannot remove the whole broadcast.
 4.There cannot be two broadcast with same name.
 5.Any number of files can be uploaded, but the limit should not cross 20mb.
 
@@ -69,3 +70,7 @@ There will be a notification button in top right corner,if that is clicked, we
 Should we let the users make two or more notification with same name and subject?yes (done)
 Thinking of taking out the name attribute from the new notification because it make no sense. (name stays)
 ----------------------------------------------------------------------------------------------------------
+
+3/10/2016
+
+How the users can get all the notifications they had and lost after uninstalling the app and then reinstalling.

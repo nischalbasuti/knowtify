@@ -15,7 +15,7 @@ notify-1384==>user==>XXXX(UserKey)==>Uname(Maybe not needed)
 				                  ==>Broadcasts==>XXXX(BroadcastKey)==>Bname
 								                                    ==>Binfo
 								                                    ==>Privacy
-								                                    ==>Subscribers==>XXXX==>XXXX(SubscriberNewNotificationURL)
+								                                    ==>Subscribers==>XXXX==>XXXX(SubscriberURL)
 										                            ==>SubscriberToken
 								                                    ==>Notifications==>XXXX==>Name
 											                                               ==>Subject

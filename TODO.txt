@@ -1,5 +1,31 @@
 Knowtiphy
 
+Database Structure
+
+XXXX-Keys,URL
+notify-1384==>user==>XXXX(UserKey)==>Uname(Maybe not needed)
+		                          ==>DPURL
+				                  ==>token
+				                  ==>NewNotification==>XXXX==>NotificationURLWithKey
+				                  ==>Queries==>XXXX(QueriesKey)==>XXXX(NotificationURLWithKey)
+				 			                                   ==>Query
+							                                   ==>Rating
+							                                   ==>Reply
+				                  ==>Subscriptions==>XXXX(BroadcastURL)
+				                  ==>Broadcasts==>XXXX(BroadcastKey)==>Bname
+								                                    ==>Binfo
+								                                    ==>Privacy
+								                                    ==>Subscribers==>XXXX==>XXXX(SubscriberNewNotificationURL)
+										                            ==>SubscriberToken
+								                                    ==>Notifications==>XXXX==>Name
+											                                               ==>Subject
+											                                               ==>Content
+											                                               ==>Attachment==>XXXX(AttachementKey)==>AType
+															                                                                   ==>AName
+															                                                                   ==>ASize
+															                                                                   ==>AttachmentURL
+
+
 Jaelse part of work.
 
 1.asynchronizing.(Not yet started)

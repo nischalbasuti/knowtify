@@ -5,6 +5,7 @@ package com.hydratech19gmail.notify;
  */
 public class Notification {
 
+    private String broadcast;
     private String name;
     private String timeStamp;
     private String subject;
@@ -14,7 +15,8 @@ public class Notification {
 
     }
 
-    public Notification(String name,String subject,String content,String timeStamp) {
+    public Notification(String broadcast,String name,String subject,String content,String timeStamp) {
+        this.broadcast = broadcast;
         this.name = name;
         this.subject = subject;
         this.content = content;
@@ -22,6 +24,15 @@ public class Notification {
     }
 
     //getters and setters
+
+
+    public String getBroadcast() {
+        return broadcast;
+    }
+
+    public void setBroadcast(String broadcast) {
+        this.broadcast = broadcast;
+    }
 
     public String getName() {
         return name;

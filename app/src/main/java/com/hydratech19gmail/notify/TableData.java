@@ -12,9 +12,11 @@ public class TableData {
     }
 
     public static abstract class TableInfo implements BaseColumns{
-        public static final String USERNAME = "user_name";
-        public static final String TOKEN = "token";
+        public static final String BROADCAST_NAME = "broadcast_name";
+        public static final String NOTIFICATION_NAME = "notification_name";
+        public static final String NOTIFICATION_SUBJECT = "notification_subject";
+        public static final String NOTIFICATION_CONTENT = "notification_content";
         public static final String DATABASE_NAME = "notify";
-        public static final String TABLE_NAME = "user_info";
+        public static final String TABLE_NAME = "notifications";
     }
 }

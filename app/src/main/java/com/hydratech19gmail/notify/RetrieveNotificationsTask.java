@@ -1,0 +1,112 @@
+package com.hydratech19gmail.notify;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.os.AsyncTask;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
+
+/**
+ * Created by zappereton on 9/10/16.
+ */
+
+public class RetrieveNotificationsTask extends AsyncTask<String,Notification,String> {
+    Context ctx;
+    private final String TAG = "NotificationUpdateTask";
+    Notification n;
+    DatabaseReference notificationRef;
+    RetrieveNotificationsTask(Context ctx) {
+        this.ctx = ctx;
+    }
+
+    RetrieveNotificationsTask(Context ctx,Notification n,DatabaseReference notificationRef){
+        this.ctx = ctx;
+        this.n = n;
+        this.notificationRef = notificationRef;
+    }
+    @Override
+    protected void onPreExecute() {
+    }
+
+    @Override
+    protected String doInBackground(String... params) {
+
+        synchronized (this) {
+            String method = params[0];
+
+            if (method.equals("get_all_notifications")) {
+                Log.d(TAG,"get_all_notification called");
+                //get all the notification from the database if any.
+                DatabaseOperations dop = new DatabaseOperations(ctx);
+                Cursor allNotifications = dop.getAllNotifications(dop);
+                while (allNotifications.moveToNext()) {
+
+                    String broadcastName = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.BROADCAST_NAME));
+                    String notificationName = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATION_NAME));
+                    String notificationsSubject = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATION_SUBJECT));
+                    String notificationContent = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATION_CONTENT));
+
+                    Notification n = new Notification(broadcastName, notificationName, notificationsSubject, notificationContent, null);
+
+                    publishProgress(n);
+                }
+
+                //listen for new notifications
+                SharedPreferences sharedPreferences = ctx.getSharedPreferences("myprefs", MODE_PRIVATE);
+                String prefUserKey = sharedPreferences.getString("user_key", "user key doesnt exits");
+
+                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference notificationRef = ref.child("users")
+                        .child(prefUserKey)
+                        .child("newNotification");
+
+                notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d(TAG,"onDataChange RetrieveNotificationsTask");
+                        Toast.makeText(ctx, "onDataChange RetrieveNotificationsTask", Toast.LENGTH_SHORT).show();
+                        for (DataSnapshot notification : dataSnapshot.getChildren()) {
+                            try {
+                                Log.d("child notifications", notification.toString());
+                        /*add these notifications to the local database*/
+                                DatabaseOperations dop = new DatabaseOperations(ctx);
+                                Notification newNotification = notification.getValue(Notification.class);
+                                dop.putNotification(dop, newNotification);
+                                NOTIFICATIONS.addFirst(newNotification);
+                                DatabaseReference oldNotificationRef = notificationRef.child(notification.getKey());
+                                oldNotificationRef.removeValue();
+                            } catch (Exception e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                    }
+                });
+                return "get_all_notifications";
+            }
+        }
+        return null;
+    }
+
+    @Override
+    protected void onProgressUpdate(Notification... values) {
+        NOTIFICATIONS.addFirst(values[0]);
+    }
+
+    @Override
+    protected void onPostExecute(String s) {
+    }
+}

@@ -74,8 +74,8 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         Notification n = getItem(position);
 
         mViewHolder.broadcastTitle.setText(n.getName());
-        mViewHolder.broadcasterName.setText(n.getSubject());
-        mViewHolder.contentText.setText(n.getContent());
+        mViewHolder.broadcasterName.setText(n.getBroadcast());
+        mViewHolder.contentText.setText(n.getSubject());
         //mViewHolder.broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
 

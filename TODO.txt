@@ -100,3 +100,26 @@ Thinking of taking out the name attribute from the new notification because it m
 3/10/2016
 
 How the users can get all the notifications they had and lost after uninstalling the app and then reinstalling.
+
+When the app is reinstalled then all the notifications from all the broadcasts subscribed will be loaded
+and then those according to their time stamp and then inserted to the local database.
+
+---------------------------------------------------------------------------------------------------------------
+
+9/10/2016
+
+The home fragment listview will only show name of the notification as the heading and then the name of the
+broadcast below that and as the content there only be the subject. In the last the time will be shown.
+When the notification willbe tapped, a new activity will be opened which will have all the information.
+
+----------------------------------------------------------------------------------------------------------------
+10/10/2016
+Make local database.(done)
+Connect the local database with the listview in the home fragment.(done)
+make the listview dynamic.(done)
+
+Do what is there in 3/10/2016.(not done)
+
+asynchronize(done)
+
+---------------------------------------------------------------------------------------------------------------

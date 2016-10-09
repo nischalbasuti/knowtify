@@ -157,7 +157,8 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
         }
     }
 
-    String broadcastKey;
+    String broadcastKey="null";
+    String broadcastName="null";
     private void makeNewNotification() {
         SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
         final String prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
@@ -174,8 +175,9 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         //send the notification when broadcast key is found
-                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                        for(final DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                             broadcastKey = childSnapshot.getKey();
+                            broadcastName = childSnapshot.child("name").getValue().toString();
                             Log.d("NewNotif","broadcast key: "+broadcastKey);
 
 
@@ -225,6 +227,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                                 });
                                 if(no_same_notification == true){
                                    Notification notification = new Notification(
+                                        broadcastName,
                                         name,
                                         subject,
                                         content,
@@ -240,6 +243,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                                                 Log.d("key",dataSnapshot.getKey());
                                                 /*send this key with the url to the node js server*/
                                                 HashMap<String, String> params = new HashMap<String, String>();
+                                                params.put("broadcastName",broadcastName);
                                                 params.put("user",prefUserKey);
                                                 params.put("broadcast",broadcastKey);
                                                 params.put("key",dataSnapshot.getKey());

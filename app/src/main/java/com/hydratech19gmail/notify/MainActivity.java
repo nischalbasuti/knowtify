@@ -3,12 +3,9 @@ package com.hydratech19gmail.notify;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -36,13 +33,14 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,GoogleApiClient.OnConnectionFailedListener {
+    public static LinkedList<Notification> NOTIFICATIONS;
 
     private static final String TAG = "MainActivity";
     private TabLayout tabLayout;
@@ -75,6 +73,10 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) throws NullPointerException{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        NOTIFICATIONS = new LinkedList();
+        //getting all the notifications from the local database in background task.
+        RetrieveNotificationsTask retrieveNotificationsTask = new RetrieveNotificationsTask(getBaseContext());
+        retrieveNotificationsTask.execute("get_all_notifications");
 
         GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder
                 (GoogleSignInOptions.DEFAULT_SIGN_IN)

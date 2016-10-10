@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
@@ -110,6 +111,17 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
                 adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_expandable_list_item_1,list);
 
                 ListView downloadListView = (ListView)rootView.findViewById(R.id.dropdownListView);
+                downloadListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                        if(position == 0){
+                            Toast.makeText(getContext(),"Delete",Toast.LENGTH_SHORT).show();
+                        }
+                        else if(position == 1){
+                            Toast.makeText(getContext(),"Mark as read",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
                 downloadListView.setAdapter(adapter);
 
                 attachmentDialog.show();

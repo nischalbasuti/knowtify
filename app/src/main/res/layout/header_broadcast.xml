@@ -3,22 +3,15 @@
     android:orientation="vertical"
     android:id="@+id/header_broadcast"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="#f2f2f2">
 
-    <ImageView
-        android:id="@+id/dividerTop"
-        android:layout_alignParentTop="true"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:src="@color/authui_colorAccent"/>
     <ImageView
         android:layout_width="20dp"
         android:layout_height="30dp"
         android:id="@+id/dropDownMenu"
         android:src="@drawable/icon_menu_dropdown"
         android:layout_alignParentEnd="true"
-        android:layout_below="@id/dividerTop"
         android:layout_marginTop="4dp"
         android:layout_marginRight="4dp"
         />
@@ -75,14 +68,12 @@
         android:text="nalskdjflasfjlasdflaslkdfjaslkfjaskfasdfasdfadsfasdfasdfasdfasdfasdfasfasdfasdfasdfasdfasdfasdfa"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <ImageView
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="1dip"
+        android:background="@color/light_grey"
         android:id="@+id/dividerBottom"
-        android:layout_below="@+id/broadcast_info"
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_marginTop="@dimen/fab_margin"
-        android:layout_marginBottom="@dimen/fab_margin"
-        android:src="@color/authui_colorAccent"/>
+        android:layout_below="@+id/broadcast_info"/>
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -92,6 +83,7 @@
         android:textStyle="bold"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_marginBottom="@dimen/fab_margin"
-        android:layout_marginStart="@dimen/fab_margin"/>
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="16dp"/>
 
 </RelativeLayout>

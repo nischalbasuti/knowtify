@@ -75,4 +75,9 @@ public class DatabaseOperations extends SQLiteOpenHelper{
         sqldb.delete(TableData.TableInfo.TABLE_NAME,selection,args);
 
     }
+
+    public void deleteAllNotification(DatabaseOperations dop){
+        SQLiteDatabase sqldb = dop.getWritableDatabase();
+        sqldb.execSQL("delete * from "+ TableData.TableInfo.TABLE_NAME);
+    }
 }

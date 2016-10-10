@@ -127,4 +127,13 @@ need to put the link of icon8.
 
 The name of the notification should not be greater than 30 letters.
 The subject of the notification should not be greater than 100 letters.
+
+
+#009688 color I used for ic_tab_notifications.
+
+
+Next thing to do:
+The local database should be refreshed if the user sign in with different account. Refreshing means
+to delete all the data from the local database and then loading the data again from the remote database.
+(Task done. need to check when nischal put timestamp in all the notifications.)
 ---------------------------------------------------------------------------------------------------------------

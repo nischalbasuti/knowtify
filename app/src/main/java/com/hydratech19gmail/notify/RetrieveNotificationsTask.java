@@ -73,8 +73,6 @@ public class RetrieveNotificationsTask extends AsyncTask<String,Notification,Str
                 notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        Log.d(TAG,"onDataChange RetrieveNotificationsTask");
-                        Toast.makeText(ctx, "onDataChange RetrieveNotificationsTask", Toast.LENGTH_SHORT).show();
                         for (DataSnapshot notification : dataSnapshot.getChildren()) {
                             try {
                                 Log.d("child notifications", notification.toString());
@@ -96,6 +94,133 @@ public class RetrieveNotificationsTask extends AsyncTask<String,Notification,Str
                     }
                 });
                 return "get_all_notifications";
+            }
+            if (method.equals("reinstalled")){
+                final SharedPreferences sharedPreferences = ctx.getSharedPreferences("myprefs", MODE_PRIVATE);
+                String prefUserKey = sharedPreferences.getString("user_key", "user key doesnt exits");
+
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference notificationRef = ref.child("users")
+                        .child(prefUserKey)
+                        .child("subscriptions");
+
+                notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot channel : dataSnapshot.getChildren()) {
+                            try {
+
+                                Subscriptions subscriptions = channel.getValue(Subscriptions.class);
+                                String userName = subscriptions.getUserName();
+                                String channelName = subscriptions.getChannelName();
+
+                                DatabaseReference channelRef = ref.child("users")
+                                                                    .child(userName)
+                                                                    .child("broadcasts")
+                                                                    .child(channelName);
+                                channelRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot notification : dataSnapshot.getChildren()){
+                                            try{
+                                                /*sort the notificatins according to their timestamp.
+                                                add these notifications to the local database
+                                                add these notifications to the NOTIFICATIONS*/
+
+                                                /*
+                                                DatabaseOperations dop = new DatabaseOperations(ctx);
+                                                Notification newNotification = notification.getValue(Notification.class);
+                                                dop.putNotification(dop, newNotification);
+                                                NOTIFICATIONS.addFirst(newNotification); */
+                                            }catch (Exception e){
+                                                Log.d(TAG,e.getMessage());
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            } catch (Exception e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                return "reinstalled";
+            }
+            if(method.equals("signed_in_with_different_account")){
+                //fire delete all the old data from the database.
+                DatabaseOperations dop = new DatabaseOperations(ctx);
+                dop.deleteAllNotification(dop);
+
+                //get the data again from the remote database.
+                final SharedPreferences sharedPreferences = ctx.getSharedPreferences("myprefs", MODE_PRIVATE);
+                String prefUserKey = sharedPreferences.getString("user_key", "user key doesnt exits");
+
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                final DatabaseReference notificationRef = ref.child("users")
+                        .child(prefUserKey)
+                        .child("subscriptions");
+
+                notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot channel : dataSnapshot.getChildren()) {
+                            try {
+
+                                Subscriptions subscriptions = channel.getValue(Subscriptions.class);
+                                String userName = subscriptions.getUserName();
+                                String channelName = subscriptions.getChannelName();
+
+                                DatabaseReference channelRef = ref.child("users")
+                                        .child(userName)
+                                        .child("broadcasts")
+                                        .child(channelName);
+                                channelRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for(DataSnapshot notification : dataSnapshot.getChildren()){
+                                            try{
+                                                /*sort the notificatins according to their timestamp.
+                                                add these notifications to the local database
+                                                add these notifications to the NOTIFICATIONS*/
+
+                                                /*
+                                                DatabaseOperations dop = new DatabaseOperations(ctx);
+                                                Notification newNotification = notification.getValue(Notification.class);
+                                                dop.putNotification(dop, newNotification);
+                                                NOTIFICATIONS.addFirst(newNotification); */
+                                            }catch (Exception e){
+                                                Log.d(TAG,e.getMessage());
+                                            }
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+                            } catch (Exception e) {
+                                Log.d(TAG, e.getMessage());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+                return "reinstalled";
             }
         }
         return null;

@@ -28,13 +28,13 @@ notify-1384==>user==>XXXX(UserKey)==>Uname(Maybe not needed)
 
 Jaelse part of work.
 
-1.asynchronizing.(Not yet started)
+1.asynchronizing.(done)
 2.starting service.(done)
 3.notification on the cellphone.(Sound is left)
 4.completing the home fragement.(In progress)
 5.setting reminder.(Not yet started)
 6.send email.(In progress)
-7.Make local database.(not yet started)
+7.Make local database.(done)
 
 Nischal part of work.
 
@@ -122,4 +122,9 @@ Do what is there in 3/10/2016.(not done)
 
 asynchronize(done)
 
+
+need to put the link of icon8.
+
+The name of the notification should not be greater than 30 letters.
+The subject of the notification should not be greater than 100 letters.
 ---------------------------------------------------------------------------------------------------------------

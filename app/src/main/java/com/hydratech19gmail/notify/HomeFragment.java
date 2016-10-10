@@ -62,7 +62,6 @@ public class HomeFragment extends Fragment{
         notificationRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Toast.makeText(getContext(), "onDataChange", Toast.LENGTH_SHORT).show();
                 for (DataSnapshot notification : dataSnapshot.getChildren()) {
                     try {
                         Log.d("child notifications", notification.toString());

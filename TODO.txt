@@ -92,12 +92,12 @@ There will be a notification button in top right corner,if that is clicked, we
 
 
 -------------------------------------------------------------------------------------------
-1/10/2016
+1/10/2016(Jaelse)
 Should we let the users make two or more notification with same name and subject?yes (done)
 Thinking of taking out the name attribute from the new notification because it make no sense. (name stays)
 ----------------------------------------------------------------------------------------------------------
 
-3/10/2016
+3/10/2016(Jaelse)
 
 How the users can get all the notifications they had and lost after uninstalling the app and then reinstalling.
 
@@ -106,19 +106,19 @@ and then those according to their time stamp and then inserted to the local data
 
 ---------------------------------------------------------------------------------------------------------------
 
-9/10/2016
+9/10/2016(Jaelse)
 
 The home fragment listview will only show name of the notification as the heading and then the name of the
 broadcast below that and as the content there only be the subject. In the last the time will be shown.
 When the notification willbe tapped, a new activity will be opened which will have all the information.
 
 ----------------------------------------------------------------------------------------------------------------
-10/10/2016
+10/10/2016(Jaelse)
 Make local database.(done)
 Connect the local database with the listview in the home fragment.(done)
 make the listview dynamic.(done)
 
-Do what is there in 3/10/2016.(not done)
+Do what is there in 3/10/2016.(done. testing after nischal's work)
 
 asynchronize(done)
 
@@ -137,3 +137,19 @@ The local database should be refreshed if the user sign in with different accoun
 to delete all the data from the local database and then loading the data again from the remote database.
 (Task done. need to check when nischal put timestamp in all the notifications.)
 ---------------------------------------------------------------------------------------------------------------
+
+11/10/2016(Jaelse)
+
+TODO
+OnclickItem listener for the home fragment listView. Click should only happen on the middle part of the item.
+
+Make the activity for each notification when clicked. Complete everything in this activity
+
+complete the delete option in dropdownmenu.
+
+Do Download task.
+Do the reminder thing.
+
+Do search fragment UI.
+Do notifications fragment UI.
+----------------------------------------------------------------------------------------------------------------

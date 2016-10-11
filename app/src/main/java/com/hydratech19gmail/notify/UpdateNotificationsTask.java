@@ -20,16 +20,16 @@ import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
  * Created by zappereton on 9/10/16.
  */
 
-public class RetrieveNotificationsTask extends AsyncTask<String,Notification,String> {
+public class UpdateNotificationsTask extends AsyncTask<String,Notification,String> {
     Context ctx;
     private final String TAG = "NotificationUpdateTask";
     Notification n;
     DatabaseReference notificationRef;
-    RetrieveNotificationsTask(Context ctx) {
+    UpdateNotificationsTask(Context ctx) {
         this.ctx = ctx;
     }
 
-    RetrieveNotificationsTask(Context ctx, Notification n){
+    UpdateNotificationsTask(Context ctx, Notification n){
         this.ctx = ctx;
         this.n = n;
     }

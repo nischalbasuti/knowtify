@@ -109,7 +109,7 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                             Toast.makeText(WholeNotificationActivity.this,"Delete",Toast.LENGTH_SHORT).show();
                             Notification n = new Notification(broadcastName,notificationName,notificationSubject,notificationContent,null);
 
-                            RetrieveNotificationsTask updateNotificationsTask = new RetrieveNotificationsTask(WholeNotificationActivity.this,n);
+                            UpdateNotificationsTask updateNotificationsTask = new UpdateNotificationsTask(WholeNotificationActivity.this,n);
                             updateNotificationsTask.execute("delete_a_notification");
 
                             Log.d("SizeB", String.valueOf(NOTIFICATIONS.size()));

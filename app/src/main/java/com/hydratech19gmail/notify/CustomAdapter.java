@@ -107,7 +107,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             Toast.makeText(getContext(), "Delete", Toast.LENGTH_SHORT).show();
-                            RetrieveNotificationsTask updateNotificationsTask = new RetrieveNotificationsTask(getContext(),n);
+                            UpdateNotificationsTask updateNotificationsTask = new UpdateNotificationsTask(getContext(),n);
                             updateNotificationsTask.execute("delete_a_notification");
 
                             Log.d("NOTIFICAIONS","a"+n.getTimeStamp());

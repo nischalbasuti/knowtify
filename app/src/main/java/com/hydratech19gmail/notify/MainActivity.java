@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         NOTIFICATIONS = new LinkedList();
         //getting all the notifications from the local database in background task.
-        RetrieveNotificationsTask retrieveNotificationsTask = new RetrieveNotificationsTask(getBaseContext());
+        UpdateNotificationsTask retrieveNotificationsTask = new UpdateNotificationsTask(getBaseContext());
         retrieveNotificationsTask.execute("get_all_notifications");
 
         GoogleSignInOptions mGoogleSignInOptions = new GoogleSignInOptions.Builder

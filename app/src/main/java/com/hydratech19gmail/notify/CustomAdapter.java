@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.DataSetObserver;
 import android.graphics.Color;
 import android.provider.ContactsContract;
@@ -19,6 +20,7 @@ import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
@@ -51,6 +53,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         public ImageView dropDownImage;
         public ImageView queryImage;
         public ImageView attachmentImage;
+        public LinearLayout subjectLinearLayout;
     }
 
     public CustomAdapter(Context context, List<Notification> data){
@@ -73,6 +76,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             mViewHolder.dropDownImage = (ImageView)convertView.findViewById(R.id.dropDownMenu);
             mViewHolder.queryImage = (ImageView)convertView.findViewById(R.id.ask_question);
             mViewHolder.attachmentImage = (ImageView)convertView.findViewById(R.id.attachment);
+            mViewHolder.subjectLinearLayout = (LinearLayout)convertView.findViewById(R.id.contentLayout);
 
             convertView.setTag(mViewHolder);
 
@@ -84,7 +88,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         }
 
 
-        Notification n = getItem(position);
+        final Notification n = getItem(position);
 
         mViewHolder.broadcastTitle.setText(n.getName());
         mViewHolder.broadcasterName.setText(n.getBroadcast());
@@ -96,40 +100,28 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         mViewHolder.dropDownImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-            //new PopupWindowDropDownMenu(getContext(),mDropDownList).popupWindowDropDownMenu().showAsDropDown(view);
-                final Dialog attachmentDialog = new Dialog(getContext());
-
-                List<String> list = new ArrayList<String>();
-                list.add("Delete");
-                list.add("Mark as Read");
-                ArrayAdapter<String> adapter;
-
-                attachmentDialog.setContentView(R.layout.dialog_dropdown);
-
-                View rootView = inflater.inflate(R.layout.dialog_dropdown,null);
-
-                adapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_expandable_list_item_1,list);
-
-                ListView downloadListView = (ListView)rootView.findViewById(R.id.dropdownListView);
-                downloadListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                String[] options = {"Delete", "Mark as Read"};
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(getContext());
+                dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        if(position == 0){
-                            Toast.makeText(getContext(),"Delete",Toast.LENGTH_SHORT).show();
-                        }
-                        else if(position == 1){
-                            Toast.makeText(getContext(),"Mark as read",Toast.LENGTH_SHORT).show();
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Toast.makeText(getContext(), "Delete", Toast.LENGTH_SHORT).show();
+                            RetrieveNotificationsTask updateNotificationsTask = new RetrieveNotificationsTask(getContext(),n);
+                            updateNotificationsTask.execute("delete_a_notification");
+
+                            Log.d("NOTIFICAIONS","a"+n.getTimeStamp());
+                            NOTIFICATIONS.remove(n);
+
+                            CustomAdapter.this.notifyDataSetChanged();
+                        } else if (which == 1) {
+                            Toast.makeText(getContext(), "Mark as Read", Toast.LENGTH_SHORT).show();
                         }
                     }
                 });
-                downloadListView.setAdapter(adapter);
-
-                attachmentDialog.show();
-                attachmentDialog.setContentView(rootView);
-
+                dialogBuilder.show();
             }
         });
-
         mViewHolder.queryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -160,6 +152,23 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
                         attachmentDialog.cancel();
                     }
                 });
+            }
+        });
+
+
+        mViewHolder.subjectLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(),n.getSubject().toString(),Toast.LENGTH_SHORT).show();
+
+                Intent intent = new Intent(getContext(),WholeNotificationActivity.class);
+
+                intent.putExtra("broadcastName", n.getBroadcast());
+                intent.putExtra("notificationName", n.getName());
+                intent.putExtra("notificationSubject",n.getSubject());
+                intent.putExtra("notificationContent",n.getContent());
+
+                getContext().startActivity(intent);
             }
         });
 

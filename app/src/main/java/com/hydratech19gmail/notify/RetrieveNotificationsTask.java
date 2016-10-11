@@ -29,10 +29,9 @@ public class RetrieveNotificationsTask extends AsyncTask<String,Notification,Str
         this.ctx = ctx;
     }
 
-    RetrieveNotificationsTask(Context ctx,Notification n,DatabaseReference notificationRef){
+    RetrieveNotificationsTask(Context ctx, Notification n){
         this.ctx = ctx;
         this.n = n;
-        this.notificationRef = notificationRef;
     }
     @Override
     protected void onPreExecute() {
@@ -221,6 +220,18 @@ public class RetrieveNotificationsTask extends AsyncTask<String,Notification,Str
                     }
                 });
                 return "reinstalled";
+            }
+            if(method.equals("delete_a_notification")){
+                if(n != null){
+                    Log.d("delete_a_notification","entered");
+                    String broadcastName = n.getBroadcast();
+                    String notificationName = n.getName();
+                    String notificationSubject = n.getSubject();
+
+                    DatabaseOperations dop = new DatabaseOperations(ctx);
+                    dop.deleteNotification(dop,broadcastName,notificationName,notificationSubject);
+                }
+                return "delete_a_notifcation";
             }
         }
         return null;

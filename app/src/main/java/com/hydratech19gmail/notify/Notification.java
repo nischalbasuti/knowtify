@@ -53,4 +53,16 @@ public class Notification {
     public void setContent(String content) {
         this.content = content;
     }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public void setSubject(String subject) {
+        this.subject = subject;
+    }
 }

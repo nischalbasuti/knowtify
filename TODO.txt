@@ -152,4 +152,7 @@ Do the reminder thing.
 
 Do search fragment UI.
 Do notifications fragment UI.
+
+when the user reinstalls the app his token changes, then the token also have to change on the subcriptions he
+has
 ----------------------------------------------------------------------------------------------------------------

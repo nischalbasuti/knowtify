@@ -40,6 +40,9 @@
             android:name=".BroadcastActivity"
             android:label="@string/title_activity_broadcast"></activity>
         <activity
+            android:name=".WholeNotificationActivity"
+            android:label="WholeNotification"></activity>
+        <activity
             android:name=".NewNotificationDialog"
             android:excludeFromRecents="true"
             android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>

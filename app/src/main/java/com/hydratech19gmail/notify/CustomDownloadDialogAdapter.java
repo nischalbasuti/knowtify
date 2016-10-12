@@ -13,6 +13,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,6 +31,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import java.net.URLConnection;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -90,8 +98,42 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
 
                 Notification innerN = getItem(position);
                 String url = innerN.getName();
-                DownloadTask dt = new DownloadTask("download",position);
-                dt.execute("https://firebasestorage.googleapis.com/v0/b/notify-1384.appspot.com/o/5%20Year%20IDP%20CSE%20-%202013.doc.pdf?alt=media&token=892a4a34-2cc6-4e62-b5a1-1a5f42acbf79");
+                ProgressBar pb = (ProgressBar) parent.findViewWithTag(position+"dpb");
+
+                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                StorageReference fileRef = storageReference.child("images/unnamed.png");
+
+                File folder = new File("/sdcard/Notify/");
+                if (!(folder.exists())){
+                    folder.mkdirs();
+                }
+
+                File input_file = new File(folder,"file"+position+".png");
+
+                final double[] size = {0};
+
+                fileRef.getMetadata().addOnSuccessListener(new OnSuccessListener<StorageMetadata>() {
+                    @Override
+                    public void onSuccess(StorageMetadata storageMetadata) {
+                        size[0] = storageMetadata.getSizeBytes();
+                    }
+                });
+                fileRef.getFile(input_file).addOnProgressListener(new OnProgressListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onProgress(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        int progressions = (int)(taskSnapshot.getBytesTransferred()*100/size[0]);
+
+                        Log.d("progressions", String.valueOf(progressions));
+                        ((ProgressBar) parent.findViewWithTag(position+"dpb")).setProgress(progressions);
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                        parent.findViewWithTag(position+"dpb").setVisibility(View.INVISIBLE);                    }
+                });
+
+                //DownloadTask dt = new DownloadTask("download",position,pb);
+                //dt.execute("https://firebasestorage.googleapis.com/v0/b/notify-1384.appspot.com/o/images%2Funnamed.png?alt=media&token=076de189-e55f-4213-8ef0-d20c9dd75797");
             }
         });
 
@@ -102,75 +144,11 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                 parent.findViewWithTag(position+"d").setVisibility(View.VISIBLE);
                 parent.findViewWithTag(position+"dpb").setVisibility(View.INVISIBLE);
 
-                DownloadTask dt = new DownloadTask("not download",position);
+                ProgressBar pb = (ProgressBar) parent.findViewWithTag(position+"dpb");
+                //DownloadTask dt = new DownloadTask("not download",position,pb);
             }
         });
         return convertView;
-    }
-    class DownloadTask extends AsyncTask<String,Integer,Void>{
-
-        String URL;
-        int position;
-
-        final String TAG = "DownloadTask";
-
-        DownloadTask(String URL,int position){
-            this.URL = URL;
-            this.position = position;
-        }
-        @Override
-        protected void onPreExecute() {
-            Log.d(TAG, String.valueOf(position));
-        }
-
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            //mViewHolder.downloadProgressBar.set;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
-
-        @Override
-        protected Void doInBackground(String... params) {
-            Log.d(TAG,params[0].toString());
-            int file_length=0;
-            String path = params[0];
-            try {
-                URL url = new URL(path);
-                URLConnection urlConnection = url.openConnection();
-                urlConnection.connect();
-                file_length = urlConnection.getContentLength();
-
-                File folder = new File(getContext().getCacheDir(),"Notify");
-                if (!(folder.exists())){
-                    folder.mkdir();
-                }
-
-                File input_file = new File(folder,"file"+position+".pdf");
-                InputStream inputStream = new BufferedInputStream(url.openStream(),8192);
-                byte[] data = new byte[1024];
-
-                int total = 0;
-                int count = 0;
-                OutputStream outputStream = new FileOutputStream(folder);
-
-                while ((count=inputStream.read())!=-1){
-                    total += count;
-                    outputStream.write(data,0,count);
-                    int progress = (int)((total*100)/file_length);
-                    publishProgress(progress);
-                }
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return null;
-        }
     }
 }
 

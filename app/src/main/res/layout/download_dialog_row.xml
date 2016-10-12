@@ -32,9 +32,19 @@
         android:src="@drawable/ic_download"
         android:layout_alignParentRight="true"
         />
+
+    <ProgressBar
+        style="?android:attr/progressBarStyleSmall"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:paddingTop="5dp"
+        android:id="@+id/downloadProgressbar"
+        android:layout_alignParentRight="true"/>
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:background="@color/light_grey"
-        android:layout_below="@+id/name_of_file"/>
+        android:layout_below="@+id/name_of_file"
+        android:id="@+id/view" />
+
 </RelativeLayout>

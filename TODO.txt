@@ -141,18 +141,24 @@ to delete all the data from the local database and then loading the data again f
 11/10/2016(Jaelse)
 
 TODO
-OnclickItem listener for the home fragment listView. Click should only happen on the middle part of the item.
+OnclickItem listener for the home fragment listView. Click should only happen on the middle part of the item.(Done)
 
-Make the activity for each notification when clicked. Complete everything in this activity
+Make the activity for each notification when clicked. Complete everything in this activity(done)
 
-complete the delete option in dropdownmenu.
+complete the delete option in dropdownmenu.(done)
+
+when the user re-installs the app his token changes, then the token also have to change on the subscriptions he
+has
+----------------------------------------------------------------------------------------------------------------
+
+12/10/2016
+
+need to figure out how to refresh the Home fragment when coming back from the wholeNotificationsActivity
+clicking delete.
 
 Do Download task.
 Do the reminder thing.
 
 Do search fragment UI.
 Do notifications fragment UI.
-
-when the user reinstalls the app his token changes, then the token also have to change on the subcriptions he
-has
-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------

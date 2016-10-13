@@ -31,8 +31,8 @@ Jaelse part of work.
 1.asynchronizing.(done)
 2.starting service.(done)
 3.notification on the cellphone.(Sound is left)
-4.completing the home fragement.(In progress)
-5.setting reminder.(Not yet started)
+4.completing the home fragement.(done)
+5.setting reminder.(60% done)
 6.send email.(In progress)
 7.Make local database.(done)
 
@@ -53,43 +53,40 @@ Kavya part of work.
 
 Things to figure out.
 
-1.How to multi cast.
-2.uploading and downloading protocol.
-3.policies.
-4.Subscription.
-5.add queries.
+1.How to multi cast.(done)
+2.uploading and downloading protocol.(done)
+3.policies.(done)
+4.Subscription.(done)
+5.add queries.(done)
 
 
 pending:
 
-email sign in and sign up.
+TODO email sign in and sign up.
 
 Things to remember.
 
-Put word limit.
+TODO Put word limit.
 
 
-the upper character limit - 1000.
+TODO the upper character limit - 1000.
 
 we open a new activity to show the whole message.
 
 
-automatically the date time when the notification is created will be stored.
+TODO automatically the date time when the notification is created will be stored.
 
 
-DP minimum size.
-check the dp dimension if dimension is less, give an error.
+TODO DP minimum size.
+TODO check the dp dimension if dimension is less, give an error.
 
 
 Policies:
-1.Broadcaster cannot delete the notification but they can edit it.(need to remove this)
-2.Subscribers can remove the broadcast Subscription.
+TODO 1.Broadcaster cannot delete the notification but they can edit it.(need to remove this)
+TODO 2.Subscribers can remove the broadcast Subscription.
 3.Broadcaster can only stop the notification service but cannot remove the whole broadcast.
-4.There cannot be two broadcast with same name.
-5.Any number of files can be uploaded, but the limit should not cross 20mb.
-
-There will be a notification button in top right corner,if that is clicked, we
-
+TODO 4.There cannot be two broadcast with same name.
+TODO 5.Any number of files can be uploaded, but the limit should not cross 20mb.
 
 -------------------------------------------------------------------------------------------
 1/10/2016(Jaelse)
@@ -103,6 +100,7 @@ How the users can get all the notifications they had and lost after uninstalling
 
 When the app is reinstalled then all the notifications from all the broadcasts subscribed will be loaded
 and then those according to their time stamp and then inserted to the local database.
+TODO sorting left
 
 ---------------------------------------------------------------------------------------------------------------
 
@@ -110,10 +108,11 @@ and then those according to their time stamp and then inserted to the local data
 
 The home fragment listview will only show name of the notification as the heading and then the name of the
 broadcast below that and as the content there only be the subject. In the last the time will be shown.
-When the notification willbe tapped, a new activity will be opened which will have all the information.
+When the notification will be tapped, a new activity will be opened which will have all the information.
 
 ----------------------------------------------------------------------------------------------------------------
 10/10/2016(Jaelse)
+
 Make local database.(done)
 Connect the local database with the listview in the home fragment.(done)
 make the listview dynamic.(done)
@@ -123,10 +122,10 @@ Do what is there in 3/10/2016.(done. testing after nischal's work)
 asynchronize(done)
 
 
-need to put the link of icon8.
+TODO need to put the link of icon8.
 
-The name of the notification should not be greater than 30 letters.
-The subject of the notification should not be greater than 100 letters.
+TODO The name of the notification should not be greater than 30 letters.
+TODO The subject of the notification should not be greater than 100 letters.
 
 
 #009688 color I used for ic_tab_notifications.
@@ -135,30 +134,40 @@ The subject of the notification should not be greater than 100 letters.
 Next thing to do:
 The local database should be refreshed if the user sign in with different account. Refreshing means
 to delete all the data from the local database and then loading the data again from the remote database.
-(Task done. need to check when nischal put timestamp in all the notifications.)
+(Task done. TODO need to check when nischal put timestamp in all the notifications.)
 ---------------------------------------------------------------------------------------------------------------
 
 11/10/2016(Jaelse)
 
-TODO
 OnclickItem listener for the home fragment listView. Click should only happen on the middle part of the item.(Done)
 
 Make the activity for each notification when clicked. Complete everything in this activity(done)
 
 complete the delete option in dropdownmenu.(done)
 
-when the user re-installs the app his token changes, then the token also have to change on the subscriptions he
-has
+TODO when the user re-installs the app his token changes, then the token also have to change on the subscriptions he has
 ----------------------------------------------------------------------------------------------------------------
 
-12/10/2016
+12/10/2016(Jaelse)
 
-need to figure out how to refresh the Home fragment when coming back from the wholeNotificationsActivity
-clicking delete.
+TODO need to figure out how to refresh the Home fragment when coming back from the wholeNotificationsActivity clicking delete.
 
-Do Download task.
-Do the reminder thing.
+Do Download task.(90% complete)
+
+TODO Stop download after it has started.
+---------------------------------------------------------------------------------------------------------------
+
+13/10/2016 (Jaelse)
+Do the reminder thing.(done)
+
+when the user has clicked download button and then clicks back button, the download will be happening
+in the background. Therefor we need to put the current status of the download back to the dialog if the
+user comes back.
+
+Learn how to make rules for both firebase database and firebase storage.
 
 Do search fragment UI.
-Do notifications fragment UI.
+Do profile fragment UI.
+
+TODO put button to open the downloaded file.
 ---------------------------------------------------------------------------------------------------------------

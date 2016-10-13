@@ -96,10 +96,6 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                 parent.findViewWithTag(position+"d").setVisibility(View.INVISIBLE);
                 parent.findViewWithTag(position+"dpb").setVisibility(View.VISIBLE);
 
-                Notification innerN = getItem(position);
-                String url = innerN.getName();
-                ProgressBar pb = (ProgressBar) parent.findViewWithTag(position+"dpb");
-
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
                 StorageReference fileRef = storageReference.child("images/unnamed.png");
 
@@ -131,9 +127,6 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                     public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
                         parent.findViewWithTag(position+"dpb").setVisibility(View.INVISIBLE);                    }
                 });
-
-                //DownloadTask dt = new DownloadTask("download",position,pb);
-                //dt.execute("https://firebasestorage.googleapis.com/v0/b/notify-1384.appspot.com/o/images%2Funnamed.png?alt=media&token=076de189-e55f-4213-8ef0-d20c9dd75797");
             }
         });
 
@@ -143,9 +136,6 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                 Toast.makeText(getContext(),"Downloading...",Toast.LENGTH_LONG).show();
                 parent.findViewWithTag(position+"d").setVisibility(View.VISIBLE);
                 parent.findViewWithTag(position+"dpb").setVisibility(View.INVISIBLE);
-
-                ProgressBar pb = (ProgressBar) parent.findViewWithTag(position+"dpb");
-                //DownloadTask dt = new DownloadTask("not download",position,pb);
             }
         });
         return convertView;

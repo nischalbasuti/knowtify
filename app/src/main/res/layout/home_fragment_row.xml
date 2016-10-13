@@ -99,6 +99,15 @@
             android:adjustViewBounds="true"
             android:paddingTop="10dp"
             android:id="@+id/ask_question" />
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            app:srcCompat="@drawable/ic_alarm_clock"
+            android:layout_toLeftOf="@id/ask_question"
+            android:adjustViewBounds="true"
+            android:paddingTop="10dp"
+            android:id="@+id/renimder" />
     </RelativeLayout>
 
 </RelativeLayout>

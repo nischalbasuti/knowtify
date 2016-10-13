@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -53,6 +54,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         public ImageView dropDownImage;
         public ImageView queryImage;
         public ImageView attachmentImage;
+        public ImageView alarmImage;
         public LinearLayout subjectLinearLayout;
     }
 
@@ -77,7 +79,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             mViewHolder.queryImage = (ImageView)convertView.findViewById(R.id.ask_question);
             mViewHolder.attachmentImage = (ImageView)convertView.findViewById(R.id.attachment);
             mViewHolder.subjectLinearLayout = (LinearLayout)convertView.findViewById(R.id.contentLayout);
-
+            mViewHolder.alarmImage = (ImageView) convertView.findViewById(R.id.renimder);
             convertView.setTag(mViewHolder);
 
             Log.d("CustomAdapter","getView | null");
@@ -172,6 +174,16 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             }
         });
 
+        mViewHolder.alarmImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                CalendarEventMaker calendarEventMaker = new CalendarEventMaker(getContext(),
+                        calendar.getTimeInMillis(),calendar.getTimeInMillis()+60*60*1000,"Event Making Test");
+                calendarEventMaker.makeEvent();
+                Toast.makeText(getContext(),"Event Setup",Toast.LENGTH_LONG).show();
+            }
+        });
         return convertView;
     }
 }

@@ -31,8 +31,8 @@ Jaelse part of work.
 1.asynchronizing.(done)
 2.starting service.(done)
 3.notification on the cellphone.(Sound is left)
-4.completing the home fragement.(done)
-5.setting reminder.(60% done)
+4.completing the home fragment.(done)
+5.setting reminder.(done)
 6.send email.(In progress)
 7.Make local database.(done)
 
@@ -156,7 +156,6 @@ Do Download task.(90% complete)
 
 TODO Stop download after it has started.
 ---------------------------------------------------------------------------------------------------------------
-
 13/10/2016 (Jaelse)
 Do the reminder thing.(done)
 
@@ -166,8 +165,7 @@ user comes back.
 
 Learn how to make rules for both firebase database and firebase storage.
 
-Do search fragment UI.
-Do profile fragment UI.
+Do search fragment UI.(done)
 
 TODO put button to open the downloaded file.
 ---------------------------------------------------------------------------------------------------------------

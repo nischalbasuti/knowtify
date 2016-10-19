@@ -2,8 +2,13 @@ package com.hydratech19gmail.notify;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -24,6 +29,7 @@ import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
  */
 
 public class WholeNotificationActivity extends AppCompatActivity implements View.OnClickListener{
+    public static Boolean CHECK = false;
 
     String broadcastName;
     String notificationName;
@@ -94,8 +100,8 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
 
     @Override
     public void onClick(View v) {
-        LayoutInflater inflater = getLayoutInflater();
-        View rootView = inflater.inflate(R.layout.dialog_attachment,null);
+        final LayoutInflater inflater = getLayoutInflater();
+        final View rootView = inflater.inflate(R.layout.dialog_attachment,null);
 
         switch (v.getId()){
             case R.id.wdropDownMenu:
@@ -103,6 +109,7 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                 String[] options = {"Delete","Mark as Read"};
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(WholeNotificationActivity.this);
                 dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
+                    @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
@@ -112,8 +119,18 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                             UpdateNotificationsTask updateNotificationsTask = new UpdateNotificationsTask(WholeNotificationActivity.this,n);
                             updateNotificationsTask.execute("delete_a_notification");
 
-                            Log.d("SizeB", String.valueOf(NOTIFICATIONS.size()));
-                            NOTIFICATIONS.remove(n);
+                            CHECK = false;
+                            for(Notification h : NOTIFICATIONS) {
+                                if(broadcastName.equals(h.getBroadcast()) &&
+                                        notificationName.equals(h.getName()) &&
+                                        notificationSubject.equals(h.getSubject()) &&
+                                        notificationContent.equals(h.getContent())){
+
+                                    CHECK = NOTIFICATIONS.remove(h);
+                                    Log.d("check",Boolean.toString(CHECK));
+                                    break;
+                                }
+                            }
 
                             onBackPressed();
                         }

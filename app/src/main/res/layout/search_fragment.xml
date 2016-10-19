@@ -36,15 +36,13 @@
            android:layout_height="wrap_content"
            app:srcCompat="@drawable/ic_menu_gallery"
            android:id="@+id/imageView2"
-           android:layout_weight="1"
-           android:clickable="true"/>
+           android:layout_weight="1" />
 
        <ImageView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            app:srcCompat="@drawable/ic_chat_bubble_outline_black_18dp"
            android:id="@+id/imageView"
-           android:layout_weight="1"
-           android:clickable="true"/>
+           android:layout_weight="1" />
    </LinearLayout>
 </RelativeLayout>

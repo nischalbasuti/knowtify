@@ -64,7 +64,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, final ViewGroup parent) {
 
         if (convertView == null) {
 
@@ -170,7 +170,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
                 intent.putExtra("notificationSubject",n.getSubject());
                 intent.putExtra("notificationContent",n.getContent());
 
-                getContext().startActivity(intent);
+                ((Activity)getContext()).startActivityForResult(intent,1);
             }
         });
 
@@ -185,5 +185,9 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             }
         });
         return convertView;
+    }
+
+    public void refresh(){
+        this.notifyDataSetChanged();
     }
 }

@@ -74,8 +74,8 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot notification : dataSnapshot.getChildren()) {
                             try {
-                                Log.d("child notifications", notification.toString());
-                        /*add these notifications to the local database*/
+                                Log.d("child notificat Task", notification.toString());
+                                /*add these notifications to the local database*/
                                 DatabaseOperations dop = new DatabaseOperations(ctx);
                                 Notification newNotification = notification.getValue(Notification.class);
                                 dop.putNotification(dop, newNotification);

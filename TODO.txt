@@ -169,3 +169,8 @@ Do search fragment UI.(done)
 
 TODO put button to open the downloaded file.
 ---------------------------------------------------------------------------------------------------------------
+19/10/2016 (Jaelse)
+
+Make a function to open the photo,pdf, docx files from the app.
+Photo when opened user can swipe right or left to see other photos of the same notification.
+---------------------------------------------------------------------------------------------------------------

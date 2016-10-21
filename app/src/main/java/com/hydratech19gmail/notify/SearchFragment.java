@@ -1,5 +1,6 @@
 package com.hydratech19gmail.notify;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,16 +13,24 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.LinkedList;
 
 /**
  * Created by Jaelse on 30-07-2016.
  */
-public class SearchFragment extends Fragment {
+public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,8 +40,14 @@ public class SearchFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         View rootView = inflater.inflate(R.layout.search_fragment,container,false);
+
+        final LinkedList<Broadcast> broadcasts = new LinkedList<>();
+
+        final ListAdapter listAdapter = new BroadcastAdapter(getContext(),broadcasts);
+        ListView listView = (ListView) rootView.findViewById(R.id.searchList);
+        listView.setAdapter(listAdapter);
+
         SearchView searchView = (SearchView)rootView.findViewById(R.id.searchView);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
@@ -44,11 +59,45 @@ public class SearchFragment extends Fragment {
             public boolean onQueryTextChange(String newText) {
                 Log.d("Search",newText);
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                DatabaseReference broadcastRef = ref.child("users").child("ronjalcom").child("broadcasts");
+                broadcastRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot d: dataSnapshot.getChildren()){
 
+                            Broadcast broadcast = d.getValue(Broadcast.class);
+                            broadcasts.add(broadcast);
+                            ((BroadcastAdapter)listAdapter).notifyDataSetChanged();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 return false;
             }
         });
+
+        listView.setOnItemClickListener(this);
         return rootView;
 
+    }
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(getContext(),BroadcastActivity.class);
+
+        TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
+        TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
+        TextView userId = (TextView) view.findViewById(R.id.time);
+        TextView privacy = (TextView) view.findViewById(R.id.privacy);
+
+        intent.putExtra("broadcastName", broadcastName.getText().toString());
+        intent.putExtra("broadcastInfo", broadcastInfo.getText().toString());
+        intent.putExtra("userId",userId.getText().toString());
+        intent.putExtra("privacy",privacy.getText().toString());
+
+        startActivity(intent);
     }
 }

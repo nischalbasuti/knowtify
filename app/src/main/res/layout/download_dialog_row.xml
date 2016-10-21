@@ -33,8 +33,18 @@
         android:layout_alignParentRight="true"
         />
 
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/open_folder"
+        android:paddingTop="5dp"
+        android:src="@drawable/ic_open_folder"
+        android:layout_alignParentRight="true"
+        />
+
     <ProgressBar
         style="?android:attr/progressBarStyleSmall"
+        android:indeterminate="true"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:paddingTop="5dp"

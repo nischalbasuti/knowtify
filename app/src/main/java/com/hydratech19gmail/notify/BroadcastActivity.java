@@ -1,6 +1,7 @@
 package com.hydratech19gmail.notify;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -9,6 +10,7 @@ import android.net.Uri;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -41,6 +43,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
+
 public class BroadcastActivity extends AppCompatActivity implements View.OnClickListener{
 
     private static final String TAG = "BroadcastActivity";
@@ -52,8 +56,6 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     String mBroadcastInfo;
     String mUserId;
     String mPrivacy;
-
-  //  String mBroadcastKey;
 
     final LinkedList<Notification> notifications = new LinkedList<>();
 
@@ -98,12 +100,37 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         //setting up drop down list
         ArrayList<String> dropDownList = new ArrayList<>();
         dropDownList.add("Settings");
-        dropDownList.add("Delete");
+        dropDownList.add("Subscribe");
         final PopupWindowDropDownMenu popupWindowDropDownMenu = new PopupWindowDropDownMenu(this,dropDownList);
         ((ImageView) header.findViewById(R.id.dropDownMenu)).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                popupWindowDropDownMenu.popupWindowDropDownMenu().showAsDropDown(view);
+                //popupWindowDropDownMenu.popupWindowDropDownMenu().showAsDropDown(view);
+
+                String[] options = {"Subscribe", "Delete"};
+                AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BroadcastActivity.this);
+                dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (which == 0) {
+                            Toast.makeText(BroadcastActivity.this, "Subscribe", Toast.LENGTH_SHORT).show();
+
+                            String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
+                            final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(path);
+
+                            SharedPreferences sharedPreferences = BroadcastActivity.this.getSharedPreferences("myprefs", MODE_PRIVATE);
+                            String prefUserKey = sharedPreferences.getString("user_key", "user key doesnt exits");
+                            String prefToken = sharedPreferences.getString("device_token", "device token doesn't exit");
+                            Subscriber subscriber  = new Subscriber(prefUserKey,prefToken);
+
+                            ref.push().setValue(subscriber);
+
+                        } else if (which == 1) {
+                            Toast.makeText(BroadcastActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+                dialogBuilder.show();
             }
         });
 
@@ -143,7 +170,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                             notificationRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
-                                    Toast.makeText(getApplicationContext(), "onDataChange", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getBaseContext(), "onDataChange", Toast.LENGTH_SHORT).show();
 
                                     //TODO find a better fix
 
@@ -235,7 +262,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                     @Override
                     public void onFailure(@NonNull Exception exception) {
                         Log.d("NotifDialog: ","file thing: "+exception.getMessage());
-                        Toast.makeText(getApplicationContext(),"error uploading file",Toast.LENGTH_LONG).show();
+                        Toast.makeText(getBaseContext(),"error uploading file",Toast.LENGTH_LONG).show();
                         // Handle unsuccessful uploads
                     }
                 }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

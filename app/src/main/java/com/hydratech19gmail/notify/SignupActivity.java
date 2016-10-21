@@ -304,4 +304,3 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                 });
     }
 }
-

@@ -49,6 +49,11 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     private static final String TAG = "BroadcastActivity";
 
+    final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+    String prefUserKey;
+    String prefToken;
+
     FirebaseUser mUser;
 
     String mBroadcastKey;
@@ -63,6 +68,11 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
+
+
+        SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
+        prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
+        prefToken = sharedPreferences.getString("device_token", "device token doesn't exit");
 
         //getting user info
         mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -97,34 +107,23 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
         ((TextView) header.findViewById(R.id.user_id)).setOnClickListener(this);
 
+        ((ImageView) header.findViewById(R.id.thumbnail)).setOnClickListener(this);
+
         //setting up drop down list
         ArrayList<String> dropDownList = new ArrayList<>();
         dropDownList.add("Settings");
         dropDownList.add("Subscribe");
-        final PopupWindowDropDownMenu popupWindowDropDownMenu = new PopupWindowDropDownMenu(this,dropDownList);
-        ((ImageView) header.findViewById(R.id.dropDownMenu)).setOnClickListener(new View.OnClickListener() {
+        header.findViewById(R.id.dropDownMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 //popupWindowDropDownMenu.popupWindowDropDownMenu().showAsDropDown(view);
-
                 String[] options = {"Subscribe", "Delete"};
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BroadcastActivity.this);
                 dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            Toast.makeText(BroadcastActivity.this, "Subscribe", Toast.LENGTH_SHORT).show();
-
-                            String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
-                            final DatabaseReference ref = FirebaseDatabase.getInstance().getReference().child(path);
-
-                            SharedPreferences sharedPreferences = BroadcastActivity.this.getSharedPreferences("myprefs", MODE_PRIVATE);
-                            String prefUserKey = sharedPreferences.getString("user_key", "user key doesnt exits");
-                            String prefToken = sharedPreferences.getString("device_token", "device token doesn't exit");
-                            Subscriber subscriber  = new Subscriber(prefUserKey,prefToken);
-
-                            ref.push().setValue(subscriber);
-
+                            //subscribeBroadcast();
                         } else if (which == 1) {
                             Toast.makeText(BroadcastActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                         }
@@ -149,13 +148,32 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     }
 
+    private void subscribeBroadcast() {
+        Toast.makeText(this,"subscribing",Toast.LENGTH_SHORT).show();
+        //finding broadcast key
+        ref.child("users").child(mUserId).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
+                .addListenerForSingleValueEvent(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        //if broadcast key is found, add subscriber
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            mBroadcastKey = childSnapshot.getKey();
+                            Log.d(TAG,"broadcast key: "+mBroadcastKey);
+
+                            Subscriber subscriber  = new Subscriber(prefUserKey,prefToken);
+
+                            String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
+                            DatabaseReference subsRef = ref.child(path);
+                            subsRef.push().setValue(subscriber);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {}
+                });
+    }
+
     private void displayNotifications(final ListAdapter listAdapter) {
-
-        SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
-        final String prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
-
-        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-
         //finding broadcast key
         ref.child("users").child(prefUserKey).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
@@ -164,15 +182,13 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                         //if broadcast key is found, display notifications
                         for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                             mBroadcastKey = childSnapshot.getKey();
-                            Log.d("NewNotif","broadcast key: "+mBroadcastKey);
+                            Log.d(TAG,"broadcast key: "+mBroadcastKey);
 
                             DatabaseReference notificationRef = ref.child("users/"+prefUserKey+"/broadcasts/"+mBroadcastKey+"/notifications/");
                             notificationRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     Toast.makeText(getBaseContext(), "onDataChange", Toast.LENGTH_SHORT).show();
-
-                                    //TODO find a better fix
 
                                     notifications.clear();
                                     for(DataSnapshot notification : dataSnapshot.getChildren()){
@@ -186,17 +202,13 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                                 }
 
                                 @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
+                                public void onCancelled(DatabaseError databaseError) {}
                             });
                         }
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
+                    public void onCancelled(DatabaseError databaseError) {}
                 });
     }
 
@@ -221,61 +233,13 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 finish();
                 break;
             case R.id.fab_new_notification://starting dialog box to create new notification
-            //    NewNotificationDialog newNotificationDialog = new NewNotificationDialog(this,mUser);
-            //    newNotificationDialog.show();
                 Intent intent1 = new Intent(this,NewNotificationDialog.class);
                 intent1.putExtra("broadcastName",mBroadcastName);
                 startActivity(intent1);
-        }
-    }
-
-    String path;
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if(requestCode == 1 && resultCode == Activity.RESULT_OK && data != null && data.getData() != null){
-            Uri uri = data.getData();
-            String[] projection = { MediaStore.Images.Media.DATA };
-
-            Cursor cursor = getContentResolver().query(uri, projection, null, null, null);
-            cursor.moveToFirst();
-
-            Log.d("something", DatabaseUtils.dumpCursorToString(cursor));
-            int columnIndex = cursor.getColumnIndex(projection[0]);
-
-            path = cursor.getString(columnIndex);
-
-            Toast.makeText(this,path,Toast.LENGTH_LONG).show();
-            cursor.close();
-
-            //uploading file
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReferenceFromUrl("gs://notify-1384.appspot.com");
-            try{
-
-                Uri file = Uri.fromFile(new File(path));
-                StorageReference riversRef = storageRef.child("images/"+file.getLastPathSegment());
-                UploadTask uploadTask = riversRef.putFile(file);
-
-                // Register observers to listen for when the download is done or if it fails
-                uploadTask.addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception exception) {
-                        Log.d("NotifDialog: ","file thing: "+exception.getMessage());
-                        Toast.makeText(getBaseContext(),"error uploading file",Toast.LENGTH_LONG).show();
-                        // Handle unsuccessful uploads
-                    }
-                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
-                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                    }
-                });
-            } catch (Exception e) {
-                Log.d("NotifDialog: ","file thing: "+e.getMessage());
-                //e.printStackTrace();
-            }
+                break;
+            case R.id.thumbnail:
+                subscribeBroadcast();
+                break;
         }
     }
 }

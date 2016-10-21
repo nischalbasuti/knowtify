@@ -16,7 +16,8 @@
         android:layout_marginRight="4dp"
         />
 
-    <ImageView android:id="@+id/thumbnail"
+    <ImageView
+        android:id="@+id/thumbnail"
         android:layout_below="@+id/dividerTop"
         android:layout_width="40dp"
         android:layout_height="40dp"

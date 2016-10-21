@@ -90,12 +90,14 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
         TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
-        TextView userId = (TextView) view.findViewById(R.id.time);
+        TextView userId = (TextView) view.findViewById(R.id.user_id);
         TextView privacy = (TextView) view.findViewById(R.id.privacy);
 
         intent.putExtra("broadcastName", broadcastName.getText().toString());
         intent.putExtra("broadcastInfo", broadcastInfo.getText().toString());
-        intent.putExtra("userId",userId.getText().toString());
+
+        //TODO change user id and put user id in all broadcast
+        intent.putExtra("userId","ronjalcom");
         intent.putExtra("privacy",privacy.getText().toString());
 
         startActivity(intent);

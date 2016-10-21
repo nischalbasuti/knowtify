@@ -82,7 +82,7 @@ TODO check the dp dimension if dimension is less, give an error.
 
 
 Policies:
-TODO 1.Broadcaster cannot delete the notification but they can edit it.(need to remove this)
+TODO 1.Broadcaster cannot delete the notification but they can edit it.(this will not be there for now)
 TODO 2.Subscribers can remove the broadcast Subscription.
 3.Broadcaster can only stop the notification service but cannot remove the whole broadcast.
 TODO 4.There cannot be two broadcast with same name.
@@ -150,7 +150,7 @@ TODO when the user re-installs the app his token changes, then the token also ha
 
 12/10/2016(Jaelse)
 
-TODO need to figure out how to refresh the Home fragment when coming back from the wholeNotificationsActivity clicking delete.
+TODO need to figure out how to refresh the Home fragment when coming back from the wholeNotificationsActivity clicking delete.(done)
 
 Do Download task.(90% complete)
 
@@ -168,4 +168,9 @@ Learn how to make rules for both firebase database and firebase storage.
 Do search fragment UI.(done)
 
 TODO put button to open the downloaded file.
+---------------------------------------------------------------------------------------------------------------
+19/10/2016 (Jaelse)
+
+Make a function to open the photo,pdf, docx files from the app.
+Photo when opened user can swipe right or left to see other photos of the same notification.
 ---------------------------------------------------------------------------------------------------------------

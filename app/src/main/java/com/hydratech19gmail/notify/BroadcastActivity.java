@@ -7,6 +7,8 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
+import android.nfc.Tag;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -42,6 +44,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
@@ -124,6 +128,31 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             //subscribeBroadcast();
+                            try {
+                                new AsyncTask<Void,Void,Boolean>() {
+                                    @Override
+                                    protected Boolean doInBackground(Void[] voids) {
+                                        Log.d(TAG,"async task sub");
+                                        subscribeBroadcast();
+                                        return true;
+                                    }
+
+                                    @Override
+                                    protected void onPostExecute(Boolean success) {
+                                        if(success){
+                                            //update layout
+                                            Toast.makeText(BroadcastActivity.this,"async task subscription complete",Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(BroadcastActivity.this,"async task subscription failed",Toast.LENGTH_SHORT).show();
+                                            //show error
+                                        }
+
+                                    }
+
+                                }.execute().get();
+                            } catch (InterruptedException | ExecutionException e) {
+                                e.printStackTrace();
+                            }
                         } else if (which == 1) {
                             Toast.makeText(BroadcastActivity.this, "Delete", Toast.LENGTH_SHORT).show();
                         }
@@ -149,7 +178,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void subscribeBroadcast() {
-        Toast.makeText(this,"subscribing "+mUserId,Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this,"subscribing "+mUserId,Toast.LENGTH_SHORT).show();
         //finding broadcast key
         ref.child("users").child(mUserId).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
                 .addListenerForSingleValueEvent(

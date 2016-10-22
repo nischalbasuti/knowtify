@@ -124,13 +124,13 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         String key = childSnapshot.getKey();
                                         Log.d(TAG,"user key: "+key);
 
-                                        //writting key value pair
+                                        //writing key value pair
                                         SharedPreferences sharedPref = getBaseContext().getSharedPreferences("myprefs",MODE_PRIVATE);
                                         SharedPreferences.Editor editor = sharedPref.edit();
                                         editor.putString("user_key", key);
                                         editor.commit();
 
-                                        if(!user.getEmail().toString().replace("@","").replace(".","").equals(key)){
+                                        if(!StringConverter.userIdToKey(user.getEmail()).equals(key)){
                                             ref.child("users").child(key).child("token").setValue(null);
                                         }
                                     }
@@ -144,7 +144,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //setting token
                     ref.child("users/"+StringConverter.userIdToKey(user.getEmail())).child("token").setValue(prefToken);
 
-                    //start main acivity
+                    //start main activity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);
                     startActivity(intent);
                     finish();

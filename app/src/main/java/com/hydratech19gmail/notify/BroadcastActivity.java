@@ -26,8 +26,10 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -65,6 +67,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     String mBroadcastInfo;
     String mUserId;
     String mPrivacy;
+    Boolean subscribed = false;
 
     final LinkedList<Notification> notifications = new LinkedList<>();
 
@@ -73,10 +76,11 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_broadcast);
 
-
         SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
         prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
         prefToken = sharedPreferences.getString("device_token", "device token doesn't exit");
+
+
 
         //getting user info
         mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -121,19 +125,27 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             @Override
             public void onClick(View view) {
                 //popupWindowDropDownMenu.popupWindowDropDownMenu().showAsDropDown(view);
-                String[] options = {"Subscribe", "Delete"};
+                String[] options;
+                if(subscribed){
+                    options = new String[]{"Unsubscribe", "Delete"};
+                } else {
+                    options = new String[]{"Subscribe", "Delete"};
+                }
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(BroadcastActivity.this);
                 dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            //subscribeBroadcast();
                             try {
                                 new AsyncTask<Void,Void,Boolean>() {
                                     @Override
                                     protected Boolean doInBackground(Void[] voids) {
                                         Log.d(TAG,"async task sub");
-                                        subscribeBroadcast();
+                                        if(subscribed){
+                                            unsubscribeBroadcast();
+                                        } else {
+                                            subscribeBroadcast();
+                                        }
                                         return true;
                                     }
 
@@ -178,29 +190,37 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void subscribeBroadcast() {
-        //Toast.makeText(this,"subscribing "+mUserId,Toast.LENGTH_SHORT).show();
-        //finding broadcast key
-        ref.child("users").child(mUserId).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
-                .addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        //if broadcast key is found, add subscriber
-                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                            mBroadcastKey = childSnapshot.getKey();
-                            Log.d(TAG,"broadcast key: "+mBroadcastKey);
+        String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
+        Log.d(TAG,"sub path: "+path);
+        DatabaseReference subsRef = ref.child("users")
+                .child(mUserId)
+                .child("broadcasts")
+                .child(mBroadcastKey)
+                .child("subscribers")
+                .child(prefUserKey)
+                .child("token");
+        subsRef.setValue(prefToken).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                subscribed = true;
+            }
+        });
+    }
 
-                            Subscriber subscriber  = new Subscriber(prefUserKey,prefToken);
-
-                            String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
-                            Log.d(TAG,"sub path: "+path);
-                            DatabaseReference subsRef = ref.child(path);
-                            subsRef.push().setValue(subscriber);
-                        }
-                    }
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {}
-                });
+    private void unsubscribeBroadcast(){
+        DatabaseReference subsRef = ref.child("users")
+                .child(mUserId)
+                .child("broadcasts")
+                .child(mBroadcastKey)
+                .child("subscribers")
+                .child(prefUserKey)
+                .child("token");
+        subsRef.setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                subscribed = false;
+            }
+        });
     }
 
     private void displayNotifications(final ListAdapter listAdapter) {
@@ -213,6 +233,32 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                         for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
                             mBroadcastKey = childSnapshot.getKey();
                             Log.d(TAG,"broadcast key: "+mBroadcastKey);
+
+                            //**********************checking if subscribed**************************
+                            DatabaseReference subsRef = ref.child("users")
+                                    .child(mUserId)
+                                    .child("broadcasts")
+                                    .child(mBroadcastKey)
+                                    .child("subscribers");
+                            subsRef.child(prefUserKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                                        String key = childSnapshot.getKey();
+                                        Log.d(TAG,"user key: "+key);
+
+                                        subscribed = true;
+                                        //old subscriber new/old device
+                                       // ref.setValue(prefToken);
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+                            //**********************************************************************
 
                             DatabaseReference notificationRef = ref.child("users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/notifications/");
                             notificationRef.addValueEventListener(new ValueEventListener() {

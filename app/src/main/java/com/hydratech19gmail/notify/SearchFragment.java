@@ -58,18 +58,35 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
             @Override
             public boolean onQueryTextChange(String newText) {
+                broadcasts.clear();
                 Log.d("Search",newText);
-                DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference broadcastRef = ref.child("users").child("testertestmailcom").child("broadcasts");
-                broadcastRef.addValueEventListener(new ValueEventListener() {
+                final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+                ref.child("users").orderByChild("token").addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         broadcasts.clear();
-                        for(DataSnapshot d: dataSnapshot.getChildren()){
 
-                            Broadcast broadcast = d.getValue(Broadcast.class);
-                            broadcasts.add(broadcast);
-                            ((BroadcastAdapter)listAdapter).notifyDataSetChanged();
+                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
+                            String userKey = childSnapshot.getKey();
+                            Log.d(TAG,"user key: "+userKey);
+
+                            DatabaseReference broadcastRef = ref.child("users").child(userKey).child("broadcasts");
+                            broadcastRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot d: dataSnapshot.getChildren()){
+                                        Broadcast broadcast = d.getValue(Broadcast.class);
+                                        broadcasts.add(broadcast);
+                                        ((BroadcastAdapter)listAdapter).notifyDataSetChanged();
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
                     }
 
@@ -78,6 +95,7 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
                     }
                 });
+
                 return false;
             }
         });

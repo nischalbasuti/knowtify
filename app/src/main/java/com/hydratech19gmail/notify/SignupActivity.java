@@ -235,7 +235,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                             editor.commit();
 
                             Log.d(TAG,"user key: "+key);
-                            if(!user.getEmail().toString().replace("@","").replace(".","").equals(key)){
+                            if(!StringConverter.userIdToKey(user.getEmail()).equals(key)){
                                 ref.child("users").child(key).child("token").setValue(null);
                             }
                         }
@@ -248,7 +248,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                 });
 
         //checking for email
-        ref.equalTo(user.getEmail().toString().replace("@","").replace("@",""))
+        ref.equalTo(StringConverter.userIdToKey(user.getEmail()))
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -274,7 +274,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
             Log.d(TAG, "push token: "+tkn.getToken());
             */
             //creating user for first time
-            userRef.child(user.getEmail().toString().replace("@","").replace(".","")).child("token").setValue(prefToken);
+            userRef.child(StringConverter.userIdToKey(user.getEmail())).child("token").setValue(prefToken);
         }
 
 

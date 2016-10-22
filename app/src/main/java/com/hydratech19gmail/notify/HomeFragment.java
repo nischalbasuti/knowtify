@@ -70,7 +70,7 @@ public class HomeFragment extends Fragment{
                 for (DataSnapshot notification : dataSnapshot.getChildren()) {
                     try {
                         Log.d("child notifications 111", notification.toString());
-                        Log.d("Enter", "Enter the home");
+                        Log.d("Enter", notification.getKey());
                         Notification newNotification = notification.getValue(Notification.class);
                         /*add these notifications to the local database*/
                         DatabaseOperations dop = new DatabaseOperations(getContext());

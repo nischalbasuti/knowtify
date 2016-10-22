@@ -1,6 +1,8 @@
 package com.hydratech19gmail.notify;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -109,7 +111,7 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                 ((TextView)parent.findViewWithTag(position+"size")).setText("0");
 
                 StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference fileRef = storageReference.child("images/unnamed.png");
+                StorageReference fileRef = storageReference.child("images/Screenshot_2016-08-10-11-48-52_1.jpg");
 
                 File folder = new File("/sdcard/Notify/");
                 if (!(folder.exists())){
@@ -160,6 +162,13 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(),"Opening....",Toast.LENGTH_LONG).show();
+
+                Intent intent = new Intent(getContext(),ShowAttachmentImage.class);
+
+                intent.putExtra("url","/sdcard/Notify/file0.png");
+
+                getContext().startActivity(intent);
+
             }
         });
         return convertView;

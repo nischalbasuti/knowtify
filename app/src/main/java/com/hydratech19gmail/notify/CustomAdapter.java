@@ -40,15 +40,12 @@ import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
  * Created by Jaelse on 01-08-2016.
  */
 public class CustomAdapter extends ArrayAdapter<Notification> {
-    ArrayList<String> mDropDownList;
-
     LayoutInflater inflater;
 
     ViewHolder mViewHolder;
 
     static class ViewHolder {
         public TextView broadcastTitle;
-        //public ImageView broadcastThumbImage;
         public TextView broadcasterName;
         public TextView contentText;
         public ImageView dropDownImage;
@@ -72,7 +69,6 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
 
             mViewHolder = new ViewHolder();
             mViewHolder.broadcastTitle = (TextView)convertView.findViewById(R.id.broadcastTitle);
-           // mViewHolder.broadcastThumbImage = (ImageView)convertView.findViewById(R.id.thumbnail_image);
             mViewHolder.broadcasterName = (TextView)convertView.findViewById(R.id.broadcasterName);
             mViewHolder.contentText = (TextView)convertView.findViewById(R.id.content);
             mViewHolder.dropDownImage = (ImageView)convertView.findViewById(R.id.dropDownMenu);
@@ -81,8 +77,6 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             mViewHolder.subjectLinearLayout = (LinearLayout)convertView.findViewById(R.id.contentLayout);
             mViewHolder.alarmImage = (ImageView) convertView.findViewById(R.id.renimder);
             convertView.setTag(mViewHolder);
-
-            Log.d("CustomAdapter","getView | null");
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
 
@@ -95,7 +89,6 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         mViewHolder.broadcastTitle.setText(n.getName());
         mViewHolder.broadcasterName.setText(n.getBroadcast());
         mViewHolder.contentText.setText(n.getSubject());
-        //mViewHolder.broadcastThumbImage.setImageResource(R.drawable.dp_default_broadcast);
 
 
         //setting dropdown

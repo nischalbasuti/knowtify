@@ -178,4 +178,4 @@ Photo when opened user can swipe right or left to see other photos of the same n
 
 23/10/2016
 
-TODO notifications showing twice in home fragment. Fix it
+TODO notifications showing twice in home fragment. Fix it.

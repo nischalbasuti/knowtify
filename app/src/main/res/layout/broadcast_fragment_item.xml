@@ -10,7 +10,8 @@
         android:text="user key"
         android:textSize="20dp"
         android:layout_alignParentRight="true"
-        android:id="@+id/userKey"/>
+        android:id="@+id/userKey"
+        android:visibility="gone"/>
 
     <ImageView android:id="@+id/thumbnail"
         android:layout_width="40dp"

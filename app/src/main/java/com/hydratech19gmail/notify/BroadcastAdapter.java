@@ -28,6 +28,7 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
         public TextView broadcastInfo;
         public TextView privacy;
         public TextView time;
+        public TextView userKey;
     }
 
     public BroadcastAdapter(Context context, List<Broadcast> resource) {
@@ -45,6 +46,7 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
             mViewHolder.broadcastInfo = (TextView) convertView.findViewById(R.id.broadcast_info);
             mViewHolder.privacy = (TextView) convertView.findViewById(R.id.privacy);
             mViewHolder.time = (TextView) convertView.findViewById(R.id.time);
+            mViewHolder.userKey = (TextView) convertView.findViewById(R.id.userKey);
 
             convertView.setTag(mViewHolder);
 
@@ -58,6 +60,7 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
         mViewHolder.broadcastName.setText(broadcast.getName());
         mViewHolder.broadcastInfo.setText(broadcast.getInfo());
         mViewHolder.privacy.setText(broadcast.getPrivacy());
+        mViewHolder.userKey.setText(broadcast.getUserKey());
 
         mViewHolder.time.setText(DateConvert.timeStampToDate(Long.parseLong(broadcast.getTimeStamp())*1000));
 

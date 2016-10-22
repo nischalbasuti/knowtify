@@ -99,6 +99,7 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
 
             }
 
+            newBroadcast.setUserKey(StringConverter.userIdToKey(mUser.getEmail()));
 
             //pushing data
             broadcastRef.push().setValue(newBroadcast, new DatabaseReference.CompletionListener() {

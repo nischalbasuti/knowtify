@@ -113,12 +113,16 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
 
         TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
         TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
-        TextView userId = (TextView) view.findViewById(R.id.time);
         TextView privacy = (TextView) view.findViewById(R.id.privacy);
+        String broadcasterKey = ((TextView) view.findViewById(R.id.userKey)).getText().toString();
+        broadcasterKey = StringConverter.userIdToKey(broadcasterKey);
+
+        Log.d(TAG,"broadcaster key: "+broadcasterKey);
+
+        intent.putExtra("userId",broadcasterKey);
 
         intent.putExtra("broadcastName", broadcastName.getText().toString());
         intent.putExtra("broadcastInfo", broadcastInfo.getText().toString());
-        intent.putExtra("userId",userId.getText().toString());
         intent.putExtra("privacy",privacy.getText().toString());
 
         startActivity(intent);

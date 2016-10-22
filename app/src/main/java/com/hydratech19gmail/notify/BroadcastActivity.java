@@ -149,7 +149,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void subscribeBroadcast() {
-        Toast.makeText(this,"subscribing",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"subscribing "+mUserId,Toast.LENGTH_SHORT).show();
         //finding broadcast key
         ref.child("users").child(mUserId).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
                 .addListenerForSingleValueEvent(
@@ -164,6 +164,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                             Subscriber subscriber  = new Subscriber(prefUserKey,prefToken);
 
                             String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
+                            Log.d(TAG,"sub path: "+path);
                             DatabaseReference subsRef = ref.child(path);
                             subsRef.push().setValue(subscriber);
                         }
@@ -175,7 +176,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     private void displayNotifications(final ListAdapter listAdapter) {
         //finding broadcast key
-        ref.child("users").child(prefUserKey).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
+        ref.child("users").child(mUserId).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -184,7 +185,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                             mBroadcastKey = childSnapshot.getKey();
                             Log.d(TAG,"broadcast key: "+mBroadcastKey);
 
-                            DatabaseReference notificationRef = ref.child("users/"+prefUserKey+"/broadcasts/"+mBroadcastKey+"/notifications/");
+                            DatabaseReference notificationRef = ref.child("users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/notifications/");
                             notificationRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {

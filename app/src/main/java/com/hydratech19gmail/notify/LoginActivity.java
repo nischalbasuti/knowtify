@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                 }
                             });
                     //setting token
-                    ref.child("users/"+user.getEmail().toString().replace("@","").replace(".","")).child("token").setValue(prefToken);
+                    ref.child("users/"+StringConverter.userIdToKey(user.getEmail())).child("token").setValue(prefToken);
 
                     //start main acivity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);

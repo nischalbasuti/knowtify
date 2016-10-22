@@ -130,6 +130,7 @@
                 android:paddingEnd="16dp"
                 android:paddingStart="62dp"/>
             <Button
+                android:visibility="gone"
                 android:id="@+id/volley_test"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -32,6 +32,7 @@ import java.util.LinkedList;
  */
 public class SearchFragment extends Fragment implements AdapterView.OnItemClickListener {
 
+    private static final String TAG = "SearchFrag";
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,10 +60,11 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
             public boolean onQueryTextChange(String newText) {
                 Log.d("Search",newText);
                 DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-                DatabaseReference broadcastRef = ref.child("users").child("ronjalcom").child("broadcasts");
+                DatabaseReference broadcastRef = ref.child("users").child("testertestmailcom").child("broadcasts");
                 broadcastRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        broadcasts.clear();
                         for(DataSnapshot d: dataSnapshot.getChildren()){
 
                             Broadcast broadcast = d.getValue(Broadcast.class);
@@ -90,14 +92,16 @@ public class SearchFragment extends Fragment implements AdapterView.OnItemClickL
 
         TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
         TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
-        TextView userId = (TextView) view.findViewById(R.id.user_id);
         TextView privacy = (TextView) view.findViewById(R.id.privacy);
+        String broadcasterKey = ((TextView) view.findViewById(R.id.userKey)).getText().toString();
+        broadcasterKey = StringConverter.userIdToKey(broadcasterKey);
+
+        Log.d(TAG,"broadcaster key: "+broadcasterKey);
+
+        intent.putExtra("userId",broadcasterKey);
 
         intent.putExtra("broadcastName", broadcastName.getText().toString());
         intent.putExtra("broadcastInfo", broadcastInfo.getText().toString());
-
-        //TODO change user id and put user id in all broadcast
-        intent.putExtra("userId","ronjalcom");
         intent.putExtra("privacy",privacy.getText().toString());
 
         startActivity(intent);

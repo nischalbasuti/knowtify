@@ -9,6 +9,7 @@ public class Broadcast {
     private String timeStamp;
     private String info;
     private String privacy;
+    private String userKey;
 
     public Broadcast() {}
 
@@ -45,5 +46,13 @@ public class Broadcast {
 
     public void setTimeStamp(String timeStamp) {
         this.timeStamp = timeStamp;
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
     }
 }

@@ -199,17 +199,17 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 .child("broadcasts")
                 .child(mBroadcastKey)
                 .child("subscribers")
-                .child(prefUserKey)
-                .child("token");
-        subsRef.setValue(prefToken).addOnCompleteListener(new OnCompleteListener<Void>() {
+                .child(prefUserKey);
+        Subscriber subscriber = new Subscriber(prefUserKey,prefToken);
+        subsRef.setValue(subscriber).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 subscribed = true;
             }
         });
 
-        //adding broadcastKey to user's subscriptions
-        ref.child("users").child(prefUserKey).child("subscriptions").child(mUserId).child(mBroadcastKey).setValue("not null");
+        Subscriptions subscription = new Subscriptions(mUserId,mBroadcastKey,prefUserKey);
+        ref.child("users").child(prefUserKey).child("subscriptions").child(mBroadcastKey).setValue(subscription);
     }
 
     private void unsubscribeBroadcast(){
@@ -219,8 +219,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 .child("broadcasts")
                 .child(mBroadcastKey)
                 .child("subscribers")
-                .child(prefUserKey)
-                .child("token");
+                .child(prefUserKey);
         subsRef.setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -228,9 +227,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-
-        //removing broadcastKey to user's subscriptions
-        ref.child("users").child(prefUserKey).child("subscriptions").child(mUserId).child(mBroadcastKey).setValue(null);
+        ref.child("users").child(prefUserKey).child("subscriptions").child(mBroadcastKey).setValue(null);
     }
 
     private void displayNotifications(final ListAdapter listAdapter) {

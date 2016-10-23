@@ -8,6 +8,9 @@ public class Subscriptions {
     String channelName;
     String subscribersKey;
 
+    public Subscriptions(){
+    }
+
     Subscriptions(String userName, String channelName, String subscribersKey){
         this.userName = userName;
         this.channelName = channelName;

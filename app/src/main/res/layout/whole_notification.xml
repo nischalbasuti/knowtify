@@ -94,7 +94,7 @@
             android:layout_height="wrap_content"
             android:minHeight="40dp"
             android:text="12:50 25/06/2016"
-            android:id="@+id/time"
+            android:id="@+id/wtime"
             android:textSize="12dp"
             android:padding="10dp" />
         <ImageView

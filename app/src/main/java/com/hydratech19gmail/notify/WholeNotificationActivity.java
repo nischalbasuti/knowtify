@@ -35,11 +35,13 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
     String notificationName;
     String notificationSubject;
     String notificationContent;
+    String notificationTimestamp;
 
     TextView broadcastNameTV;
     TextView notificationNameTV;
     TextView notificationsSubjectTV;
     TextView notificationContentTV;
+    TextView notificationTimestampTV;
 
     ImageView dropDownImage;
     ImageView queryImage;
@@ -56,16 +58,19 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
         notificationName = getIntent().getExtras().getString("notificationName");
         notificationSubject = getIntent().getExtras().getString("notificationSubject");
         notificationContent = getIntent().getExtras().getString("notificationContent");
+        notificationTimestamp = getIntent().getExtras().getString("notificationTimestamp");
 
         broadcastNameTV = (TextView)findViewById(R.id.wbroadcastName);
         notificationNameTV = (TextView)findViewById(R.id.wNotificationName);
         notificationsSubjectTV = (TextView)findViewById(R.id.wSubject);
         notificationContentTV = (TextView)findViewById(R.id.wContent);
+        notificationTimestampTV = (TextView)findViewById(R.id.wtime);
 
         broadcastNameTV.setText(broadcastName);
         notificationNameTV.setText(notificationName);
         notificationsSubjectTV.setText(notificationSubject);
         notificationContentTV.setText(notificationContent);
+        notificationTimestampTV.setText(DateConvert.timeStampToDate(Long.parseLong(notificationTimestamp)*1000));
 
         dropDownImage = (ImageView)findViewById(R.id.wdropDownMenu);
         queryImage = (ImageView)findViewById(R.id.wask_question);

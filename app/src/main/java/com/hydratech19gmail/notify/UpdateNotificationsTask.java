@@ -24,7 +24,6 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
     Context ctx;
     private final String TAG = "NotificationUpdateTask";
     Notification n;
-    DatabaseReference notificationRef;
     UpdateNotificationsTask(Context ctx) {
         this.ctx = ctx;
     }
@@ -54,8 +53,9 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                     String notificationName = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATION_NAME));
                     String notificationsSubject = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATION_SUBJECT));
                     String notificationContent = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATION_CONTENT));
+                    String notificationTimstamp = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATIONS_TIMESTAMP));
 
-                    Notification n = new Notification(broadcastName, notificationName, notificationsSubject, notificationContent, null);
+                    Notification n = new Notification(broadcastName, notificationName, notificationsSubject, notificationContent, notificationTimstamp);
 
                     publishProgress(n);
                 }

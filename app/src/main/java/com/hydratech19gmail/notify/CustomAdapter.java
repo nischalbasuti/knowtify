@@ -10,6 +10,7 @@ import android.graphics.Color;
 import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +33,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
@@ -53,6 +55,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         public ImageView attachmentImage;
         public ImageView alarmImage;
         public LinearLayout subjectLinearLayout;
+        public TextView timeStamp;
     }
 
     public CustomAdapter(Context context, List<Notification> data){
@@ -76,6 +79,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             mViewHolder.attachmentImage = (ImageView)convertView.findViewById(R.id.attachment);
             mViewHolder.subjectLinearLayout = (LinearLayout)convertView.findViewById(R.id.contentLayout);
             mViewHolder.alarmImage = (ImageView) convertView.findViewById(R.id.renimder);
+            mViewHolder.timeStamp = (TextView)convertView.findViewById(R.id.time);
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -89,7 +93,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         mViewHolder.broadcastTitle.setText(n.getName());
         mViewHolder.broadcasterName.setText(n.getBroadcast());
         mViewHolder.contentText.setText(n.getSubject());
-
+        mViewHolder.timeStamp.setText(DateConvert.timeStampToDate(Long.parseLong(n.getTimeStamp())*1000));
 
         //setting dropdown
         mViewHolder.dropDownImage.setOnClickListener(new View.OnClickListener() {
@@ -162,6 +166,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
                 intent.putExtra("notificationName", n.getName());
                 intent.putExtra("notificationSubject",n.getSubject());
                 intent.putExtra("notificationContent",n.getContent());
+                intent.putExtra("notificationTimestamp",n.getTimeStamp());
 
                 ((Activity)getContext()).startActivityForResult(intent,1);
             }

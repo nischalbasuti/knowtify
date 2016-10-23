@@ -13,6 +13,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+
 import static android.content.Context.MODE_PRIVATE;
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
@@ -97,12 +101,14 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
             if (method.equals("reinstalled")){
                 final SharedPreferences sharedPreferences = ctx.getSharedPreferences("myprefs", MODE_PRIVATE);
                 String prefUserKey = sharedPreferences.getString("user_key", "user key doesnt exits");
+                final String prefToken = sharedPreferences.getString("device_token","device_token_doesnt_exist");
 
                 final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 final DatabaseReference notificationRef = ref.child("users")
                         .child(prefUserKey)
                         .child("subscriptions");
 
+                final LinkedList<Notification> notifications = new LinkedList<>();
                 notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -112,25 +118,30 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                                 Subscriptions subscriptions = channel.getValue(Subscriptions.class);
                                 String userName = subscriptions.getUserName();
                                 String channelName = subscriptions.getChannelName();
+                                String subscribersKey = subscriptions.getSubscribersKey();
 
                                 DatabaseReference channelRef = ref.child("users")
                                                                     .child(userName)
                                                                     .child("broadcasts")
                                                                     .child(channelName);
-                                channelRef.addListenerForSingleValueEvent(new ValueEventListener() {
+
+                                //updating the token.
+                                channelRef.child("subscribers").child(subscribersKey)
+                                                                .child("token")
+                                                                .setPriority(prefToken);
+
+                                //getting all the notifications from all the subscriptions.
+                                DatabaseReference notificationsRef = channelRef
+                                                                    .child("notifications");
+                                notificationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                         for(DataSnapshot notification : dataSnapshot.getChildren()){
                                             try{
-                                                /*sort the notificatins according to their timestamp.
-                                                add these notifications to the local database
-                                                add these notifications to the NOTIFICATIONS*/
 
-                                                /*
-                                                DatabaseOperations dop = new DatabaseOperations(ctx);
-                                                Notification newNotification = notification.getValue(Notification.class);
-                                                dop.putNotification(dop, newNotification);
-                                                NOTIFICATIONS.addFirst(newNotification); */
+                                                //adding to a temp linked list.
+                                                Notification n = notification.getValue(Notification.class);
+                                                notifications.add(n);
                                             }catch (Exception e){
                                                 Log.d(TAG,e.getMessage());
                                             }
@@ -153,6 +164,9 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
 
                     }
                 });
+
+                //calling function to sort and add the notifications to the local database and to the linked list.
+                sortAndAdd(notifications);
                 return "reinstalled";
             }
             if(method.equals("signed_in_with_different_account")){
@@ -235,6 +249,31 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
             }
         }
         return null;
+    }
+
+    private void sortAndAdd(LinkedList<Notification> notifications) {
+        int i = notifications.size();
+        Notification tempN;
+        while(i != 0){
+            Long head = Long.parseLong(notifications.get(i).getTimeStamp());
+            for(int j=1+1;j<notifications.size();j++){
+                if(head > Long.parseLong(notifications.get(j).getTimeStamp())){
+                    tempN = notifications.get(i);
+                    notifications.set(i,notifications.get(j));
+                    notifications.set(j,tempN);
+                }
+                i++;
+            }
+        }
+
+        for (i = notifications.size();i <= 0; i--){
+            DatabaseOperations dop = new DatabaseOperations(ctx);
+
+            //adding to local database.
+            dop.putNotification(dop,notifications.get(i));
+            //adding to Linked List NOTIFICATIONS
+            NOTIFICATIONS.add(notifications.get(i));
+        }
     }
 
     @Override

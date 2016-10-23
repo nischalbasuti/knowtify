@@ -6,11 +6,12 @@ package com.hydratech19gmail.notify;
 public class Subscriptions {
     String userName;
     String channelName;
+    String subscribersKey;
 
-    Subscriptions(String userName, String channelName){
+    Subscriptions(String userName, String channelName, String subscribersKey){
         this.userName = userName;
         this.channelName = channelName;
-
+        this.subscribersKey = subscribersKey;
     }
 
     public String getUserName() {
@@ -27,6 +28,14 @@ public class Subscriptions {
 
     public void setChannelName(String channelName) {
         this.channelName = channelName;
+    }
+
+    public String getSubscribersKey() {
+        return subscribersKey;
+    }
+
+    public void setSubscribersKey(String subscribersKey) {
+        this.subscribersKey = subscribersKey;
     }
 
 }

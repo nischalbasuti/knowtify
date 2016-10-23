@@ -137,28 +137,28 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
                             try {
-                                new AsyncTask<Void,Void,Boolean>() {
+                                new AsyncTask<Void,Void,Integer>() {
                                     @Override
-                                    protected Boolean doInBackground(Void[] voids) {
+                                    protected Integer doInBackground(Void[] voids) {
                                         Log.d(TAG,"async task sub");
                                         if(subscribed){
                                             unsubscribeBroadcast();
+                                            return 0;
                                         } else {
                                             subscribeBroadcast();
+                                            return 1;
                                         }
-                                        return true;
                                     }
 
                                     @Override
-                                    protected void onPostExecute(Boolean success) {
-                                        if(success){
+                                    protected void onPostExecute(Integer taskid) {
+                                        if(taskid == 0){
                                             //update layout
-                                            Toast.makeText(BroadcastActivity.this,"async task subscription complete",Toast.LENGTH_SHORT).show();
-                                        } else {
-                                            Toast.makeText(BroadcastActivity.this,"async task subscription failed",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(BroadcastActivity.this,"async task unsubscribe",Toast.LENGTH_SHORT).show();
+                                        } else if (taskid == 1){
+                                            Toast.makeText(BroadcastActivity.this,"async task subscribe",Toast.LENGTH_SHORT).show();
                                             //show error
                                         }
-
                                     }
 
                                 }.execute().get();
@@ -190,6 +190,8 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void subscribeBroadcast() {
+
+        //adding userKey to subscribers
         String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
         Log.d(TAG,"sub path: "+path);
         DatabaseReference subsRef = ref.child("users")
@@ -205,9 +207,13 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 subscribed = true;
             }
         });
+
+        //adding broadcastKey to user's subscriptions
+        ref.child("users").child(prefUserKey).child("subscriptions").child(mUserId).child(mBroadcastKey).setValue("not null");
     }
 
     private void unsubscribeBroadcast(){
+        //removing userKey from subscribers
         DatabaseReference subsRef = ref.child("users")
                 .child(mUserId)
                 .child("broadcasts")
@@ -221,11 +227,19 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 subscribed = false;
             }
         });
+
+
+        //removing broadcastKey to user's subscriptions
+        ref.child("users").child(prefUserKey).child("subscriptions").child(mUserId).child(mBroadcastKey).setValue(null);
     }
 
     private void displayNotifications(final ListAdapter listAdapter) {
         //finding broadcast key
-        ref.child("users").child(mUserId).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
+        ref.child("users")
+                .child(mUserId)
+                .child("broadcasts")
+                .orderByChild("name")
+                .equalTo(mBroadcastName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -260,7 +274,11 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                             });
                             //**********************************************************************
 
-                            DatabaseReference notificationRef = ref.child("users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/notifications/");
+                            DatabaseReference notificationRef = ref.child("users/"
+                                                                            +mUserId
+                                                                            +"/broadcasts/"
+                                                                            +mBroadcastKey
+                                                                            +"/notifications/");
                             notificationRef.addValueEventListener(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {

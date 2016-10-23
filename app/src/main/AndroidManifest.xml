@@ -43,6 +43,8 @@
         <activity
             android:name=".WholeNotificationActivity"
             android:label="WholeNotification"></activity>
+        <activity android:name=".ShowAttachmentImage"
+            android:label="ShowAttachmentImage"></activity>
         <activity
             android:name=".NewNotificationDialog"
             android:excludeFromRecents="true"

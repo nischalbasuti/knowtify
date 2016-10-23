@@ -155,6 +155,7 @@ TODO need to figure out how to refresh the Home fragment when coming back from t
 Do Download task.(90% complete)
 
 TODO Stop download after it has started.
+
 ---------------------------------------------------------------------------------------------------------------
 13/10/2016 (Jaelse)
 Do the reminder thing.(done)
@@ -174,3 +175,11 @@ TODO put button to open the downloaded file.
 Make a function to open the photo,pdf, docx files from the app.
 Photo when opened user can swipe right or left to see other photos of the same notification.
 ---------------------------------------------------------------------------------------------------------------
+
+23/10/2016
+
+TODO notifications showing twice in home fragment. Fix it.
+
+Setting TimeStamp (done).
+
+-------------------------------------------------------------------------------------------------------------

@@ -16,8 +16,10 @@ public class DatabaseOperations extends SQLiteOpenHelper{
     public static final int database_version = 1;
     public String CREATE_QUERY = "CREATE TABLE "+TableData.TableInfo.TABLE_NAME+
             "("+TableData.TableInfo.BROADCAST_NAME+" TEXT,"+
-            TableData.TableInfo.NOTIFICATION_NAME+" TEXT,"+TableData.TableInfo.NOTIFICATION_SUBJECT+" TEXT,"+
-            TableData.TableInfo.NOTIFICATION_CONTENT+" TEXT);";
+            TableData.TableInfo.NOTIFICATION_NAME+" TEXT,"+
+            TableData.TableInfo.NOTIFICATION_SUBJECT+" TEXT,"+
+            TableData.TableInfo.NOTIFICATION_CONTENT+" TEXT,"+
+            TableData.TableInfo.NOTIFICATIONS_TIMESTAMP+" TEXT);";
 
     public DatabaseOperations(Context context) {
         super(context, TableData.TableInfo.DATABASE_NAME, null, database_version);
@@ -45,6 +47,7 @@ public class DatabaseOperations extends SQLiteOpenHelper{
         cv.put(TableData.TableInfo.NOTIFICATION_NAME,notification.getName());
         cv.put(TableData.TableInfo.NOTIFICATION_SUBJECT,notification.getSubject());
         cv.put(TableData.TableInfo.NOTIFICATION_CONTENT,notification.getContent());
+        cv.put(TableData.TableInfo.NOTIFICATIONS_TIMESTAMP,notification.getTimeStamp());
 
         long k = sqldb.insert(TableData.TableInfo.TABLE_NAME,null,cv);
 
@@ -56,7 +59,8 @@ public class DatabaseOperations extends SQLiteOpenHelper{
         SQLiteDatabase sqldb = dop.getReadableDatabase();
 
         String[] columns = {TableData.TableInfo.BROADCAST_NAME,TableData.TableInfo.NOTIFICATION_NAME,
-                            TableData.TableInfo.NOTIFICATION_SUBJECT,TableData.TableInfo.NOTIFICATION_CONTENT};
+                            TableData.TableInfo.NOTIFICATION_SUBJECT,TableData.TableInfo.NOTIFICATION_CONTENT,
+                            TableData.TableInfo.NOTIFICATIONS_TIMESTAMP};
 
         Cursor CR = sqldb.query(TableData.TableInfo.TABLE_NAME,columns,null,null,null,null,null);
 

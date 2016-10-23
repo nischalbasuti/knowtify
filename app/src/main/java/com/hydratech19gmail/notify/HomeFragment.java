@@ -69,10 +69,9 @@ public class HomeFragment extends Fragment{
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot notification : dataSnapshot.getChildren()) {
                     try {
-                        Log.d("child notifications 111", notification.toString());
-                        Log.d("Enter", "Enter the home");
                         Notification newNotification = notification.getValue(Notification.class);
                         /*add these notifications to the local database*/
+                        Log.d("Home time","jaekse"+newNotification.getTimeStamp());
                         DatabaseOperations dop = new DatabaseOperations(getContext());
                         dop.putNotification(dop, newNotification);
 
@@ -95,6 +94,7 @@ public class HomeFragment extends Fragment{
     @Override
     public void onResume() {
         super.onResume();
+        Log.d("home fragment","onResume");
         //add the listener
         notificationRef.addValueEventListener(valueEventListener);
 

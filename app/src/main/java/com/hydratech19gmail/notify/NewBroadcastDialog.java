@@ -69,15 +69,9 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
         else {
             //..............
 
-            //getting key value from aldsfjalsdf
-            SharedPreferences sharedPref = getContext().getSharedPreferences("myprefs",Context.MODE_PRIVATE);
-            String key = sharedPref.getString("user_key","user_key_doesnt_exist");
-
-            Log.d("broadDialog","prefs key: "+key);
-
             //sending message to database
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-            DatabaseReference broadcastRef = ref.child("users/"+key+"/broadcasts");
+            DatabaseReference broadcastRef = ref.child("users/"+mUser.getUid()+"/broadcasts");
             Broadcast newBroadcast = new Broadcast();
 
             newBroadcast.setName(broadcastName);

@@ -221,34 +221,10 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
         SharedPreferences sharedPref = getSharedPreferences("myprefs",Context.MODE_PRIVATE);
         prefToken = sharedPref.getString("device_token","device_token_doesnt_exist");
 
-        //checking if token exists and removing
-        ref.child("users").orderByChild("token").equalTo(prefToken)
-                .addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                            String key = childSnapshot.getKey();
-                            //writting key value pair
-                            SharedPreferences sharedPref = getBaseContext().getSharedPreferences("myprefs",MODE_PRIVATE);
-                            SharedPreferences.Editor editor = sharedPref.edit();
-                            editor.putString("user_key", key);
-                            editor.commit();
-
-                            Log.d(TAG,"user key: "+key);
-                            if(!StringConverter.userIdToKey(user.getEmail()).equals(key)){
-                                ref.child("users").child(key).child("token").setValue(null);
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+        //TODO send request to remove duplicate tokens
 
         //checking for email
-        ref.equalTo(StringConverter.userIdToKey(user.getEmail()))
+        ref.equalTo(user.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -258,7 +234,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
 
                             userExists = true;
                             //old user new/old device
-                            ref.child("users/"+user.getEmail().toString()).setValue(prefToken);
+                            ref.child("users/"+user.getUid()).setValue(prefToken);
                         }
                     }
 
@@ -267,14 +243,10 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
 
                     }
                 });
-        if(userExists == false){
-            /*
-            Token tkn = new Token(prefToken);
-            userRef.push().setValue(tkn);
-            Log.d(TAG, "push token: "+tkn.getToken());
-            */
+        if(!userExists){
             //creating user for first time
-            userRef.child(StringConverter.userIdToKey(user.getEmail())).child("token").setValue(prefToken);
+            userRef.child(user.getUid())
+                    .setValue(new User(user.getUid(),prefToken));
         }
 
 

@@ -64,10 +64,8 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
 
         listView.setAdapter(listAdapter);
 
-        String userKey = user.getEmail().replace("@","").replace(".","");
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        DatabaseReference broadcastRef = ref.child("users/"+userKey+"/broadcasts");
+        DatabaseReference broadcastRef = ref.child("users/"+user.getUid()+"/broadcasts");
 
         broadcastRef.addValueEventListener(new ValueEventListener() {
             @Override

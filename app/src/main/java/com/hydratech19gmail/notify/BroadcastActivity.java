@@ -1,15 +1,9 @@
 package com.hydratech19gmail.notify;
 
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
-import android.nfc.Tag;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
@@ -20,36 +14,22 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-
-import java.io.File;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.ExecutionException;
-
-import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
 public class BroadcastActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -57,7 +37,6 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-    String prefUserKey;
     String prefToken;
 
     FirebaseUser mUser;
@@ -77,10 +56,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         setContentView(R.layout.activity_broadcast);
 
         SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
-        prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
         prefToken = sharedPreferences.getString("device_token", "device token doesn't exit");
-
-
 
         //getting user info
         mUser = FirebaseAuth.getInstance().getCurrentUser();
@@ -113,14 +89,11 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         ((TextView) header.findViewById(R.id.privacy)).setText(mPrivacy);
         ((TextView) header.findViewById(R.id.user_id)).setText(mUserId);
 
-        ((TextView) header.findViewById(R.id.user_id)).setOnClickListener(this);
+        header.findViewById(R.id.user_id).setOnClickListener(this);
 
-        ((ImageView) header.findViewById(R.id.thumbnail)).setOnClickListener(this);
+        header.findViewById(R.id.thumbnail).setOnClickListener(this);
 
         //setting up drop down list
-        ArrayList<String> dropDownList = new ArrayList<>();
-        dropDownList.add("Settings");
-        dropDownList.add("Subscribe");
         header.findViewById(R.id.dropDownMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -199,8 +172,8 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 .child("broadcasts")
                 .child(mBroadcastKey)
                 .child("subscribers")
-                .child(prefUserKey);
-        Subscriber subscriber = new Subscriber(prefUserKey,prefToken);
+                .child(mUser.getUid());
+        Subscriber subscriber = new Subscriber(mUser.getUid(),prefToken);
         subsRef.setValue(subscriber).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -208,8 +181,8 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        Subscriptions subscription = new Subscriptions(mUserId,mBroadcastKey,prefUserKey);
-        ref.child("users").child(prefUserKey).child("subscriptions").child(mBroadcastKey).setValue(subscription);
+        Subscriptions subscription = new Subscriptions(mUserId,mBroadcastKey,mUser.getUid());
+        ref.child("users").child(mUser.getUid()).child("subscriptions").child(mBroadcastKey).setValue(subscription);
     }
 
     private void unsubscribeBroadcast(){
@@ -219,7 +192,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                 .child("broadcasts")
                 .child(mBroadcastKey)
                 .child("subscribers")
-                .child(prefUserKey);
+                .child(mUser.getUid());
         subsRef.setValue(null).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
@@ -227,7 +200,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        ref.child("users").child(prefUserKey).child("subscriptions").child(mBroadcastKey).setValue(null);
+        ref.child("users").child(mUser.getUid()).child("subscriptions").child(mBroadcastKey).setValue(null);
     }
 
     private void displayNotifications(final ListAdapter listAdapter) {
@@ -251,7 +224,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                                     .child("broadcasts")
                                     .child(mBroadcastKey)
                                     .child("subscribers");
-                            subsRef.child(prefUserKey).addListenerForSingleValueEvent(new ValueEventListener() {
+                            subsRef.child(mUser.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){

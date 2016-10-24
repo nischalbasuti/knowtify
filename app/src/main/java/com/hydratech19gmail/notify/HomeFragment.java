@@ -13,6 +13,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -55,13 +57,11 @@ public class HomeFragment extends Fragment{
         final ListView listView = (ListView) rootView.findViewById(R.id.notificationList);
         listView.setAdapter(listAdapter);
 
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("myprefs", MODE_PRIVATE);
-        String prefUserKey = sharedPreferences.getString("user_key", "user key doesnt exits");
-
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         notificationRef = ref.child("users")
-                .child(prefUserKey)
+                .child(user.getUid())
                 .child("newNotification");
 
         valueEventListener = new ValueEventListener() {

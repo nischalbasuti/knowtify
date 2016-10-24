@@ -76,18 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         setContentView(R.layout.activity_login);
 
-        //...setting toolbar and tabs...
-        /*
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        */
-
         //changing action bar title
         setTitle(R.string.title_activity_login);
 
@@ -96,8 +84,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         Typeface logo_typeface = Typeface.createFromAsset(getAssets(),"fonts/OliJo-Bold.ttf");
         logo.setTypeface(logo_typeface);
 
-
-        boolean userExists = false;
         //setting listener to check for sign in. Start main activity when successful.
         mAuthListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -115,34 +101,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     final String prefToken = sharedPref.getString("device_token","device_token_doesnt_exist");
                     Log.d(TAG,"pref token: "+prefToken);
 
-                    //checking if token exists
-                    ref.child("users").orderByChild("token").equalTo(prefToken)
-                            .addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for(DataSnapshot childSnapshot : dataSnapshot.getChildren()){
-                                        String key = childSnapshot.getKey();
-                                        Log.d(TAG,"user key: "+key);
+                    //TODO send request to remove duplicate tokens
 
-                                        //writing key value pair
-                                        SharedPreferences sharedPref = getBaseContext().getSharedPreferences("myprefs",MODE_PRIVATE);
-                                        SharedPreferences.Editor editor = sharedPref.edit();
-                                        editor.putString("user_key", key);
-                                        editor.commit();
-
-                                        if(!StringConverter.userIdToKey(user.getEmail()).equals(key)){
-                                            ref.child("users").child(key).child("token").setValue(null);
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
                     //setting token
-                    ref.child("users/"+StringConverter.userIdToKey(user.getEmail())).child("token").setValue(prefToken);
+                    ref.child("users/")
+                            .child(user.getUid())
+                            .setValue(new User(user.getUid(),prefToken));
 
                     //start main activity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);

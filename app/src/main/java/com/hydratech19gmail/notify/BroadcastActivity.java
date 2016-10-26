@@ -21,8 +21,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -44,7 +46,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     String mBroadcastKey;
     String mBroadcastName;
     String mBroadcastInfo;
-    String mUserId;
+    String mBroadcasterUID;
     String mPrivacy;
     Boolean subscribed = false;
 
@@ -64,7 +66,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         //getting data from previous activity
         mBroadcastName = getIntent().getExtras().getString("broadcastName");
         mBroadcastInfo = getIntent().getExtras().getString("broadcastInfo");
-        mUserId = getIntent().getExtras().getString("userId");
+        mBroadcasterUID = getIntent().getExtras().getString("userId");
         mPrivacy = getIntent().getExtras().getString("privacy");
 
         try {
@@ -87,7 +89,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         //setting broadcast information
         ((TextView) header.findViewById(R.id.broadcast_info)).setText(mBroadcastInfo);
         ((TextView) header.findViewById(R.id.privacy)).setText(mPrivacy);
-        ((TextView) header.findViewById(R.id.user_id)).setText(mUserId);
+        ((TextView) header.findViewById(R.id.user_id)).setText(mBroadcasterUID);
 
         header.findViewById(R.id.user_id).setOnClickListener(this);
 
@@ -165,10 +167,10 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     private void subscribeBroadcast() {
 
         //adding userKey to subscribers
-        String path = "users/"+mUserId+"/broadcasts/"+mBroadcastKey+"/subscribers/";
+        String path = "users/"+mBroadcasterUID+"/broadcasts/"+mBroadcastKey+"/subscribers/";
         Log.d(TAG,"sub path: "+path);
         DatabaseReference subsRef = ref.child("users")
-                .child(mUserId)
+                .child(mBroadcasterUID)
                 .child("broadcasts")
                 .child(mBroadcastKey)
                 .child("subscribers")
@@ -181,14 +183,14 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        Subscriptions subscription = new Subscriptions(mUserId,mBroadcastKey,mUser.getUid());
+        Subscriptions subscription = new Subscriptions(mBroadcasterUID,mBroadcastKey,mUser.getUid());
         ref.child("users").child(mUser.getUid()).child("subscriptions").child(mBroadcastKey).setValue(subscription);
     }
 
     private void unsubscribeBroadcast(){
         //removing userKey from subscribers
         DatabaseReference subsRef = ref.child("users")
-                .child(mUserId)
+                .child(mBroadcasterUID)
                 .child("broadcasts")
                 .child(mBroadcastKey)
                 .child("subscribers")
@@ -206,7 +208,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     private void displayNotifications(final ListAdapter listAdapter) {
         //finding broadcast key
         ref.child("users")
-                .child(mUserId)
+                .child(mBroadcasterUID)
                 .child("broadcasts")
                 .orderByChild("name")
                 .equalTo(mBroadcastName)
@@ -220,7 +222,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
                             //**********************checking if subscribed**************************
                             DatabaseReference subsRef = ref.child("users")
-                                    .child(mUserId)
+                                    .child(mBroadcasterUID)
                                     .child("broadcasts")
                                     .child(mBroadcastKey)
                                     .child("subscribers");
@@ -245,7 +247,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                             //**********************************************************************
 
                             DatabaseReference notificationRef = ref.child("users/"
-                                                                            +mUserId
+                                                                            +mBroadcasterUID
                                                                             +"/broadcasts/"
                                                                             +mBroadcastKey
                                                                             +"/notifications/");
@@ -292,7 +294,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         switch (view.getId()) {
             case R.id.user_id://starting activity to display broadcasters profile
                 Intent intent = new Intent(this,BroadcasterProfileActivity.class);
-                intent.putExtra("userId",mUserId);
+                intent.putExtra("userId",mBroadcasterUID);
                 startActivity(intent);
                 finish();
                 break;

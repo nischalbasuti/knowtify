@@ -160,17 +160,12 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
     String broadcastKey="null";
     String broadcastName="null";
     private void makeNewNotification() {
-        SharedPreferences sharedPreferences = getSharedPreferences("myprefs",MODE_PRIVATE);
-        final String prefUserKey = sharedPreferences.getString("user_key","user key doesnt exits");
-
         final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
-        Log.d("NewNotif","user key: "+prefUserKey);
         Log.d(TAG,"broadcast name: "+mBroadcastName);
 
-
         //finding broadcast key
-        ref.child("users").child(prefUserKey).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
+        ref.child("users").child(mUser.getUid()).child("broadcasts").orderByChild("name").equalTo(mBroadcastName)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -182,7 +177,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
 
 
                             final DatabaseReference notificationRef = ref.child("users")
-                                    .child(prefUserKey)
+                                    .child(mUser.getUid())
                                     .child("broadcasts")
                                     .child(broadcastKey)
                                     .child("notifications");
@@ -244,7 +239,7 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                                                 /*send this key with the url to the node js server*/
                                                 HashMap<String, String> params = new HashMap<String, String>();
                                                 params.put("broadcastName",broadcastName);
-                                                params.put("user",prefUserKey);
+                                                params.put("user",mUser.getUid());
                                                 params.put("broadcast",broadcastKey);
                                                 params.put("key",dataSnapshot.getKey());
                                                 RequestQueue requestQueue = Volley.newRequestQueue(getBaseContext());

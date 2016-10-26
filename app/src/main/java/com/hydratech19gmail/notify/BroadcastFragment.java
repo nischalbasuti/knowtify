@@ -1,13 +1,7 @@
 package com.hydratech19gmail.notify;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.database.DatabaseUtils;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -21,7 +15,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -40,9 +33,6 @@ import java.util.LinkedList;
 public class BroadcastFragment extends Fragment implements View.OnClickListener, OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private static final String TAG = "BroadcastFragmen";
-
-    String path;
-    TextView pathV;
 
     private FirebaseUser user;
     @Override
@@ -70,8 +60,6 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
         broadcastRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //Toast.makeText(getContext(),"broadcast update",Toast.LENGTH_SHORT).show();
-
                 //TODO find a better fix
                 broadcasts.clear();
 
@@ -113,7 +101,6 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
         TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
         TextView privacy = (TextView) view.findViewById(R.id.privacy);
         String broadcasterKey = ((TextView) view.findViewById(R.id.userKey)).getText().toString();
-        broadcasterKey = StringConverter.userIdToKey(broadcasterKey);
 
         Log.d(TAG,"broadcaster key: "+broadcasterKey);
 

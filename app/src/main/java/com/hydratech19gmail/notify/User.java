@@ -10,16 +10,16 @@ import com.google.firebase.auth.FirebaseUser;
 public class User {
     private String uid;
     private String token;
-    private String emailid;
+    private String emailId;
     private String username;
     private String photoUrl;
 
     public User(){}
 
-    public User(String uid, String token, String emailid, String username, String photoUrl) {
+    public User(String uid, String token, String emailId, String username, String photoUrl) {
         this.uid = uid;
         this.token = token;
-        this.emailid = emailid;
+        this.emailId = emailId;
         this.username = username;
         this.photoUrl = photoUrl;
     }
@@ -41,12 +41,12 @@ public class User {
         this.token = token;
     }
 
-    public String getEmailid() {
-        return emailid;
+    public String getEmailId() {
+        return emailId;
     }
 
-    public void setEmailid(String emailid) {
-        this.emailid = emailid;
+    public void setEmailId(String emailid) {
+        this.emailId = emailid;
     }
 
     public String getUsername() {

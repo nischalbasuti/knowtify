@@ -4,6 +4,7 @@ package com.hydratech19gmail.notify;
  * Created by zappereton on 10/10/16.
  */
 public class Subscriptions {
+
     String userName;
     String channelName;
     String subscribersKey;

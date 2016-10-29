@@ -1,14 +1,11 @@
 package com.hydratech19gmail.notify;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -22,30 +19,19 @@ import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.net.URLConnection;
 import java.util.List;
-import java.util.StringTokenizer;
-
-import static java.lang.Boolean.FALSE;
-import static java.lang.Boolean.TRUE;
 
 /**
  * Created by zappereton on 10/10/16.
  */
 
-public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     {
+public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>{
     LayoutInflater inflater;
 
     CustomDownloadDialogAdapter.ViewHolder mViewHolder;
+
+    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
 
     static class ViewHolder {
         public TextView nameOfFile;
@@ -59,6 +45,7 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
     public CustomDownloadDialogAdapter(Context context, List<Notification> data){
         super(context,R.layout.home_fragment_row,data);
         inflater = LayoutInflater.from(context);
+
     }
 
     @Override
@@ -69,7 +56,6 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
             convertView = inflater.inflate(R.layout.download_dialog_row,parent,false);
 
             mViewHolder = new CustomDownloadDialogAdapter.ViewHolder();
-            Log.d("uou","Entered");
             mViewHolder.nameOfFile = (TextView)convertView.findViewById(R.id.name_of_file);
             mViewHolder.sizeOfFile = (TextView)convertView.findViewById(R.id.size_of_file);
 
@@ -85,7 +71,6 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
             mViewHolder.downloadProgressBar.setTag(position+"dpb");
             mViewHolder.sizeOfFile.setTag(position+"size");
 
-
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (CustomDownloadDialogAdapter.ViewHolder) convertView.getTag();
@@ -94,11 +79,13 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
         Notification n = getItem(position);
 
         mViewHolder.nameOfFile.setText((position+1)+"."+n.getName());
-        mViewHolder.sizeOfFile.setText("10Mb");
+
         mViewHolder.downloadProgressBar.setVisibility(View.INVISIBLE);
         mViewHolder.openFolder.setVisibility(View.INVISIBLE);
 
         mViewHolder.downloadProgressBar.setProgress(50);
+
+        final StorageReference fileRef = storageReference.child("images/Screenshot_2016-08-10-11-48-52_1.jpg");
 
         mViewHolder.download.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -110,8 +97,6 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                 parent.findViewWithTag(position+"dpb").setVisibility(View.VISIBLE);
                 ((TextView)parent.findViewWithTag(position+"size")).setText("0");
 
-                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                StorageReference fileRef = storageReference.child("images/Screenshot_2016-08-10-11-48-52_1.jpg");
 
                 File folder = new File("/sdcard/Notify/");
                 if (!(folder.exists())){
@@ -143,7 +128,7 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                         parent.findViewWithTag(position+"dpb").setVisibility(View.INVISIBLE);
                         parent.findViewWithTag(position+"of").setVisibility(View.VISIBLE);
                         //need to correct this thing.
-                        ((TextView) parent.findViewWithTag(position+"size")).setText((int) ((size[0])/(1024*1024))+"mb");
+                        ((TextView) parent.findViewWithTag(position+"size")).setText((float) ((size[0])/(1024))+"mb");
                     }
                 });
             }
@@ -155,6 +140,8 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
                 Toast.makeText(getContext(),"Downloading...",Toast.LENGTH_LONG).show();
                 parent.findViewWithTag(position+"d").setVisibility(View.VISIBLE);
                 parent.findViewWithTag(position+"dpb").setVisibility(View.INVISIBLE);
+
+                fileRef.getActiveDownloadTasks().get(0).cancel();
             }
         });
 
@@ -173,6 +160,8 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>     
         });
         return convertView;
     }
+
+
 }
 
 

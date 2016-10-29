@@ -91,6 +91,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         ((TextView) header.findViewById(R.id.privacy)).setText(mPrivacy);
         ((TextView) header.findViewById(R.id.user_id)).setText(mBroadcasterUID);
 
+
         header.findViewById(R.id.user_id).setOnClickListener(this);
 
         header.findViewById(R.id.thumbnail).setOnClickListener(this);

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -123,6 +122,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.email_sign_up_button:
+                displayError("");
                 signUp();
                 break;
         }
@@ -160,7 +160,6 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                     Log.d(TAG,""+task.getException());
                     Toast.makeText(SignupActivity.this,"sign up failed, try again", Toast
                             .LENGTH_LONG).show();
-                    displayError(task.getException().toString());
                 }
                 else {
                     Toast.makeText(getApplicationContext(),"sign up successful",Toast.LENGTH_LONG).show();
@@ -246,7 +245,13 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
         if(!userExists){
             //creating user for first time
             userRef.child(user.getUid())
-                    .setValue(new User(user.getUid(),prefToken));
+                    .setValue(new User(
+                            user.getUid(),
+                            prefToken,
+                            user.getEmail(),
+                            user.getDisplayName(),
+                            user.getPhotoUrl().toString())
+                    );
         }
 
 

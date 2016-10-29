@@ -159,7 +159,7 @@ public class MainActivity extends AppCompatActivity
         nav_user_email.setText(user.getEmail());
 
         try {
-            Bitmap bitmap = (Bitmap) new RetrieveImage().execute(user.getPhotoUrl().toString()).get();
+            Bitmap bitmap = new RetrieveImage().execute(user.getPhotoUrl().toString()).get();
 
             ImageView nav_user_image = (ImageView) navHeader.findViewById(R.id.drawer_user_image);
             nav_user_image.setMaxHeight(nav_user_image.getHeight());

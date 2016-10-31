@@ -2,13 +2,10 @@ package com.hydratech19gmail.notify;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.BoolRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -119,8 +116,14 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                     public void onClick(DialogInterface dialog, int which) {
                         if(which == 0){
                             Toast.makeText(WholeNotificationActivity.this,"Delete",Toast.LENGTH_SHORT).show();
-                            Notification n = new Notification(broadcastName,notificationName,notificationSubject,notificationContent,null);
-
+                        //TODO add timestamp and broadcastKey
+                            //    Notification n = new Notification(broadcastName,notificationName,notificationSubject,notificationContent,null, userKey, broadcastKey);
+                            Notification n = new Notification();
+                            n.setBroadcast(broadcastName);
+                            n.setName(notificationName);
+                            n.setSubject(notificationSubject);
+                            n.setContent(notificationContent);
+                            n.setTimeStamp(null);
                             UpdateNotificationsTask updateNotificationsTask = new UpdateNotificationsTask(WholeNotificationActivity.this,n);
                             updateNotificationsTask.execute("delete_a_notification");
 

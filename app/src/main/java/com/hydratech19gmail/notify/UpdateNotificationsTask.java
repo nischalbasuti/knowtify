@@ -5,7 +5,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -13,9 +12,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.HashMap;
 import java.util.LinkedList;
-import java.util.Map;
 
 import static android.content.Context.MODE_PRIVATE;
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
@@ -59,7 +56,15 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                     String notificationContent = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATION_CONTENT));
                     String notificationTimstamp = allNotifications.getString(allNotifications.getColumnIndex(TableData.TableInfo.NOTIFICATIONS_TIMESTAMP));
 
-                    Notification n = new Notification(broadcastName, notificationName, notificationsSubject, notificationContent, notificationTimstamp);
+                    //TODO fix nischal messing with jaelse's code like a motherfucker....add userKey and broadcastKey
+             //       Notification n = new Notification(broadcastName, notificationName, notificationsSubject, notificationContent, notificationTimstamp, userKey, broadcastKey);
+                    Notification n = new Notification();
+                    n.setBroadcast(broadcastName);
+                    n.setName(notificationName);
+                    n.setSubject(notificationsSubject);
+                    n.setContent(notificationContent);
+                    n.setTimeStamp(notificationTimstamp);
+
 
                     publishProgress(n);
                 }
@@ -106,7 +111,7 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                 final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 final DatabaseReference notificationRef = ref.child("users")
                         .child(prefUserKey)
-                        .child("subscriptions");
+                        .child("subscription");
 
                 final LinkedList<Notification> notifications = new LinkedList<>();
                 notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -115,10 +120,10 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                         for (DataSnapshot channel : dataSnapshot.getChildren()) {
                             try {
 
-                                Subscriptions subscriptions = channel.getValue(Subscriptions.class);
-                                String userName = subscriptions.getUserName();
-                                String channelName = subscriptions.getChannelName();
-                                String subscribersKey = subscriptions.getSubscribersKey();
+                                Subscription subscription = channel.getValue(Subscription.class);
+                                String userName = subscription.getUserName();
+                                String channelName = subscription.getChannelName();
+                                String subscribersKey = subscription.getSubscribersKey();
 
                                 DatabaseReference channelRef = ref.child("users")
                                                                     .child(userName)
@@ -130,7 +135,7 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                                                                 .child("token")
                                                                 .setPriority(prefToken);
 
-                                //getting all the notifications from all the subscriptions.
+                                //getting all the notifications from all the subscription.
                                 DatabaseReference notificationsRef = channelRef
                                                                     .child("notifications");
                                 notificationsRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -181,7 +186,7 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                 final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                 final DatabaseReference notificationRef = ref.child("users")
                         .child(prefUserKey)
-                        .child("subscriptions");
+                        .child("subscription");
 
                 notificationRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -189,9 +194,9 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                         for (DataSnapshot channel : dataSnapshot.getChildren()) {
                             try {
 
-                                Subscriptions subscriptions = channel.getValue(Subscriptions.class);
-                                String userName = subscriptions.getUserName();
-                                String channelName = subscriptions.getChannelName();
+                                Subscription subscription = channel.getValue(Subscription.class);
+                                String userName = subscription.getUserName();
+                                String channelName = subscription.getChannelName();
 
                                 DatabaseReference channelRef = ref.child("users")
                                         .child(userName)

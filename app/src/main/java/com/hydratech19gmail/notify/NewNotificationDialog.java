@@ -2,14 +2,12 @@ package com.hydratech19gmail.notify;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
@@ -18,12 +16,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -40,12 +36,10 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.util.HashMap;
-import java.util.Map;
 
 /*
  * Created by nischal on 25/8/16.
@@ -220,15 +214,17 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
 
                                     }
                                 });
+
                                 if(no_same_notification == true){
-                                   Notification notification = new Notification(
-                                        broadcastName,
-                                        name,
-                                        subject,
-                                        content,
-                                        timeStamp
-                                );
-                                notificationRef.push().setValue(notification);
+                                    Notification notification = new Notification(
+                                            broadcastName,
+                                            name,
+                                            subject,
+                                            content,
+                                            timeStamp,
+                                            mUser.getUid(),
+                                            broadcastKey);
+                                    notificationRef.push().setValue(notification);
 
                                     Query query1 = notificationRef.orderByChild("name").equalTo(name);
                                     query.addChildEventListener(new ChildEventListener() {

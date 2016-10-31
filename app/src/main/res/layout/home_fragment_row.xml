@@ -5,13 +5,39 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:background="@drawable/customshape">
+
     <TextView
+        android:id="@+id/userKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="user key"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/broadcastKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="broadcast key"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
+    <TextView
+        android:id="@+id/notificationKey"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="notification key"
+        android:textSize="20dp"
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/notification_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="Large Text"
-        android:id="@+id/broadcastTitle"
         android:paddingLeft="8dp" />
 
     <ImageView
@@ -24,23 +50,23 @@
         />
 
     <TextView
+        android:id="@+id/broadcast_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/broadcasterName"
-        android:layout_below="@+id/broadcastTitle"
+        android:layout_below="@+id/notification_name"
         android:paddingLeft="8dp" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:background="@color/light_grey"
-        android:layout_below="@+id/broadcasterName"/>
+        android:layout_below="@+id/broadcast_name"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="100dp"
         android:id="@+id/contentLayout"
-        android:layout_below="@+id/broadcasterName">
+        android:layout_below="@+id/broadcast_name">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -48,7 +74,7 @@
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:text="Subject:"
             android:id="@+id/subject"
-            android:layout_below="@+id/broadcasterName"
+            android:layout_below="@+id/broadcast_name"
             android:paddingTop="10dp"
             android:paddingLeft="10dp"/>
         <TextView

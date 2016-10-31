@@ -11,16 +11,23 @@ public class Notification {
     private String subject;
     private String content;
 
+    private String notificationKey;
+    private String userKey;
+    private String broadcastKey;
+
     public Notification(){
 
     }
 
-    public Notification(String broadcast,String name,String subject,String content,String timeStamp) {
+    public Notification(String broadcast, String name, String subject, String content, String timeStamp, String userKey, String broadcastKey) {
         this.broadcast = broadcast;
         this.name = name;
         this.subject = subject;
         this.content = content;
         this.timeStamp = timeStamp;
+        this.notificationKey = notificationKey;
+        this.userKey = userKey;
+        this.broadcastKey = broadcastKey;
     }
 
     //getters and setters
@@ -64,5 +71,29 @@ public class Notification {
 
     public void setSubject(String subject) {
         this.subject = subject;
+    }
+
+    public String getNotificationKey() {
+        return notificationKey;
+    }
+
+    public void setNotificationKey(String notificationKey) {
+        this.notificationKey = notificationKey;
+    }
+
+    public String getUserKey() {
+        return userKey;
+    }
+
+    public void setUserKey(String userKey) {
+        this.userKey = userKey;
+    }
+
+    public String getBroadcastKey() {
+        return broadcastKey;
+    }
+
+    public void setBroadcastKey(String broadcastKey) {
+        this.broadcastKey = broadcastKey;
     }
 }

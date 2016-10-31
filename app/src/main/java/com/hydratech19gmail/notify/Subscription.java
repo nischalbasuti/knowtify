@@ -3,16 +3,16 @@ package com.hydratech19gmail.notify;
 /**
  * Created by zappereton on 10/10/16.
  */
-public class Subscriptions {
+public class Subscription {
 
-    String userName;
-    String channelName;
-    String subscribersKey;
+    private String userName;
+    private String channelName;
+    private String subscribersKey;
 
-    public Subscriptions(){
+    public Subscription(){
     }
 
-    Subscriptions(String userName, String channelName, String subscribersKey){
+    Subscription(String userName, String channelName, String subscribersKey){
         this.userName = userName;
         this.channelName = channelName;
         this.subscribersKey = subscribersKey;

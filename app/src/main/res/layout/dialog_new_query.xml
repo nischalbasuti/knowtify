@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_horizontal_margin">
+
+    <TextView
+        android:id="@+id/tv_new_query"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Query:"
+        android:textStyle="bold"/>
+    <EditText
+        android:id="@+id/query_subject"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_new_query"
+        android:hint="Query subject"
+        android:layout_margin="@dimen/fab_margin"
+        />
+    <EditText
+        android:id="@+id/query_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="140dp"
+        android:layout_below="@id/query_subject"
+        android:hint="Query content"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"/>
+    
+    <Button
+        android:id="@+id/new_query_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/query_content"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        android:text="Create New Query"
+        android:textAllCaps="false"/>
+    <Button
+        android:id="@+id/new_query_exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/new_query_button"
+        android:layout_marginEnd="@dimen/fab_margin"
+        android:layout_alignParentEnd="true"
+        android:text="Cancel"
+        android:textAllCaps="false"/>
+</RelativeLayout>

@@ -30,6 +30,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.RemoteMessage;
+
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 
@@ -157,7 +159,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         //setting adapter
         listView.setAdapter(listAdapter);
 
-        displayNotifications(listAdapter);
+        displayNotifications(listAdapter); // also retrieves broadcastKey
 
         //setting on click listener fo new notification fab
         FloatingActionButton newNotificationFab = (FloatingActionButton) findViewById(R.id.fab_new_notification);
@@ -184,7 +186,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
             }
         });
 
-        Subscriptions subscription = new Subscriptions(mBroadcasterUID,mBroadcastKey,mUser.getUid());
+        Subscription subscription = new Subscription(mBroadcasterUID,mBroadcastKey,mUser.getUid());
         ref.child("users").child(mUser.getUid()).child("subscriptions").child(mBroadcastKey).setValue(subscription);
     }
 
@@ -260,7 +262,9 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
                                     notifications.clear();
                                     for(DataSnapshot notification : dataSnapshot.getChildren()){
                                         try{
-                                            notifications.addFirst(notification.getValue(Notification.class));
+                                            Notification notification1 = notification.getValue(Notification.class);
+                                            notification1.setNotificationKey(notification.getKey());
+                                            notifications.addFirst(notification1);
                                         } catch (Exception e) {
                                             Log.d(TAG,e.getMessage());
                                         }

@@ -5,35 +5,22 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.DataSetObserver;
-import android.graphics.Color;
-import android.provider.ContactsContract;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.Toolbar;
-import android.text.format.DateFormat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Locale;
 
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
@@ -47,8 +34,8 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
     ViewHolder mViewHolder;
 
     static class ViewHolder {
-        public TextView broadcastTitle;
-        public TextView broadcasterName;
+        public TextView notificationName;
+        public TextView broadcastName;
         public TextView contentText;
         public ImageView dropDownImage;
         public ImageView queryImage;
@@ -56,6 +43,11 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         public ImageView alarmImage;
         public LinearLayout subjectLinearLayout;
         public TextView timeStamp;
+
+        //metadata
+        TextView userKey;
+        TextView broadcastKey;
+        TextView notificationKey;
     }
 
     public CustomAdapter(Context context, List<Notification> data){
@@ -71,8 +63,8 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             convertView = inflater.inflate(R.layout.home_fragment_row,parent,false);
 
             mViewHolder = new ViewHolder();
-            mViewHolder.broadcastTitle = (TextView)convertView.findViewById(R.id.broadcastTitle);
-            mViewHolder.broadcasterName = (TextView)convertView.findViewById(R.id.broadcasterName);
+            mViewHolder.notificationName = (TextView)convertView.findViewById(R.id.notification_name);
+            mViewHolder.broadcastName = (TextView)convertView.findViewById(R.id.broadcast_name);
             mViewHolder.contentText = (TextView)convertView.findViewById(R.id.content);
             mViewHolder.dropDownImage = (ImageView)convertView.findViewById(R.id.dropDownMenu);
             mViewHolder.queryImage = (ImageView)convertView.findViewById(R.id.ask_question);
@@ -80,6 +72,12 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
             mViewHolder.subjectLinearLayout = (LinearLayout)convertView.findViewById(R.id.contentLayout);
             mViewHolder.alarmImage = (ImageView) convertView.findViewById(R.id.renimder);
             mViewHolder.timeStamp = (TextView)convertView.findViewById(R.id.time);
+
+
+            mViewHolder.userKey = ((TextView)convertView.findViewById(R.id.userKey));
+            mViewHolder.broadcastKey = ((TextView)convertView.findViewById(R.id.broadcastKey));
+            mViewHolder.notificationKey = ((TextView)convertView.findViewById(R.id.notificationKey));
+
             convertView.setTag(mViewHolder);
         } else {
             mViewHolder = (ViewHolder) convertView.getTag();
@@ -90,10 +88,15 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
 
         final Notification n = getItem(position);
 
-        mViewHolder.broadcastTitle.setText(n.getName());
-        mViewHolder.broadcasterName.setText(n.getBroadcast());
+        mViewHolder.notificationName.setText(n.getName());
+        mViewHolder.broadcastName.setText(n.getBroadcast());
         mViewHolder.contentText.setText(n.getSubject());
         mViewHolder.timeStamp.setText(DateConvert.timeStampToDate(Long.parseLong(n.getTimeStamp())*1000));
+
+        //metadata
+        mViewHolder.userKey.setText(n.getUserKey());
+        mViewHolder.broadcastKey.setText(n.getBroadcastKey());
+        mViewHolder.notificationKey.setText(n.getNotificationKey());
 
         //setting dropdown
         mViewHolder.dropDownImage.setOnClickListener(new View.OnClickListener() {
@@ -124,7 +127,14 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
         mViewHolder.queryImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(),"uouououo",Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(getContext(),QueryActivity.class);
+                intent.putExtra("user_key",n.getUserKey());
+                intent.putExtra("broadcast_key",n.getBroadcastKey());
+                intent.putExtra("notification_key",n.getNotificationKey());
+                intent.putExtra("notification_name",n.getName());
+                intent.putExtra("notification_content",n.getContent());
+
+                getContext().startActivity(intent);
             }
         });
 

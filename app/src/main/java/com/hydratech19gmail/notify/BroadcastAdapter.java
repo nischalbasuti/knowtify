@@ -8,8 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 /*
@@ -32,14 +30,14 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
     }
 
     public BroadcastAdapter(Context context, List<Broadcast> resource) {
-        super(context, R.layout.broadcast_fragment_item,resource);
+        super(context, R.layout.broadcast_item,resource);
         mLayoutInflater = LayoutInflater.from(getContext());
 
     }
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = mLayoutInflater.inflate(R.layout.broadcast_fragment_item,parent,false);
+            convertView = mLayoutInflater.inflate(R.layout.broadcast_item,parent,false);
 
             mViewHolder = new ViewHolder();
             mViewHolder.broadcastName = (TextView) convertView.findViewById(R.id.broadcast_name);

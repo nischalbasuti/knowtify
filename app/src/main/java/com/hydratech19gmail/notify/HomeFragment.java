@@ -1,7 +1,5 @@
 package com.hydratech19gmail.notify;
 
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,19 +9,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import static android.app.Activity.RESULT_OK;
-import static android.content.Context.MODE_PRIVATE;
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
 /*
@@ -60,6 +54,31 @@ public class HomeFragment extends Fragment{
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference subscriptionRef = ref.child("users")
+                                            .child(user.getUid())
+                                            .child("subscriptions");
+
+        subscriptionRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot subscriptionChannel : dataSnapshot.getChildren()) {
+                    try{
+                        Subscription subscriptions = subscriptionChannel.getValue(Subscription.class);
+                        NotificationsListener notificationsListener = new NotificationsListener(listAdapter,getContext(),subscriptions.getSubscribersKey(),subscriptionChannel.getKey());
+                        notificationsListener.getNotifications();
+                    }catch (Exception e){
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });/*
         notificationRef = ref.child("users")
                 .child(user.getUid())
                 .child("newNotification");
@@ -70,15 +89,13 @@ public class HomeFragment extends Fragment{
                 for (DataSnapshot notification : dataSnapshot.getChildren()) {
                     try {
                         Notification newNotification = notification.getValue(Notification.class);
-                        /*add these notifications to the local database*/
-                        Log.d("Home time","jaekse"+newNotification.getTimeStamp());
+                        //add these notifications to the local database
+                        Log.d("Home time", "jaekse" + newNotification.getTimeStamp());
                         DatabaseOperations dop = new DatabaseOperations(getContext());
                         dop.putNotification(dop, newNotification);
 
                         NOTIFICATIONS.addFirst(newNotification);
                         ((CustomAdapter) listAdapter).notifyDataSetChanged();
-                        DatabaseReference oldNotificationRef = notificationRef.child(notification.getKey());
-                        oldNotificationRef.removeValue();
                     } catch (Exception e) {
                         Log.d(TAG, e.getMessage());
                     }
@@ -87,7 +104,7 @@ public class HomeFragment extends Fragment{
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-        };
+        };*/
         return rootView;
     }
 
@@ -96,7 +113,7 @@ public class HomeFragment extends Fragment{
         super.onResume();
         Log.d("home fragment","onResume");
         //add the listener
-        notificationRef.addValueEventListener(valueEventListener);
+        //notificationRef.addValueEventListener(valueEventListener);
 
         if(WholeNotificationActivity.CHECK == true){
             refresh();
@@ -107,7 +124,7 @@ public class HomeFragment extends Fragment{
     public void onPause() {
         super.onPause();
         //remove the listener
-        notificationRef.removeEventListener(valueEventListener);
+        //notificationRef.removeEventListener(valueEventListener);
     }
 
     public void refresh(){

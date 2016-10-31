@@ -74,7 +74,7 @@ TODO the upper character limit - 1000.
 we open a new activity to show the whole message.
 
 
-TODO automatically the date time when the notification is created will be stored.
+TODO automatically the date time when the notification is created will be stored.(done)
 
 
 TODO DP minimum size.
@@ -83,7 +83,7 @@ TODO check the dp dimension if dimension is less, give an error.
 
 Policies:
 TODO 1.Broadcaster cannot delete the notification but they can edit it.(this will not be there for now)
-TODO 2.Subscribers can remove the broadcast Subscription.
+TODO 2.Subscribers can remove the broadcast Subscription.(done)
 3.Broadcaster can only stop the notification service but cannot remove the whole broadcast.
 TODO 4.There cannot be two broadcast with same name.
 TODO 5.Any number of files can be uploaded, but the limit should not cross 20mb.
@@ -100,7 +100,7 @@ How the users can get all the notifications they had and lost after uninstalling
 
 When the app is reinstalled then all the notifications from all the broadcasts subscribed will be loaded
 and then those according to their time stamp and then inserted to the local database.
-TODO sorting left
+TODO sorting left(Look for new method on 1/11/2016)
 
 ---------------------------------------------------------------------------------------------------------------
 
@@ -134,7 +134,8 @@ TODO The subject of the notification should not be greater than 100 letters.
 Next thing to do:
 The local database should be refreshed if the user sign in with different account. Refreshing means
 to delete all the data from the local database and then loading the data again from the remote database.
-(Task done. TODO need to check when nischal put timestamp in all the notifications.)
+(Task done.  need to check when nischal put timestamp in all the notifications.)
+(this thing is removed on 1/11/2016)
 ---------------------------------------------------------------------------------------------------------------
 
 11/10/2016(Jaelse)
@@ -145,7 +146,7 @@ Make the activity for each notification when clicked. Complete everything in thi
 
 complete the delete option in dropdownmenu.(done)
 
-TODO when the user re-installs the app his token changes, then the token also have to change on the subscriptions he has
+TODO when the user re-installs the app his token changes, then the token also have to change on the subscriptions he has(not needed now).
 ----------------------------------------------------------------------------------------------------------------
 
 12/10/2016(Jaelse)
@@ -154,7 +155,7 @@ TODO need to figure out how to refresh the Home fragment when coming back from t
 
 Do Download task.(90% complete)
 
-TODO Stop download after it has started.
+TODO Stop download after it has started.(done)
 
 ---------------------------------------------------------------------------------------------------------------
 13/10/2016 (Jaelse)
@@ -176,10 +177,22 @@ Make a function to open the photo,pdf, docx files from the app.
 Photo when opened user can swipe right or left to see other photos of the same notification.
 ---------------------------------------------------------------------------------------------------------------
 
-23/10/2016
+23/10/2016 (Jaelse)
 
-TODO notifications showing twice in home fragment. Fix it.
+TODO notifications showing twice in home fragment. Fix it. (done on 1/11/2016)
 
 Setting TimeStamp (done).
 
+-------------------------------------------------------------------------------------------------------------
+
+31/10/2016 (Jaelse)
+
+TODO when back button i pressed from the download dialog, all the downloads should stop.
+-------------------------------------------------------------------------------------------------------------
+
+1/11/2016 (Jaelse)
+
+TODO make algorithm to sort the notifications according to the time stamp.
+No need of localdatabase. Disk persistent is used. Old method to retrieve the notifications has bee changed.
+TODO make the node js server listen to all the broadcasts. And send the notifications when new one is pushed.
 -------------------------------------------------------------------------------------------------------------

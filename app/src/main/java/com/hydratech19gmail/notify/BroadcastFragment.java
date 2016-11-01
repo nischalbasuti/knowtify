@@ -60,7 +60,6 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
         broadcastRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                //TODO find a better fix
                 broadcasts.clear();
 
                 for (DataSnapshot broadcast : dataSnapshot.getChildren()) {

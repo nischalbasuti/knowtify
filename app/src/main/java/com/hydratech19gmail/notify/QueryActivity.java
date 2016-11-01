@@ -12,12 +12,19 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 
 public class QueryActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -29,7 +36,10 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
     String mBroadcastKey;
     String mNotificationContent;
 
+    DatabaseReference notificationRef;
+
     final LinkedList<QueryObject> queryObjects = new LinkedList<>();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +95,36 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
         listView.setAdapter(queryAdapter);
 
         findViewById(R.id.fab_new_query).setOnClickListener(this);
+
+        notificationRef = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(mUserKey)
+                .child("broadcasts").child(mBroadcastKey)
+                .child("notifications").child(mNotificationKey);
+
+        displayQueries(queryAdapter);
+    }
+    private void displayQueries(final ListAdapter listAdapter) {
+
+        notificationRef.child("queries").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Toast.makeText(getBaseContext(), "onDataChange queries", Toast.LENGTH_SHORT).show();
+
+                queryObjects.clear();
+                for(DataSnapshot query : dataSnapshot.getChildren()){
+                    try{
+                        QueryObject queryObject = query.getValue(QueryObject.class);
+                        queryObjects.addFirst(queryObject);
+                    } catch (Exception e) {
+                        Log.d(TAG,e.getMessage());
+                    }
+                }
+                ((QueryAdapter)listAdapter).notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {}
+        });
     }
 
     @Override
@@ -92,7 +132,10 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
         switch (view.getId()){
             case R.id.fab_new_query:
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                NewQueryDialog newQueryDialog = new NewQueryDialog(this,user);
+
+
+
+                NewQueryDialog newQueryDialog = new NewQueryDialog(this,user,notificationRef);
                 newQueryDialog.show();
                 break;
         }

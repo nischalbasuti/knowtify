@@ -4,21 +4,21 @@ package com.hydratech19gmail.notify;
  * Created by nischal on 15/9/16.
  */
 public class QueryObject {
-    private String queryName;
+    private String querySubject;
     private String queryContent;
-    private String queryUserId;
+    private String queryUserKey;
+    private String timeStamp;
+    private int rating;
 
-    public QueryObject(){
-
-    }
+    public QueryObject(){}
 
     //getters and setters
-    public String getQueryName() {
-        return queryName;
+    public String getQuerySubject() {
+        return querySubject;
     }
 
-    public void setQueryName(String queryName) {
-        this.queryName = queryName;
+    public void setQuerySubject(String querySubject) {
+        this.querySubject = querySubject;
     }
 
     public String getQueryContent() {
@@ -29,11 +29,27 @@ public class QueryObject {
         this.queryContent = queryContent;
     }
 
-    public String getQueryUserId() {
-        return queryUserId;
+    public String getQueryUserKey() {
+        return queryUserKey;
     }
 
-    public void setQueryUserId(String queryUserId) {
-        this.queryUserId = queryUserId;
+    public void setQueryUserKey(String queryUserKey) {
+        this.queryUserKey = queryUserKey;
+    }
+
+    public String getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(String timeStamp) {
+        this.timeStamp = timeStamp;
+    }
+
+    public int getRating() {
+        return rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
     }
 }

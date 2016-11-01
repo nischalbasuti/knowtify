@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.hydratech19gmail.notify.MainActivity">
+    tools:context="com.hydratech19gmail.notify.MainActivity"
+    android:background="#f2f2f2">
     <ListView
         android:id="@+id/broadcast_list"
         android:layout_width="match_parent"

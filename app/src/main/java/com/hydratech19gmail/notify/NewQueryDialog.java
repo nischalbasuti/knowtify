@@ -3,28 +3,31 @@ package com.hydratech19gmail.notify;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by nischal on 31/10/16.
  */
 
-public class NewQueryDialog extends Dialog implements View.OnClickListener{
-    final FirebaseUser mUser;
+class NewQueryDialog extends Dialog implements View.OnClickListener{
+    private final FirebaseUser mUser;
+    private final DatabaseReference notificationRef;
 
-    public NewQueryDialog(Context context, FirebaseUser user) {
+    private final static String TAG = "newQueryDialog";
+
+    NewQueryDialog(Context context, FirebaseUser user, DatabaseReference notificationRef) {
         super(context);
         this.mUser = user;
+        this.notificationRef = notificationRef;
     }
 
     @Override
@@ -54,28 +57,42 @@ public class NewQueryDialog extends Dialog implements View.OnClickListener{
     }
 
     private void createNewQuery() {
-        EditText etqueryName = (EditText) findViewById(R.id.query_subject);
-        EditText etqueryInfo = (EditText) findViewById(R.id.query_content);
+        EditText etquerySubject = (EditText) findViewById(R.id.query_subject);
+        EditText etqueryContent = (EditText) findViewById(R.id.query_content);
 
-        String queryName = etqueryName.getText().toString();
-        String queryInfo = etqueryInfo.getText().toString();
+        String querySubject = etquerySubject.getText().toString();
+        String queryContent = etqueryContent.getText().toString();
 
-        if(queryName.equals("")) {
+        if(querySubject.equals("")) {
             Toast.makeText(getContext(),"Enter query name",Toast.LENGTH_SHORT).show();
+        }
+        else if(queryContent.isEmpty()) {
+            Toast.makeText(getContext(),"Enter query info",Toast.LENGTH_SHORT).show();
         }
         else {
             //..............
 
             //sending message to database
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-            //TODO change query ref
-            DatabaseReference queryRef = ref.child("users/"+mUser.getUid()+"/querys");
+            final DatabaseReference queryRef = notificationRef.child("queries");
+
+            //calculating timestamp
+            Long tsLong = System.currentTimeMillis()/1000;
+            String timeStamp = tsLong.toString();
+
+            //creating new query
             QueryObject newQuery = new QueryObject();
+
+            newQuery.setQueryContent(queryContent);
+            newQuery.setQuerySubject(querySubject);
+            newQuery.setQueryUserKey(mUser.getUid());
+            newQuery.setTimeStamp(timeStamp);
+            newQuery.setRating(1);
 
             //pushing data
             queryRef.push().setValue(newQuery, new DatabaseReference.CompletionListener() {
                 @Override
                 public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                    Log.d(TAG,"query path: "+queryRef.toString());
                     Toast.makeText(getContext(),"Created query",Toast.LENGTH_SHORT).show();
                 }
             });

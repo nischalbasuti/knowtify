@@ -29,6 +29,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.messaging.RemoteMessage;
 
@@ -86,12 +87,27 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
         final ListView listView = (ListView) findViewById(R.id.notificationList);
 
         LayoutInflater inflater = getLayoutInflater();
-        ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_broadcast,listView,false);
+        final ViewGroup header = (ViewGroup) inflater.inflate(R.layout.header_broadcast,listView,false);
 
         //setting broadcast information
         ((TextView) header.findViewById(R.id.broadcast_info)).setText(mBroadcastInfo);
         ((TextView) header.findViewById(R.id.privacy)).setText(mPrivacy);
-        ((TextView) header.findViewById(R.id.user_id)).setText(mBroadcasterUID);
+
+        DatabaseReference usernameRef = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(mBroadcasterUID).child("username");
+        usernameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String username = dataSnapshot.getValue().toString();
+                ((TextView) header.findViewById(R.id.user_id)).setText(username);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+       // ((TextView) header.findViewById(R.id.user_id)).setText(mBroadcasterUID);
 
 
         header.findViewById(R.id.user_id).setOnClickListener(this);

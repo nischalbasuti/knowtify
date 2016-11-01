@@ -23,9 +23,9 @@ public class QueryAdapter extends ArrayAdapter<QueryObject> {
     ViewHolder mViewHolder;
 
     static class ViewHolder {
-        public TextView queryName;
+        public TextView querySubject;
         public TextView queryContent;
-        public TextView queryUserId;
+        public TextView queryUserKey;
         public ImageView dropDown;
     }
 
@@ -45,9 +45,9 @@ public class QueryAdapter extends ArrayAdapter<QueryObject> {
             convertView = mLayoutInflater.inflate(R.layout.query_item,parent,false);
 
             mViewHolder = new ViewHolder();
-            mViewHolder.queryName = (TextView) convertView.findViewById(R.id.query_title);
+            mViewHolder.querySubject = (TextView) convertView.findViewById(R.id.query_subject);
             mViewHolder.queryContent = (TextView) convertView.findViewById(R.id.content);
-            mViewHolder.queryUserId = (TextView) convertView.findViewById(R.id.query_userid);
+            mViewHolder.queryUserKey = (TextView) convertView.findViewById(R.id.query_userid);
             mViewHolder.dropDown = (ImageView) convertView.findViewById(R.id.dropDownMenu);
             convertView.setTag(mViewHolder);
 
@@ -58,9 +58,9 @@ public class QueryAdapter extends ArrayAdapter<QueryObject> {
         }
 
         QueryObject query = getItem(position);
-        mViewHolder.queryName.setText(query.getQueryName());
+        mViewHolder.querySubject.setText(query.getQuerySubject());
         mViewHolder.queryContent.setText(query.getQueryContent());
-        mViewHolder.queryUserId.setText(query.getQueryUserId());
+        mViewHolder.queryUserKey.setText(query.getQueryUserKey());
 
         mViewHolder.dropDown.setOnClickListener(new View.OnClickListener() {
             @Override

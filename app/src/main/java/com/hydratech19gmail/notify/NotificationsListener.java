@@ -40,6 +40,7 @@ public class NotificationsListener {
                     //only take the new notification.
                 for(DataSnapshot notification : dataSnapshot.getChildren()) {
                     Notification n = notification.getValue(Notification.class);
+                    n.setNotificationKey(notification.getKey());
                     UpdateNotificationsTask updateNotificationsTask = new UpdateNotificationsTask(ctx,n,listAdapter);
                     updateNotificationsTask.execute("addAndSort");
                 }

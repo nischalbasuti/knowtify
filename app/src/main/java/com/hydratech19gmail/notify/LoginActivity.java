@@ -108,7 +108,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         prefToken,
                                         user.getEmail(),
                                         user.getDisplayName(),
-                                        null
+                                        "photurl is empty"
                                 ));
                     }
                     else{
@@ -121,6 +121,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                                         user.getPhotoUrl().toString()
                                 ));
                     }
+
+                    Log.d(TAG,"email: "+user.getEmail());
+                    Log.d(TAG,"username: "+user.getDisplayName());
 
                     //start main activity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);

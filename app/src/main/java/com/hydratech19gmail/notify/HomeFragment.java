@@ -63,6 +63,7 @@ public class HomeFragment extends Fragment{
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot subscriptionChannel : dataSnapshot.getChildren()) {
+                    NOTIFICATIONS.clear();
                     try{
                         Subscription subscriptions = subscriptionChannel.getValue(Subscription.class);
                         NotificationsListener notificationsListener = new NotificationsListener(listAdapter,getContext(),subscriptions.getSubscribersKey(),subscriptionChannel.getKey());

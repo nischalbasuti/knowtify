@@ -244,14 +244,26 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                 });
         if(!userExists){
             //creating user for first time
-            userRef.child(user.getUid())
-                    .setValue(new User(
-                            user.getUid(),
-                            prefToken,
-                            user.getEmail(),
-                            user.getDisplayName(),
-                            user.getPhotoUrl().toString())
-                    );
+            if(user.getPhotoUrl() == null) {
+                ref.child("users/")
+                        .child(user.getUid())
+                        .setValue(new User(user.getUid(),
+                                prefToken,
+                                user.getEmail(),
+                                user.getDisplayName(),
+                                "photurl is empty"
+                        ));
+            }
+            else{
+                ref.child("users/")
+                        .child(user.getUid())
+                        .setValue(new User(user.getUid(),
+                                prefToken,
+                                user.getEmail(),
+                                user.getDisplayName(),
+                                user.getPhotoUrl().toString()
+                        ));
+            }
         }
 
 

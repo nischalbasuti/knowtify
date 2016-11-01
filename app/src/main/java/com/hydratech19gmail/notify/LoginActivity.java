@@ -34,8 +34,11 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener,
         GoogleApiClient.OnConnectionFailedListener{
@@ -47,6 +50,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    boolean userExists = true;
 
     @Override
     public void onStart() {
@@ -98,28 +103,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     final String prefToken = sharedPref.getString("device_token","device_token_doesnt_exist");
                     Log.d(TAG,"pref token: "+prefToken);
 
-                    //TODO send request to remove duplicate tokens
 
-                    //setting token
+                    //pushing user data
                     if(user.getPhotoUrl() == null) {
-                        ref.child("users/")
-                                .child(user.getUid())
-                                .setValue(new User(user.getUid(),
-                                        prefToken,
-                                        user.getEmail(),
-                                        user.getDisplayName(),
-                                        "photurl is empty"
-                                ));
+                        ref.child("users").child(user.getUid()).child("emailId").setValue(user.getEmail());
+
+                        ref.child("users").child(user.getUid()).child("token").setValue(prefToken);
+                        ref.child("users").child(user.getUid()).child("uid").setValue(user.getUid());
+                        ref.child("users").child(user.getUid()).child("username").setValue(user.getDisplayName());
                     }
                     else{
-                        ref.child("users/")
-                                .child(user.getUid())
-                                .setValue(new User(user.getUid(),
-                                        prefToken,
-                                        user.getEmail(),
-                                        user.getDisplayName(),
-                                        user.getPhotoUrl().toString()
-                                ));
+                        ref.child("users").child(user.getUid()).child("emailId").setValue(user.getEmail());
+                        ref.child("users").child(user.getUid()).child("photoUrl").setValue(user.getPhotoUrl().toString());
+                        ref.child("users").child(user.getUid()).child("token").setValue(prefToken);
+                        ref.child("users").child(user.getUid()).child("uid").setValue(user.getUid());
+                        ref.child("users").child(user.getUid()).child("username").setValue(user.getDisplayName());
                     }
 
                     Log.d(TAG,"email: "+user.getEmail());

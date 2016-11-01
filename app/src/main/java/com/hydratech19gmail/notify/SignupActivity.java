@@ -241,11 +241,11 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+        });
         if(!userExists){
             //creating user for first time
             if(user.getPhotoUrl() == null) {
-                ref.child("users/")
+                ref.child("users")
                         .child(user.getUid())
                         .setValue(new User(user.getUid(),
                                 prefToken,
@@ -255,7 +255,7 @@ public class SignupActivity extends AppCompatActivity implements OnClickListener
                         ));
             }
             else{
-                ref.child("users/")
+                ref.child("users")
                         .child(user.getUid())
                         .setValue(new User(user.getUid(),
                                 prefToken,

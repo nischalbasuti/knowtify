@@ -101,14 +101,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                     //TODO send request to remove duplicate tokens
 
                     //setting token
-                    ref.child("users/")
-                            .child(user.getUid())
-                            .setValue(new User(user.getUid(),
-                                    prefToken,
-                                    user.getEmail(),
-                                    user.getDisplayName(),
-                                    user.getPhotoUrl().toString()
-                            ));
+                    if(user.getPhotoUrl() == null) {
+                        ref.child("users/")
+                                .child(user.getUid())
+                                .setValue(new User(user.getUid(),
+                                        prefToken,
+                                        user.getEmail(),
+                                        user.getDisplayName(),
+                                        null
+                                ));
+                    }
+                    else{
+                        ref.child("users/")
+                                .child(user.getUid())
+                                .setValue(new User(user.getUid(),
+                                        prefToken,
+                                        user.getEmail(),
+                                        user.getDisplayName(),
+                                        user.getPhotoUrl().toString()
+                                ));
+                    }
 
                     //start main activity
                     Intent intent = new Intent(getApplicationContext(),MainActivity.class);

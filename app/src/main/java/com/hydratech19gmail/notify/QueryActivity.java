@@ -2,13 +2,11 @@ package com.hydratech19gmail.notify;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -24,7 +22,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 public class QueryActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -80,7 +77,7 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
         final ArrayList<String> headerDropdownList = new ArrayList<>();
         headerDropdownList.add("asdf");
         headerDropdownList.add("settings");
-        ((ImageView)header.findViewById(R.id.dropDownMenu)).setOnClickListener(new View.OnClickListener() {
+        header.findViewById(R.id.dropDownMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 PopupWindowDropDownMenu popupWindowDropDownMenu = new PopupWindowDropDownMenu(getApplicationContext(),headerDropdownList);

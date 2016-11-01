@@ -1,6 +1,7 @@
 package com.hydratech19gmail.notify;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,7 +41,7 @@ public class QueryAdapter extends ArrayAdapter<QueryObject> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
             convertView = mLayoutInflater.inflate(R.layout.query_item,parent,false);
 
@@ -58,9 +59,15 @@ public class QueryAdapter extends ArrayAdapter<QueryObject> {
         }
 
         QueryObject query = getItem(position);
-        mViewHolder.querySubject.setText(query.getQuerySubject());
-        mViewHolder.queryContent.setText(query.getQueryContent());
-        mViewHolder.queryUserKey.setText(query.getQueryUserKey());
+        if (query != null) {
+            mViewHolder.querySubject.setText(query.getQuerySubject());
+        }
+        if (query != null) {
+            mViewHolder.queryContent.setText(query.getQueryContent());
+        }
+        if (query != null) {
+            mViewHolder.queryUserKey.setText(query.getQueryUserKey());
+        }
 
         mViewHolder.dropDown.setOnClickListener(new View.OnClickListener() {
             @Override

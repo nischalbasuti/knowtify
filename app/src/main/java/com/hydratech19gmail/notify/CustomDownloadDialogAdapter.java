@@ -31,7 +31,7 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>{
 
     CustomDownloadDialogAdapter.ViewHolder mViewHolder;
 
-    StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+    StorageReference storageReference;
 
     static class ViewHolder {
         public TextView nameOfFile;
@@ -42,10 +42,11 @@ public class CustomDownloadDialogAdapter extends ArrayAdapter<Notification>{
         public ProgressBar downloadProgressBar;
     }
 
-    public CustomDownloadDialogAdapter(Context context, List<Notification> data){
+    public CustomDownloadDialogAdapter(Context context, List<Notification> data,StorageReference storageReference){
         super(context,R.layout.home_fragment_row,data);
         inflater = LayoutInflater.from(context);
 
+        this.storageReference = storageReference;
     }
 
     @Override

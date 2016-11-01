@@ -19,6 +19,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+
+import java.util.ListIterator;
+
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
 /**
@@ -159,7 +165,9 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                 attachmentDialog.setTitle("Attachments");
                 attachmentDialog.setContentView(R.layout.dialog_attachment);
 
-                ListAdapter listAdapter = new CustomDownloadDialogAdapter(WholeNotificationActivity.this,NOTIFICATIONS);
+                final StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+
+                ListAdapter listAdapter = new CustomDownloadDialogAdapter(WholeNotificationActivity.this,NOTIFICATIONS,storageReference);
                 ListView attachmentListView = (ListView)rootView.findViewById(R.id.downloadListView);
                 attachmentListView.setAdapter(listAdapter);
 
@@ -170,6 +178,10 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                 closeB.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        ListIterator<FileDownloadTask> storageReferenceListIterator = storageReference.getActiveDownloadTasks().listIterator();
+                        while (storageReferenceListIterator.hasNext()){
+                            storageReferenceListIterator.next().cancel();
+                        }
                         attachmentDialog.cancel();
                     }
                 });

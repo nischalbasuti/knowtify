@@ -187,7 +187,7 @@ Setting TimeStamp (done).
 
 31/10/2016 (Jaelse)
 
-TODO when back button i pressed from the download dialog, all the downloads should stop.
+TODO when back button i pressed from the download dialog, all the downloads should stop.(done on 1/11/2016)
 -------------------------------------------------------------------------------------------------------------
 
 1/11/2016 (Jaelse)

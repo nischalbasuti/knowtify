@@ -8,7 +8,6 @@ public class Subscription {
     private String userName;
     private String channelName;
     private String subscribersKey;
-
     public Subscription(){
     }
 
@@ -41,5 +40,4 @@ public class Subscription {
     public void setSubscribersKey(String subscribersKey) {
         this.subscribersKey = subscribersKey;
     }
-
 }

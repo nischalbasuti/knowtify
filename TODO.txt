@@ -1,4 +1,4 @@
-Knowtiphy
+Knowtify
 
 Database Structure
 

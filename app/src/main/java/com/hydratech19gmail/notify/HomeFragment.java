@@ -72,7 +72,7 @@ public class HomeFragment extends Fragment{
                         Log.d("HomeFragment","Entered");
                         if(subscriptionKeyList.isEmpty() || !(subscriptionKeyList.isEmpty())){
                             subscriptionKeyList.addLast(subscriptionChannel.getKey());
-                            Log.d("HomeFragment","taking list again");
+                            Log.d("HomeFragment","taking list yoyoyo");
                             NotificationsListener notificationsListener = new NotificationsListener(listAdapter,getContext(),subscription.getSubscribersKey(),subscriptionChannel.getKey());
                             notificationsListener.getNotifications();
                         }

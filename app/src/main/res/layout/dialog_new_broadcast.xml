@@ -11,7 +11,7 @@
         android:text="New Broadcast:"
         android:textStyle="bold"/>
     <EditText
-        android:id="@+id/broadcast_name"
+        android:id="@+id/query_subject"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_new_broadcast"
@@ -22,7 +22,7 @@
         android:id="@+id/broadcast_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/broadcast_name"
+        android:layout_below="@id/query_subject"
         android:hint="Broadcast Information"
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"/>

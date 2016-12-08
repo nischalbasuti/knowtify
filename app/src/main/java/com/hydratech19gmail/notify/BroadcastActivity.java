@@ -181,7 +181,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
 
     private void subscribeBroadcast() {
 
-        //adding userKey to subscribers
+        //adding userId to subscribers
         String path = "users/"+mBroadcasterUID+"/broadcasts/"+mBroadcastKey+"/subscribers/";
         Log.d(TAG,"sub path: "+path);
         DatabaseReference subsRef = ref.child("users")
@@ -203,7 +203,7 @@ public class BroadcastActivity extends AppCompatActivity implements View.OnClick
     }
 
     private void unsubscribeBroadcast(){
-        //removing userKey from subscribers
+        //removing userId from subscribers
         DatabaseReference subsRef = ref.child("users")
                 .child(mBroadcasterUID)
                 .child("broadcasts")

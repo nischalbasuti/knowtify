@@ -40,7 +40,7 @@ public class BroadcastAdapter extends ArrayAdapter<Broadcast>{
             convertView = mLayoutInflater.inflate(R.layout.broadcast_item,parent,false);
 
             mViewHolder = new ViewHolder();
-            mViewHolder.broadcastName = (TextView) convertView.findViewById(R.id.broadcast_name);
+            mViewHolder.broadcastName = (TextView) convertView.findViewById(R.id.query_subject);
             mViewHolder.broadcastInfo = (TextView) convertView.findViewById(R.id.broadcast_info);
             mViewHolder.privacy = (TextView) convertView.findViewById(R.id.privacy);
             mViewHolder.time = (TextView) convertView.findViewById(R.id.time);

@@ -2,9 +2,7 @@ package com.hydratech19gmail.notify;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -57,7 +55,7 @@ public class NewBroadcastDialog extends Dialog implements View.OnClickListener {
     }
 
     private void createNewBroadcast() {
-        EditText etBroadcastName = (EditText) findViewById(R.id.broadcast_name);
+        EditText etBroadcastName = (EditText) findViewById(R.id.query_subject);
         EditText etBroadcastInfo = (EditText) findViewById(R.id.broadcast_info);
 
         String broadcastName = etBroadcastName.getText().toString();

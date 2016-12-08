@@ -10,6 +10,12 @@ public class QueryObject {
     private String timeStamp;
     private int rating;
 
+
+    private String notificationKey;
+    private String broadcastUserKey;
+    private String broadcastKey;
+    private String queryKey;
+
     public QueryObject(){}
 
     //getters and setters
@@ -51,5 +57,37 @@ public class QueryObject {
 
     public void setRating(int rating) {
         this.rating = rating;
+    }
+
+    public String getNotificationKey() {
+        return notificationKey;
+    }
+
+    public void setNotificationKey(String notificationKey) {
+        this.notificationKey = notificationKey;
+    }
+
+    public String getBroadcastUserKey() {
+        return broadcastUserKey;
+    }
+
+    public void setBroadcastUserKey(String broadcastUserKey) {
+        this.broadcastUserKey = broadcastUserKey;
+    }
+
+    public String getBroadcastKey() {
+        return broadcastKey;
+    }
+
+    public void setBroadcastKey(String broadcastKey) {
+        this.broadcastKey = broadcastKey;
+    }
+
+    public String getQueryKey() {
+        return queryKey;
+    }
+
+    public void setQueryKey(String queryKey) {
+        this.queryKey = queryKey;
     }
 }

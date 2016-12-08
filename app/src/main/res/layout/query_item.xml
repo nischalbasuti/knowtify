@@ -51,6 +51,14 @@
             android:text="content"
             android:layout_below="@+id/query_userid"
             android:padding="10dp" />
+        <TextView
+            android:id="@+id/queryKey"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="query key"
+            android:visibility="gone"
+            android:layout_below="@id/content"/>
+
     </LinearLayout>
     <View
         android:layout_width="fill_parent"

@@ -96,7 +96,7 @@ public class BroadcastFragment extends Fragment implements View.OnClickListener,
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(getContext(),BroadcastActivity.class);
 
-        TextView broadcastName = (TextView) view.findViewById(R.id.broadcast_name);
+        TextView broadcastName = (TextView) view.findViewById(R.id.query_subject);
         TextView broadcastInfo = (TextView) view.findViewById(R.id.broadcast_info);
         TextView privacy = (TextView) view.findViewById(R.id.privacy);
         String broadcasterKey = ((TextView) view.findViewById(R.id.userKey)).getText().toString();

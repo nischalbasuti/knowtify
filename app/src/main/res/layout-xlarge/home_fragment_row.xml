@@ -27,26 +27,26 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
-        android:id="@+id/broadcast_name"
+        android:id="@+id/query_subject"
         android:layout_below="@+id/notification_name"
         android:paddingLeft="8dp" />
     <View
         android:layout_width="fill_parent"
         android:layout_height="1dip"
         android:background="@color/light_grey"
-        android:layout_below="@+id/broadcast_name"/>
+        android:layout_below="@+id/query_subject"/>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:id="@+id/contentLayout"
-        android:layout_below="@+id/broadcast_name">
+        android:layout_below="@+id/query_subject">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:minHeight="100dp"
             android:text="New Text"
             android:id="@+id/content"
-            android:layout_below="@+id/broadcast_name"
+            android:layout_below="@+id/query_subject"
             android:padding="10dp" />
     </LinearLayout>
     <View

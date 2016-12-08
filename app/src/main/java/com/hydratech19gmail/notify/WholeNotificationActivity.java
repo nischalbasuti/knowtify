@@ -2,6 +2,7 @@ package com.hydratech19gmail.notify;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -23,11 +24,9 @@ import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ListIterator;
-
 import static com.hydratech19gmail.notify.MainActivity.NOTIFICATIONS;
 
-/**
+/*
  * Created by zappereton on 11/10/16.
  */
 
@@ -39,6 +38,11 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
     String notificationSubject;
     String notificationContent;
     String notificationTimestamp;
+
+    //TODO: 8/12/16  get data from getIntent.getExtras(); in onCreate()
+    String broadcastUserKey;
+    String broadcastKey;
+    String notificationKey;
 
     TextView broadcastNameTV;
     TextView notificationNameTV;
@@ -62,6 +66,11 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
         notificationSubject = getIntent().getExtras().getString("notificationSubject");
         notificationContent = getIntent().getExtras().getString("notificationContent");
         notificationTimestamp = getIntent().getExtras().getString("notificationTimestamp");
+
+        // TODO: 8/12/16 still need to get info from where this Activity is being started from
+        broadcastUserKey = getIntent().getExtras().getString("broadcastUserKey");
+        broadcastKey = getIntent().getExtras().getString("broadcastKey");
+        notificationKey = getIntent().getExtras().getString("notificationKey");
 
         broadcastNameTV = (TextView)findViewById(R.id.wbroadcastName);
         notificationNameTV = (TextView)findViewById(R.id.wNotificationName);
@@ -123,7 +132,7 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                         if(which == 0){
                             Toast.makeText(WholeNotificationActivity.this,"Delete",Toast.LENGTH_SHORT).show();
                         //TODO add timestamp and broadcastKey
-                            //    Notification n = new Notification(broadcastName,notificationName,notificationSubject,notificationContent,null, userKey, broadcastKey);
+                            //    Notification n = new Notification(broadcastName,notificationName,notificationSubject,notificationContent,null, userId, broadcastKey);
                             Notification n = new Notification();
                             n.setBroadcast(broadcastName);
                             n.setName(notificationName);
@@ -148,15 +157,23 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
 
                             onBackPressed();
                         }
-                        else if(which == 0){
-                            Toast.makeText(WholeNotificationActivity.this,"Mark as Read",Toast.LENGTH_SHORT).show();
-                        }
                     }
                 });
                 dialogBuilder.show();
                 break;
             case R.id.wask_question:
+                //open QueryActivity
+                Intent intent = new Intent(this,QueryActivity.class);
+                intent.putExtra("user_key",broadcastUserKey);// TODO: 8/12/16
+                intent.putExtra("broadcast_key",broadcastKey);// TODO: 8/12/16
+                intent.putExtra("notification_key",notificationKey);// TODO: 8/12/16
+                intent.putExtra("notification_name",notificationName);
+                intent.putExtra("notification_content",notificationContent);
+
+                startActivity(intent);
+
                 Toast.makeText(WholeNotificationActivity.this,"uouououo",Toast.LENGTH_LONG).show();
+
                 break;
             case R.id.wattachment:
                 Log.d(TAG,"wattachment");
@@ -178,9 +195,8 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
                 closeB.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ListIterator<FileDownloadTask> storageReferenceListIterator = storageReference.getActiveDownloadTasks().listIterator();
-                        while (storageReferenceListIterator.hasNext()){
-                            storageReferenceListIterator.next().cancel();
+                        for (FileDownloadTask fileDownloadTask : storageReference.getActiveDownloadTasks()) {
+                            fileDownloadTask.cancel();
                         }
                         attachmentDialog.cancel();
                     }

@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.StreamDownloadTask;
 
 import java.util.Calendar;
 import java.util.List;
@@ -70,7 +69,7 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
 
             mViewHolder = new ViewHolder();
             mViewHolder.notificationName = (TextView)convertView.findViewById(R.id.notification_name);
-            mViewHolder.broadcastName = (TextView)convertView.findViewById(R.id.broadcast_name);
+            mViewHolder.broadcastName = (TextView)convertView.findViewById(R.id.query_subject);
             mViewHolder.contentText = (TextView)convertView.findViewById(R.id.content);
             mViewHolder.dropDownImage = (ImageView)convertView.findViewById(R.id.dropDownMenu);
             mViewHolder.queryImage = (ImageView)convertView.findViewById(R.id.ask_question);

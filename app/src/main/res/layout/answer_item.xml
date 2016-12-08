@@ -17,7 +17,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/announcement_icon"
+        android:src="@drawable/ic_menu_send"
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
@@ -25,19 +25,19 @@
     </ImageView>
 
     <TextView
-        android:id="@+id/query_subject"
+        android:id="@+id/user_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Name of the broadcast"
+        android:text="username"
         android:textColor="@color/bodyTextColor"/>
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/query_subject"
+        android:layout_below="@+id/user_id"
         android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="date month, year"
@@ -45,26 +45,15 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:textColor="@color/bodyTextColor"/>
     <TextView
-        android:id="@+id/broadcast_info"
+        android:id="@+id/answer_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time"
         android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="info about broadcast"
+        android:text="answer content"
         android:textStyle="bold"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
-        android:textColor="@color/bodyTextColor"/>
-    <TextView
-        android:id="@+id/privacy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/thumbnail"
-        android:layout_alignLeft="@+id/thumbnail"
-        android:textStyle="italic"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="privacy"
-        android:layout_marginEnd="@dimen/fab_margin"
         android:textColor="@color/bodyTextColor"/>
 </RelativeLayout>

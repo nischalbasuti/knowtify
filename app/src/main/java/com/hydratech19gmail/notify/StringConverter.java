@@ -1,5 +1,13 @@
 package com.hydratech19gmail.notify;
 
+import android.widget.TextView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -30,5 +38,21 @@ public class StringConverter {
     }
     static String removeBadChars(String string){
         return string.replace("@","").replace(".","");
+    }
+
+    public static void userKeytoDisplayName(String userKey){
+        DatabaseReference usernameRef = FirebaseDatabase.getInstance().getReference()
+                .child("users").child(userKey).child("username");
+        usernameRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String username = dataSnapshot.getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

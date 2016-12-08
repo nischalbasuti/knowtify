@@ -3,7 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/customshape">
-
+    <ImageView
+        android:layout_width="20dp"
+        android:layout_height="30dp"
+        android:id="@+id/dropDownMenu"
+        android:src="@drawable/icon_menu_dropdown"
+        android:layout_alignParentEnd="true"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_marginRight="4dp"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +25,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/announcement_icon"
+        android:src="@drawable/ic_ask_questions"
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginTop="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
@@ -31,7 +39,7 @@
         android:layout_alignTop="@+id/thumbnail"
         android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Name of the broadcast"
+        android:text="query subject"
         android:textColor="@color/bodyTextColor"/>
     <TextView
         android:id="@+id/time"
@@ -45,26 +53,24 @@
         android:layout_marginEnd="@dimen/fab_margin"
         android:textColor="@color/bodyTextColor"/>
     <TextView
-        android:id="@+id/broadcast_info"
+        android:id="@+id/query_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/time"
         android:layout_toEndOf="@+id/thumbnail"
         android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="info about broadcast"
+        android:text="answer content"
         android:textStyle="bold"
         android:layout_marginEnd="@dimen/fab_margin"
         android:layout_marginBottom="@dimen/fab_margin"
         android:textColor="@color/bodyTextColor"/>
     <TextView
-        android:id="@+id/privacy"
+        android:id="@+id/broadcasts_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/thumbnail"
-        android:layout_alignLeft="@+id/thumbnail"
-        android:textStyle="italic"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="privacy"
-        android:layout_marginEnd="@dimen/fab_margin"
-        android:textColor="@color/bodyTextColor"/>
+        android:layout_below="@+id/query_content"
+        android:layout_alignStart="@+id/thumbnail"
+        android:text="Answers"
+        android:textStyle="bold"
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 </RelativeLayout>

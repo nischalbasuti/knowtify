@@ -68,9 +68,9 @@ public class WholeNotificationActivity extends AppCompatActivity implements View
         notificationTimestamp = getIntent().getExtras().getString("notificationTimestamp");
 
         // TODO: 8/12/16 still need to get info from where this Activity is being started from
-        broadcastUserKey = getIntent().getExtras().getString("broadcastUserKey");
-        broadcastKey = getIntent().getExtras().getString("broadcastKey");
-        notificationKey = getIntent().getExtras().getString("notificationKey");
+        broadcastUserKey = getIntent().getExtras().getString("user_key");
+        broadcastKey = getIntent().getExtras().getString("broadcast_key");
+        notificationKey = getIntent().getExtras().getString("notification_key");
 
         broadcastNameTV = (TextView)findViewById(R.id.wbroadcastName);
         notificationNameTV = (TextView)findViewById(R.id.wNotificationName);

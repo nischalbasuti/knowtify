@@ -188,6 +188,12 @@ public class CustomAdapter extends ArrayAdapter<Notification> {
                 intent.putExtra("notificationContent",n.getContent());
                 intent.putExtra("notificationTimestamp",n.getTimeStamp());
 
+                intent.putExtra("user_key",n.getUserKey());
+                intent.putExtra("broadcast_key",n.getBroadcastKey());
+                intent.putExtra("notification_key",n.getNotificationKey());
+                intent.putExtra("notification_name",n.getName());
+                intent.putExtra("notification_content",n.getContent());
+
                 ((Activity)getContext()).startActivityForResult(intent,1);
             }
         });

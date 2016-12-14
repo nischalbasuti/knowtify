@@ -225,55 +225,6 @@ public class NewNotificationDialog extends Activity implements View.OnClickListe
                                             mUser.getUid(),
                                             broadcastKey);
                                     notificationRef.push().setValue(notification);
-
-                                    Query query1 = notificationRef.orderByChild("name").equalTo(name);
-                                    query.addChildEventListener(new ChildEventListener() {
-                                        @Override
-                                        public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                                            if(dataSnapshot != null){
-                                                Log.d("key",dataSnapshot.getKey());
-                                                /*send this key with the url to the node js server*/
-                                                HashMap<String, String> params = new HashMap<String, String>();
-                                                params.put("broadcastName",broadcastName);
-                                                params.put("user",mUser.getUid());
-                                                params.put("broadcast",broadcastKey);
-                                                params.put("key",dataSnapshot.getKey());
-                                                RequestQueue requestQueue = Volley.newRequestQueue(getBaseContext());
-                                                    JsonObjectRequest request = new JsonObjectRequest(server, new JSONObject(params), new Response.Listener<JSONObject>() {
-                                                        @Override
-                                                        public void onResponse(JSONObject response) {
-                                                            Log.d("Response",response.toString());
-                                                        }
-                                                    }, new Response.ErrorListener() {
-                                                        @Override
-                                                        public void onErrorResponse(VolleyError error) {
-                                                            Log.d("VOlley Error",error.toString());
-                                                        }
-                                                    });
-                                                    requestQueue.add(request);
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-
-                                        }
-
-                                        @Override
-                                        public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                                        }
-
-                                        @Override
-                                        public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
-                                        }
-                                    });
                                 }
                                 /*get the key for the notification added
                                 *make sure the notification is pushed to the database correctly

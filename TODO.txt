@@ -194,5 +194,9 @@ TODO when back button i pressed from the download dialog, all the downloads shou
 
 TODO make algorithm to sort the notifications according to the time stamp.
 No need of localdatabase. Disk persistent is used. Old method to retrieve the notifications has bee changed.
-TODO make the node js server listen to all the broadcasts. And send the notifications when new one is pushed.
+TODO make the node js server listen to all the broadcasts. And send the notifications when new one is pushed.(done on 15/12/2016)
 -------------------------------------------------------------------------------------------------------------
+
+15/12/2016 (Jaelse)
+
+Fixed the home fragment repeating notification problem.

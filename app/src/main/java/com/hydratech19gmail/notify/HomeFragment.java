@@ -71,11 +71,6 @@ public class HomeFragment extends Fragment{
     public void onResume() {
         super.onResume();
 
-        Log.d("home fragment","onResume");
-
-        //add the listener
-        //notificationRef.addValueEventListener(valueEventListener);
-
         if(WholeNotificationActivity.CHECK){
             refresh();
         }
@@ -84,8 +79,6 @@ public class HomeFragment extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
-        //remove the listener
-        //notificationRef.removeEventListener(valueEventListener);
     }
 
     public void refresh(){

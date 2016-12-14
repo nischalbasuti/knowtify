@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -65,11 +66,29 @@
         android:layout_height="1dip"
         android:background="@color/light_grey"
         android:layout_below="@+id/contentLayout"/>
-    <LinearLayout
-        android:layout_width="match_parent"
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/contentLayout"
         android:layout_weight="1">
-    </LinearLayout>
 
+        <TextView
+            android:id="@+id/rateValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:text="100"
+            android:layout_alignParentRight="true"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_toLeftOf="@id/rateValue"
+            android:adjustViewBounds="true"
+            android:paddingTop="1dp"
+            android:id="@+id/rateUp"
+            app:srcCompat="@drawable/ic_rate_up" />
+    </RelativeLayout>
 </RelativeLayout>

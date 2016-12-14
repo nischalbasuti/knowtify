@@ -6,6 +6,8 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ListAdapter;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,9 +29,8 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
     Notification n;
     ListAdapter listAdapter;
 
-    UpdateNotificationsTask(Context ctx, Notification n, ListAdapter listAdapter){
+    UpdateNotificationsTask(Context ctx, ListAdapter listAdapter){
         this.ctx = ctx;
-        this.n = n;
         this.listAdapter = listAdapter;
     }
     UpdateNotificationsTask(Context ctx, Notification n){
@@ -47,8 +48,7 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
             String method = params[0];
             if(method.equals("addAndSort")){
 
-                NOTIFICATIONS.addFirst(n);
-                publishProgress(n);
+               listener();
                 /*
                 int size = NOTIFICATIONS.size();
                 Long newTimeStamp = Long.parseLong(n.getTimeStamp());
@@ -116,5 +116,74 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
 
     @Override
     protected void onPostExecute(String s) {
+    }
+
+    public void listener(){
+        final LinkedList<String> subscriptionKeyList = new LinkedList<>();
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        DatabaseReference subscriptionRef = ref.child("users")
+                .child(user.getUid())
+                .child("subscriptions");
+
+        subscriptionRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot subscriptionChannel : dataSnapshot.getChildren()) {
+                    try{
+                        Subscription subscription = subscriptionChannel.getValue(Subscription.class);
+                        if(subscriptionKeyList.isEmpty() || !subscriptionKeyList.contains(subscriptionChannel.getKey())){
+                            Log.d("HomeFragment","Enteref");
+                            subscriptionKeyList.add(subscriptionChannel.getKey());
+                            getNotifications(subscription.getSubscribersKey(),subscriptionChannel.getKey());
+                        }
+                    }catch (Exception e){
+                        Log.d(TAG, e.getMessage());
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    public void getNotifications(String uid,String channelKey) {
+
+        final LinkedList<String> notificationKeyList = new LinkedList<>();
+
+        DatabaseReference channelRef = FirebaseDatabase.getInstance().getReference().child("users")
+                .child(uid)
+                .child("broadcasts")
+                .child(channelKey)
+                .child("notifications");
+
+        channelRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot notification : dataSnapshot.getChildren()) {
+                    if(notificationKeyList.isEmpty() || !notificationKeyList.contains(notification.getKey())){
+                        Log.d("NotificationsListener","empty");
+                        notificationKeyList.addLast(notification.getKey());
+                        Notification n = notification.getValue(Notification.class);
+                        n.setNotificationKey(notification.getKey());
+
+                        NOTIFICATIONS.addFirst(n);
+                        onProgressUpdate(n);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 }

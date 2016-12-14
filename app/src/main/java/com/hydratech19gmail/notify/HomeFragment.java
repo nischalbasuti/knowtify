@@ -30,6 +30,8 @@ public class HomeFragment extends Fragment{
     ListAdapter listAdapter;
     private static final String TAG = "HomeFrgment";
 
+    int firstTime = 1;
+
     DatabaseReference notificationRef;
     ValueEventListener valueEventListener;
 
@@ -54,77 +56,27 @@ public class HomeFragment extends Fragment{
         final ListView listView = (ListView) rootView.findViewById(R.id.notificationList);
         listView.setAdapter(listAdapter);
 
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        Log.d("HomeFragment","CreateView");
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if(firstTime == 1){
+            UpdateNotificationsTask updateNotificationsTask = new UpdateNotificationsTask(getContext(),listAdapter);
+            updateNotificationsTask.execute("addAndSort");
 
-        DatabaseReference subscriptionRef = ref.child("users")
-                                            .child(user.getUid())
-                                            .child("subscriptions");
-
-        final LinkedList<String> subscriptionKeyList = new LinkedList<>();
-        subscriptionRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot subscriptionChannel : dataSnapshot.getChildren()) {
-                    try{
-                        Subscription subscription = subscriptionChannel.getValue(Subscription.class);
-                        Log.d("HomeFragment","Entered");
-                        if(subscriptionKeyList.isEmpty() || !(subscriptionKeyList.isEmpty())){
-                            subscriptionKeyList.addLast(subscriptionChannel.getKey());
-                            Log.d("HomeFragment","taking list yoyoyo");
-                            NotificationsListener notificationsListener = new NotificationsListener(listAdapter,getContext(),subscription.getSubscribersKey(),subscriptionChannel.getKey());
-                            notificationsListener.getNotifications();
-                        }
-                    }catch (Exception e){
-                        Log.d(TAG, e.getMessage());
-                    }
-
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });/*
-        notificationRef = ref.child("users")
-                .child(user.getUid())
-                .child("newNotification");
-
-        valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot notification : dataSnapshot.getChildren()) {
-                    try {
-                        Notification newNotification = notification.getValue(Notification.class);
-                        //add these notifications to the local database
-                        Log.d("Home time", "jaekse" + newNotification.getTimeStamp());
-                        DatabaseOperations dop = new DatabaseOperations(getContext());
-                        dop.putNotification(dop, newNotification);
-
-                        NOTIFICATIONS.addFirst(newNotification);
-                        ((CustomAdapter) listAdapter).notifyDataSetChanged();
-                    } catch (Exception e) {
-                        Log.d(TAG, e.getMessage());
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        };*/
+        }
+        firstTime = 0;
         return rootView;
     }
 
     @Override
     public void onResume() {
         super.onResume();
+
         Log.d("home fragment","onResume");
+
         //add the listener
         //notificationRef.addValueEventListener(valueEventListener);
 
-        if(WholeNotificationActivity.CHECK == true){
+        if(WholeNotificationActivity.CHECK){
             refresh();
         }
     }

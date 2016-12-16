@@ -37,7 +37,8 @@ public class StringConverter {
         return getMD5(userId);
     }
     static String removeBadChars(String string){
-        return string.replace("@","").replace(".","");
+        return string.replace("@","").replace(".","").replace("/","")
+                .replace("[","").replace("]","").replace("#","").replace("$","");
     }
 
     public static void userKeytoDisplayName(String userKey){

@@ -111,6 +111,7 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
 
         findViewById(R.id.fab_new_query).setOnClickListener(this);
 
+
         notificationRef = FirebaseDatabase.getInstance().getReference()
                 .child("users").child(mUserKey)
                 .child("broadcasts").child(mBroadcastKey)

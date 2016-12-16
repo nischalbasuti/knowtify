@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/search_result_row">
+
+
+    <ImageView android:id="@+id/thumbnail"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/announcement_icon"
+        android:layout_marginLeft="@dimen/fab_margin"
+        android:layout_marginTop="@dimen/fab_margin"
+        android:layout_marginRight="@dimen/fab_margin"
+        android:layout_marginBottom="2dp">
+    </ImageView>
+
+    <TextView
+        android:id="@+id/result_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbnail"
+        android:layout_toEndOf="@+id/thumbnail"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Name of the broadcast or user"
+        android:textColor="@color/bodyTextColor"/>
+
+
+</RelativeLayout>

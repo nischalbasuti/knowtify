@@ -13,7 +13,11 @@
     <application
         android:name=".FirebaseApp"
         android:allowBackup="true"
+<<<<<<< HEAD
         android:icon="@drawable/ic_launcher"
+=======
+        android:icon="@drawable/ic_launcher_knowtify1"
+>>>>>>> 904599d1b8b07e185e2967603c808d7cbf0ea21e
         android:label="@string/app_name"
         android:largeHeap="true"
         android:supportsRtl="true"

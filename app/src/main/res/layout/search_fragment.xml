@@ -9,7 +9,8 @@
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:id="@+id/searchView"
-       android:iconifiedByDefault="true"
+       android:iconifiedByDefault="false"
+       android:backgroundTint="@color/authui_colorAccent"
        android:queryHint="Search" />
     <ListView
         android:layout_width="match_parent"
@@ -34,7 +35,7 @@
        <ImageView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
-           android:id="@+id/imageView3"
+           android:id="@+id/broadcast_search"
            android:layout_weight="1"
            android:src="@drawable/ic_menu_camera"/>
 
@@ -42,14 +43,14 @@
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            app:srcCompat="@drawable/ic_menu_gallery"
-           android:id="@+id/imageView2"
+           android:id="@+id/user_search"
            android:layout_weight="1" />
 
        <ImageView
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            app:srcCompat="@drawable/ic_chat_bubble_outline_black_18dp"
-           android:id="@+id/imageView"
+           android:id="@+id/default_search"
            android:layout_weight="1" />
    </LinearLayout>
 </RelativeLayout>

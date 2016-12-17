@@ -51,7 +51,8 @@
         android:text="date month, year"
         android:textStyle="italic"
         android:layout_marginEnd="@dimen/fab_margin"
-        android:textColor="@color/bodyTextColor"/>
+        android:textColor="@color/bodyTextColor"
+        android:visibility="gone"/>
     <TextView
         android:id="@+id/query_content"
         android:layout_width="wrap_content"

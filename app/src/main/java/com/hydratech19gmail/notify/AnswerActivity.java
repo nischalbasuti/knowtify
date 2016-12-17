@@ -35,6 +35,7 @@ public class AnswerActivity extends AppCompatActivity implements View.OnClickLis
     String mBroadcastKey;
     String mNotificationContent;
     String mQueryKey;
+    String mTime;
 
     String mQuerySubject;
     String mQueryContent;
@@ -56,6 +57,7 @@ public class AnswerActivity extends AppCompatActivity implements View.OnClickLis
         //mNotificationContent = getIntent().getExtras().getString("notification_content");
         mQuerySubject = getIntent().getExtras().getString("query_subject");
         mQueryContent = getIntent().getExtras().getString("query_content");
+        mTime = getIntent().getExtras().getString("time");
 
         //changing actionbar title
         try {

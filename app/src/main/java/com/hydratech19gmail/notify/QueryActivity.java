@@ -2,6 +2,7 @@ package com.hydratech19gmail.notify;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -84,13 +86,18 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
         header.findViewById(R.id.dropDownMenu).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String[] options = {"answer", "delete"};
+                String[] options = {"Ask Query", "Delete"};
                 AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(QueryActivity.this);
                 dialogBuilder.setItems(options, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         if (which == 0) {
-                            Toast.makeText(QueryActivity.this,"answer",Toast.LENGTH_SHORT).show();
+                         //   Toast.makeText(QueryActivity.this,"answer",Toast.LENGTH_SHORT).show();
+
+                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+                            NewQueryDialog newQueryDialog = new NewQueryDialog(QueryActivity.this,user,notificationRef);
+                            newQueryDialog.show();
 
                         } else if (which == 1) {
                             Toast.makeText(QueryActivity.this, "delete", Toast.LENGTH_SHORT).show();
@@ -109,7 +116,9 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
 
         listView.setOnItemClickListener(this);
 
-        findViewById(R.id.fab_new_query).setOnClickListener(this);
+        final FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab_new_query);
+        fab.setOnClickListener(this);
+        fab.hide();
 
 
         notificationRef = FirebaseDatabase.getInstance().getReference()
@@ -121,7 +130,7 @@ public class QueryActivity extends AppCompatActivity implements View.OnClickList
     }
     private void displayQueries(final ListAdapter listAdapter) {
 
-        notificationRef.child("queries").addValueEventListener(new ValueEventListener() {
+        notificationRef.child("queries").orderByChild("rating").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Toast.makeText(getBaseContext(), "onDataChange queries", Toast.LENGTH_SHORT).show();

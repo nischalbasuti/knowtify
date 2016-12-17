@@ -15,6 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="200dp"
         android:layout_below="@id/tv_new_answer"
+        android:gravity="top"
         android:hint="Answer"
         android:layout_margin="@dimen/fab_margin"
         />

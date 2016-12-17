@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/notification_name"
         android:hint="Notification Subject"
+        android:gravity="top"
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"/>
     <EditText
@@ -36,7 +37,9 @@
         android:layout_marginTop="@dimen/fab_margin"
         android:layout_marginLeft="@dimen/fab_margin"
         android:layout_marginRight="@dimen/fab_margin"
+        android:gravity="top"
         android:height="100dp"/>
+    <!-- hiding content -->
 
     <ImageView
         android:id="@+id/upload_attachments_button"

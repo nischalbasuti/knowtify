@@ -129,7 +129,7 @@ public class UpdateNotificationsTask extends AsyncTask<String,Notification,Strin
                 .child(user.getUid())
                 .child("subscriptions");
 
-        subscriptionRef.orderByKey().addListenerForSingleValueEvent(new ValueEventListener() {
+        subscriptionRef.orderByKey().addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot subscriptionChannel : dataSnapshot.getChildren()) {

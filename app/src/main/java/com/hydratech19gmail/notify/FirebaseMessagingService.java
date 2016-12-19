@@ -39,7 +39,7 @@ public class FirebaseMessagingService extends com.google.firebase.messaging.Fire
                 .setContentTitle(name)
                 .setContentText(subject)
                 .setLights(Color.RED,3000,3000)
-                .setSmallIcon(R.drawable.ic_tab_broadcast)
+                .setSmallIcon(R.drawable.ic_launcher_knowtify)
                 .setContentIntent(pendingIntent);
             //need to add a sound for the notification
         NotificationManager manager = (NotificationManager)getSystemService(NOTIFICATION_SERVICE);
